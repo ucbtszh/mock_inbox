@@ -6,7 +6,7 @@
       <v-icon dark>mdi-account</v-icon>
     </v-toolbar>
 
-    <v-toolbar dense color="rgb(242,242,242)" flat>
+    <v-toolbar dense color="rgb(240,240,240)" flat>
       <v-btn depressed><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn>
       <v-btn depressed><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn>
       <v-btn depressed><v-icon>mdi-delete</v-icon>&nbsp;Delete</v-btn>
@@ -25,19 +25,35 @@
             <v-list>
               <template v-for="(eml, index) in emls">
                 <v-list-item
-                  :key="index"
+                  :key="eml.bodyURL"
                   @click="displayEml(index, eml.bodyURL)"
+                  @pointerover="displayRadioBtn(index)"
                 >
-                  <v-list-item-content>
-                    <v-list-item-title>{{ eml.fromName }}</v-list-item-title>
+                  <v-row>
+                    <v-col cols="1" style="margin-top:30px;">
+                      <v-radio v-show="index === emlHoverIndex" :name="index"></v-radio>
+                    </v-col>
 
-                    <v-list-item-subtitle>
-                      <div style="float: left">
-                        {{ eml.subject.substr(0, 60) }}
-                      </div>
-                      <div style="float: right">{{ eml.time }}</div>
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
+                    <v-col>
+                      <v-list-item-content>
+                        <v-list-item-title style="line-height: 1.5em">{{
+                          eml.fromName
+                        }}</v-list-item-title>
+
+                        <v-list-item-subtitle>
+                          <div style="float: left; line-height: 1.5em">
+                            {{ eml.subject.substr(0, 57) }}
+                          </div>
+                          <div style="float: right; line-height: 1.5em">
+                            {{ eml.date }}
+                          </div>
+                        </v-list-item-subtitle>
+                        <div style="font-size: 14px; line-height: 1.5em">
+                          {{ eml.previewTxt }}
+                        </div>
+                      </v-list-item-content>
+                    </v-col>
+                  </v-row>
                 </v-list-item>
               </template>
             </v-list>
@@ -46,21 +62,23 @@
 
         <v-col style="height: 100vh; overflow: auto">
           <v-card v-for="(eml, index) in emls" :key="index">
-            <div
-              v-if="index === emlClickIndex"
-              style="background-color: 'yellow'"
-            >
+            <div v-if="index === emlClickIndex">
               <v-card-title
                 ><div class="subject">{{ eml.subject }}</div></v-card-title
               >
               <div class="initial">
                 {{ eml.fromName.substr(0, 1) }}
               </div>
-              <div id="header" style="background-color: 'yellow'; margin-left:65px;">
+              <div
+                id="header"
+                style="background-color: 'yellow'; margin-left: 65px"
+              >
                 <div class="from-name" id="eml_from_name">
                   {{ eml.fromName }}&nbsp;&lt;{{ eml.fromEml }}&gt;
                 </div>
-                <div class="time" id="eml_timing">{{ eml.time }}</div>
+                <div class="time" id="eml_timing">
+                  {{ eml.date }}&nbsp;{{ eml.time }}
+                </div>
                 <div class="to" id="eml_to">
                   To:&nbsp;&nbsp;{{ eml.toEml }}<br />
                   <p v-if="eml.CCeml.length > 0">CC: {{ eml.CCeml }}</p>
@@ -86,17 +104,26 @@ export default {
   data: () => ({
     emls: emails,
     emlClickIndex: "",
+    emlHoverIndex: ""
   }),
   methods: {
     displayEml(index, src) {
       this.emlClickIndex = index;
       document.getElementById("eml-msg").src = src;
     },
+    displayRadioBtn(index) {
+      this.emlHoverIndex = index;
+
+    }
   },
 };
 </script>
 
 <style scoped>
+#inbox {
+  background-color: rgb(248, 248, 248);
+}
+
 #outlook-sign {
   font-size: 18px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -125,6 +152,7 @@ export default {
   color: white;
   text-align: center;
   line-height: 2.5em;
+  margin-top: 5px;
   margin-left: 15px;
 }
 
