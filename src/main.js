@@ -2,9 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import router from './router'
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/database";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/database";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
