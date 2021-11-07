@@ -43,7 +43,8 @@
                 <template v-for="(eml, index) in emls">
                   <v-list-item
                     :key="index"
-                    @click="displayEml(eml.bodyURL);"
+                    @click="displayEml(eml.bodyURL)"
+                    @pointerover="emlHoverIndex = index"
                   >
                     <template v-slot:default="{ active }">
                       <v-row>
@@ -51,9 +52,7 @@
                           cols="1"
                           style="margin-top: 23px; margin-left: 5px"
                         >
-                          <v-icon
-                            v-show=active
-                          >
+                          <v-icon v-show="active | (emlHoverIndex == index)">
                             {{
                               !active
                                 ? "mdi-checkbox-blank-circle-outline"
@@ -91,6 +90,15 @@
 
         <v-col style="height: 100vh; overflow: auto">
           <v-card v-for="(eml, index) in emls" :key="index">
+            <div class="container" id="app">
+              <TxtEditor name="html-editor" v-model="reply" />
+              <div style="margin-top: 40px">
+                <div>The HTML contents are as follows:</div>
+                <hr />
+                <div>{{ reply }}</div>
+              </div>
+            </div>
+
             <div v-if="index == emlViewIndex">
               <v-card-title
                 ><div class="subject">{{ eml.subject }}</div></v-card-title
@@ -98,10 +106,7 @@
               <div class="initial">
                 {{ eml.fromName.substr(0, 1) }}
               </div>
-              <div
-                id="header"
-                style="background-color: 'yellow'; margin-left: 65px"
-              >
+              <div id="header" style="margin-left: 65px">
                 <div class="from-name" id="eml_from_name">
                   {{ eml.fromName }}&nbsp;&lt;{{ eml.fromEml }}&gt;
                 </div>
@@ -123,26 +128,32 @@
         </v-col>
       </v-row>
     </v-main>
-
   </v-app>
 </template>
 
 <script>
 import emails from "../assets/stimuli_eml_full_shuffled.json";
 
+import TxtEditor from "vue-html-editor";
+
 export default {
+  components: {
+    TxtEditor,
+  },
   data: () => ({
     emls: emails,
     emlViewIndex: null,
     emlViewSrc: null,
+    emlHoverIndex: null,
     emlVi: false,
+    reply: null,
   }),
   methods: {
     displayEml(src) {
-      this.emlViewSrc = src
+      this.emlViewSrc = src;
       document.getElementById("eml-msg").src = src;
-    }
-  }
+    },
+  },
 };
 </script>
 
