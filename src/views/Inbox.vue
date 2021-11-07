@@ -22,6 +22,9 @@
       <v-btn depressed @click="labelEml('junk')"
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
+      <v-btn depressed @click="labelEml('mali')" v-if="ivBtn"
+        ><v-icon>mdi-block-helper</v-icon>&nbsp;Check for malice</v-btn
+      >
       <v-spacer></v-spacer>
       <v-btn depressed color="secondary">DONE</v-btn>
     </v-toolbar>
@@ -32,9 +35,9 @@
       dense
       border="left"
       dismissible
-      v-if="nudge"
+      v-if="ivNudge"
     >
-      {{ nudgeTxt }}
+      {{ eml.nudgeTxt }}
     </v-alert>
 
     <v-main>
@@ -123,6 +126,16 @@
               <v-card-title
                 ><div class="subject">{{ eml.subject }}</div></v-card-title
               >
+              <v-alert
+                outlined
+                type="warning"
+                dense
+                border="left"
+                v-if="ivScore"
+              >
+                {{ eml.junkScore }}
+              </v-alert>
+
               <div class="initial">
                 {{ eml.fromName.substr(0, 1) }}
               </div>
@@ -167,8 +180,9 @@ export default {
     labels: {},
     showReply: false,
     replyTxt: null,
-    nudge: null,
-    nudgeTxt: "nothing set yet",
+    ivBtn: false, // handle at global Vue attribute
+    ivScore: false, // handle at global Vue attribute
+    ivNudge: false, // handle at global Vue attribute
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
@@ -182,7 +196,7 @@ export default {
     },
     labelEml(label) {
       this.labels[this.emlViewSrc] = label;
-      document.getElementById(this.emlViewSrc).style.display = "none"
+      document.getElementById(this.emlViewSrc).style.display = "none";
       // console.log(this.labels);
     },
     sendLabels() {
