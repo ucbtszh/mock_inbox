@@ -7,11 +7,21 @@
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
-      <v-btn depressed><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn>
-      <v-btn depressed><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn>
-      <v-btn depressed><v-icon>mdi-delete</v-icon>&nbsp;Delete</v-btn>
-      <v-btn depressed><v-icon>mdi-archive-outline</v-icon>&nbsp;Archive</v-btn>
-      <v-btn depressed><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn>
+      <v-btn depressed @click="showReply = true"
+        ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
+      >
+      <v-btn depressed @click="labelEml('fw')"
+        ><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
+      >
+      <v-btn depressed @click="labelEml('del')"
+        ><v-icon>mdi-delete</v-icon>&nbsp;Delete</v-btn
+      >
+      <v-btn depressed @click="labelEml('arch')"
+        ><v-icon>mdi-archive-outline</v-icon>&nbsp;Archive</v-btn
+      >
+      <v-btn depressed @click="labelEml('junk')"
+        ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
+      >
       <v-spacer></v-spacer>
       <v-btn depressed color="secondary">DONE</v-btn>
     </v-toolbar>
@@ -24,9 +34,7 @@
       dismissible
       v-if="nudge"
     >
-      Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum.
-      Suspendisse non nisl sit amet velit hendrerit rutrum. Nullam vel sem.
-      Pellentesque dapibus hendrerit tortor.
+      {{ nudgeTxt }}
     </v-alert>
 
     <v-main>
@@ -45,6 +53,7 @@
                     :key="index"
                     @click="displayEml(eml.bodyURL)"
                     @pointerover="emlHoverIndex = index"
+                    :id="eml.bodyURL"
                   >
                     <template v-slot:default="{ active }">
                       <v-row>
@@ -90,16 +99,27 @@
 
         <v-col style="height: 100vh; overflow: auto">
           <v-card v-for="(eml, index) in emls" :key="index">
-            <div class="container" id="app">
-              <TxtEditor name="html-editor" v-model="reply" />
-              <div style="margin-top: 40px">
-                <div>The HTML contents are as follows:</div>
-                <hr />
-                <div>{{ reply }}</div>
-              </div>
-            </div>
-
             <div v-if="index == emlViewIndex">
+              {{ replyTxt }}
+
+              <v-form v-if="showReply">
+                <p style="height: 30px; padding-top: 10px; padding-left: 15px">
+                  To: {{ eml.fromEml }}
+                </p>
+
+                <vue-editor
+                  v-model="replyTxt"
+                  :editor-toolbar="customToolbar"
+                ></vue-editor>
+                <v-btn
+                  :disabled="replyTxt == null"
+                  type="submit"
+                  color="primary"
+                  @click="labelEml('re')"
+                  >Send</v-btn
+                >
+              </v-form>
+
               <v-card-title
                 ><div class="subject">{{ eml.subject }}</div></v-card-title
               >
@@ -133,25 +153,40 @@
 
 <script>
 import emails from "../assets/stimuli_eml_full_shuffled.json";
-
-import TxtEditor from "vue-html-editor";
+import { VueEditor } from "vue2-editor";
 
 export default {
   components: {
-    TxtEditor,
+    VueEditor,
   },
   data: () => ({
     emls: emails,
+    emlViewSrc: "",
     emlViewIndex: null,
-    emlViewSrc: null,
     emlHoverIndex: null,
-    emlVi: false,
-    reply: null,
+    labels: {},
+    showReply: false,
+    replyTxt: null,
+    nudge: null,
+    nudgeTxt: "nothing set yet",
+    customToolbar: [
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ align: "" }, { align: "center" }, { align: "right" }],
+    ],
   }),
   methods: {
     displayEml(src) {
       this.emlViewSrc = src;
       document.getElementById("eml-msg").src = src;
+    },
+    labelEml(label) {
+      this.labels[this.emlViewSrc] = label;
+      document.getElementById(this.emlViewSrc).style.display = "none"
+      // console.log(this.labels);
+    },
+    sendLabels() {
+      // ADD FUNCTION TO SEND REPLY MESSAGE TO DB
     },
   },
 };
