@@ -1,6 +1,6 @@
 <template>
   <v-app id="inbox">
-    <v-toolbar height="50" color="rgb(0,120,212)" app>
+    <v-toolbar height="50" color="rgb(0,120,212)">
       <p id="outlook-sign">Outlook</p>
       <v-spacer></v-spacer>
       <v-icon dark>mdi-account</v-icon>
@@ -16,6 +16,19 @@
       <v-btn depressed color="secondary">DONE</v-btn>
     </v-toolbar>
 
+    <v-alert
+      outlined
+      type="warning"
+      dense
+      border="left"
+      dismissible
+      v-if="nudge"
+    >
+      Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum.
+      Suspendisse non nisl sit amet velit hendrerit rutrum. Nullam vel sem.
+      Pellentesque dapibus hendrerit tortor.
+    </v-alert>
+
     <v-main>
       <v-row>
         <v-col cols="4">
@@ -23,46 +36,62 @@
             <v-card-title>Inbox</v-card-title>
 
             <v-list>
-              <template v-for="(eml, index) in emls">
-                <v-list-item
-                  :key="eml.bodyURL"
-                  @click="displayEml(index, eml.bodyURL)"
-                  @pointerover="displayRadioBtn(index)"
-                >
-                  <v-row>
-                    <v-col cols="1" style="margin-top:30px;">
-                      <v-radio v-show="index === emlHoverIndex" :name="index"></v-radio>
-                    </v-col>
+              <v-list-item-group
+                active-class="blue lighten-5"
+                v-model="emlViewIndex"
+              >
+                <template v-for="(eml, index) in emls">
+                  <v-list-item
+                    :key="index"
+                    @click="displayEml(eml.bodyURL);"
+                  >
+                    <template v-slot:default="{ active }">
+                      <v-row>
+                        <v-col
+                          cols="1"
+                          style="margin-top: 23px; margin-left: 5px"
+                        >
+                          <v-icon
+                            v-show=active
+                          >
+                            {{
+                              !active
+                                ? "mdi-checkbox-blank-circle-outline"
+                                : "mdi-check-circle"
+                            }}
+                          </v-icon>
+                        </v-col>
 
-                    <v-col>
-                      <v-list-item-content>
-                        <v-list-item-title style="line-height: 1.5em">{{
-                          eml.fromName
-                        }}</v-list-item-title>
+                        <v-col style="margin-top: 5px; margin-bottom: 5px">
+                          <v-list-item-title style="line-height: 1.5em">{{
+                            eml.fromName
+                          }}</v-list-item-title>
 
-                        <v-list-item-subtitle>
-                          <div style="float: left; line-height: 1.5em">
-                            {{ eml.subject.substr(0, 57) }}
+                          <v-list-item-subtitle>
+                            <div style="float: left; line-height: 1.5em">
+                              {{ eml.subject.substr(0, 57) }}
+                            </div>
+                            <div style="float: right; line-height: 1.5em">
+                              {{ eml.date }}
+                            </div>
+                          </v-list-item-subtitle>
+
+                          <div style="font-size: 14px; line-height: 1.5em">
+                            {{ eml.previewTxt }}
                           </div>
-                          <div style="float: right; line-height: 1.5em">
-                            {{ eml.date }}
-                          </div>
-                        </v-list-item-subtitle>
-                        <div style="font-size: 14px; line-height: 1.5em">
-                          {{ eml.previewTxt }}
-                        </div>
-                      </v-list-item-content>
-                    </v-col>
-                  </v-row>
-                </v-list-item>
-              </template>
+                        </v-col>
+                      </v-row>
+                    </template>
+                  </v-list-item>
+                </template>
+              </v-list-item-group>
             </v-list>
           </v-card>
         </v-col>
 
         <v-col style="height: 100vh; overflow: auto">
           <v-card v-for="(eml, index) in emls" :key="index">
-            <div v-if="index === emlClickIndex">
+            <div v-if="index == emlViewIndex">
               <v-card-title
                 ><div class="subject">{{ eml.subject }}</div></v-card-title
               >
@@ -87,13 +116,14 @@
               <iframe
                 :src="eml.bodyURL"
                 :height="eml.height + 26"
-                name="eml-msg"
+                id="eml-msg"
               />
             </div>
           </v-card>
         </v-col>
       </v-row>
     </v-main>
+
   </v-app>
 </template>
 
@@ -103,19 +133,16 @@ import emails from "../assets/stimuli_eml_full_shuffled.json";
 export default {
   data: () => ({
     emls: emails,
-    emlClickIndex: "",
-    emlHoverIndex: ""
+    emlViewIndex: null,
+    emlViewSrc: null,
+    emlVi: false,
   }),
   methods: {
-    displayEml(index, src) {
-      this.emlClickIndex = index;
+    displayEml(src) {
+      this.emlViewSrc = src
       document.getElementById("eml-msg").src = src;
-    },
-    displayRadioBtn(index) {
-      this.emlHoverIndex = index;
-
     }
-  },
+  }
 };
 </script>
 
