@@ -88,9 +88,7 @@
 <script>
 import VueRecaptcha from "vue-recaptcha";
 import Vue from "vue";
-import { auth } from "../main";
-import { signInAnonymously } from "firebase/auth";
-// FOR SOME REASON, AUTH.CURRENTUSER IS NOT ACTUALLY SET
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 export default {
   name: "consent",
@@ -103,12 +101,13 @@ export default {
     return {
       isProlificUser: false,
       setID: null,
-      showButton: false, // set to true for debugging locally
+      showButton: false
     };
   },
   methods: {
     login() {
       try {
+        const auth = getAuth()
         signInAnonymously(auth);
       }
       catch {
