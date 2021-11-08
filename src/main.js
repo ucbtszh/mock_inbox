@@ -3,7 +3,7 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import router from "./router";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // import { getFirestore } from "firebase/firestore";
 import firebase from "firebase/compat/app"
@@ -35,7 +35,8 @@ Vue.config.productionTip = false;
 // https://firebase.google.com/docs/auth/web/anonymous-auth 
 
 let app
-auth.onAuthStateChanged(() => {
+onAuthStateChanged(auth, (user) => {
+  console.log(user)
   if (!app) {
     app = new Vue ({
       vuetify,
