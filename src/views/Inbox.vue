@@ -26,7 +26,7 @@
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
-      <v-btn depressed color="secondary">DONE</v-btn>
+      <v-btn depressed color="secondary" @click="sendLabels()">DONE</v-btn>
     </v-toolbar>
 
     <v-alert
@@ -101,15 +101,12 @@
         </v-col>
 
         <v-col style="height: 100vh; overflow: auto">
-          <v-card v-for="(eml, index) in emls" :key="index">
+          <v-card v-for="(eml, index) in emls" :key="index" :id="index">
             <div v-if="index == emlViewIndex">
-              {{ replyTxt }}
-
-              <v-form v-if="showReply">
+              <div v-if="showReply">
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                   To: {{ eml.fromEml }}
                 </p>
-
                 <vue-editor
                   v-model="replyTxt"
                   :editor-toolbar="customToolbar"
@@ -118,10 +115,13 @@
                   :disabled="replyTxt == null"
                   type="submit"
                   color="primary"
-                  @click="labelEml('re')"
+                  @click="
+                    labelEml('re');
+                    sendReply();
+                  "
                   >Send</v-btn
                 >
-              </v-form>
+              </div>
 
               <v-card-title
                 ><div class="subject">{{ eml.subject }}</div></v-card-title
@@ -167,6 +167,7 @@
 <script>
 import emails from "../assets/stimuli_eml_full_shuffled.json";
 import { VueEditor } from "vue2-editor";
+import db from "../utils/db_firestore";
 
 export default {
   components: {
@@ -189,18 +190,42 @@ export default {
       [{ align: "" }, { align: "center" }, { align: "right" }],
     ],
   }),
+  mixins: [db],
   methods: {
     displayEml(src) {
       this.emlViewSrc = src;
-      document.getElementById("eml-msg").src = src;
+      try {
+        document.getElementById("eml-msg").src = src;
+      } catch (TypeError) {
+        console.log("iframe is null");
+      }
     },
     labelEml(label) {
       this.labels[this.emlViewSrc] = label;
       document.getElementById(this.emlViewSrc).style.display = "none";
+      document.getElementById(this.emlViewIndex).style.display = "none";
       // console.log(this.labels);
     },
+    // writeResponseData() {
+    //   console.log()
+    // },
     sendLabels() {
-      // ADD FUNCTION TO SEND REPLY MESSAGE TO DB
+      // SEND EML LABELS TO DB
+      if (this.labels.length < 47 | this.labels.length == null) {
+        alert(
+          "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
+        );
+      } else {
+        this.writeResponseData("testuser", "emlLabels", this.labels);
+      }
+      
+    },
+    sendReply() {
+      // SEND REPLY MESSAGE TO DB
+      let reply = {};
+      reply[this.emlViewSrc] = this.replyTxt;
+      // console.log(reply);
+      this.writeResponseData("testuser", "replyMsg", reply);
     },
   },
 };
