@@ -1,19 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Home from '../views/Home.vue'
+import Meta from 'vue-meta'
+import Consent from '../views/Consent.vue'
 
 Vue.use(VueRouter)
+Vue.use(Meta)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home
-  // },
   {
     path: '/',
+    name: 'Consent',
+    component: Consent
+  },
+  {
+    path: '/inbox',
     name: 'Inbox',
-    component: () => import(/* webpackChunkName: "inbox" */ '../views/Inbox.vue')
+    component: () => import(/* webpackChunkName: "inbox" */ '../views/Inbox.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
