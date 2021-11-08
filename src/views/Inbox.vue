@@ -22,8 +22,8 @@
       <v-btn depressed @click="labelEml('junk')"
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <v-btn depressed @click="labelEml('mali')" v-if="ivBtn"
-        ><v-icon>mdi-block-helper</v-icon>&nbsp;Check for malice</v-btn
+      <v-btn depressed @click="labelEml('mali')" v-if="$condition == 'ivBtn'"
+        ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
       <v-btn depressed color="secondary" @click="sendLabels()">DONE</v-btn>
@@ -35,9 +35,9 @@
       dense
       border="left"
       dismissible
-      v-if="ivNudge"
+      v-if="$condition == 'ivNudge'"
     >
-      {{ eml.nudgeTxt }}
+      {{ nudgeTxt }}
     </v-alert>
 
     <v-main>
@@ -131,7 +131,7 @@
                 type="warning"
                 dense
                 border="left"
-                v-if="ivScore"
+                v-if="$condition == 'ivScore'"
               >
                 {{ eml.junkScore }}
               </v-alert>
@@ -167,12 +167,14 @@
 <script>
 import emails from "../assets/stimuli_eml_full_shuffled.json";
 import { VueEditor } from "vue2-editor";
-import db from "../utils/db_firestore";
+import db from "../utils/firestore";
+import { auth } from "../main"
 
 export default {
   components: {
     VueEditor,
   },
+  mixins: [db],
   data: () => ({
     emls: emails,
     emlViewSrc: "",
@@ -181,16 +183,15 @@ export default {
     labels: {},
     showReply: false,
     replyTxt: null,
-    ivBtn: this.$condition === "ivBtn" ? true : false,
-    ivScore:  this.$condition === "ivScore" ? true : false,
-    ivNudge:  this.$condition === "ivNudge" ? true : false,
+    replies: {},
+    nudgeTxt: "PLACE HOLDER",
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
       [{ align: "" }, { align: "center" }, { align: "right" }],
     ],
   }),
-  mixins: [db],
+  // mixins: [db],
   methods: {
     displayEml(src) {
       this.emlViewSrc = src;
@@ -206,28 +207,27 @@ export default {
       document.getElementById(this.emlViewIndex).style.display = "none";
       // console.log(this.labels);
     },
-    // writeResponseData() {
-    //   console.log()
-    // },
     sendLabels() {
       // SEND EML LABELS TO DB
-      if (this.labels.length < 47 | this.labels.length == null) {
+      if ((this.labels.length < 47) | (this.labels.length == null)) {
         alert(
           "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
         );
       } else {
         this.writeResponseData("testuser", "emlLabels", this.labels);
+        this.writeResponseData("testuser", "replyMsg", this.replies);
       }
-      
     },
     sendReply() {
       // SEND REPLY MESSAGE TO DB
-      let reply = {};
-      reply[this.emlViewSrc] = this.replyTxt;
-      // console.log(reply);
-      this.writeResponseData("testuser", "replyMsg", reply);
+      this.replies[this.emlViewSrc] = this.replyTxt;
+      console.log(this.replies);
+      this.writeResponseData("testuser", "replyMsg", this.replies);
     },
   },
+  mounted() {
+    console.log(auth.currentUser)
+  }
 };
 </script>
 

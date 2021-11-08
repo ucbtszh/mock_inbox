@@ -11,7 +11,7 @@
       of £0.05, up to a total of £2.35.<br /><br />
       This study is being undertaken by researchers from University College
       London (UCL).<br />
-      Before proceeding, please carefully read the following.
+      Before proceeding, please carefully read the following.<br /><br />
     </p>
     <b
       >By signing this consent form and clicking “Continue” below, I understand
@@ -57,43 +57,31 @@
       </li>
       <li>This study is expected to take no longer than 30 minutes.</li>
     </ul>
+    <br />
 
-    <v-col md="8">
-      <v-row>
-        <v-form ref="consentForm" v-model="valid">
-          <v-text-field
-            label="Your Worker ID *"
-            hint="* Required to make sure your participation in this study is backed up correctly."
-            persistent-hint
-            outlined
-            :rules="[(v) => v.length >= 1 || 'Please fill in your Worker ID.']"
-            v-model="workerId"
-            v-if="!this.$isProlificUser"
-          ></v-text-field
-          ><br />
-          <vue-recaptcha
-            ref="recaptcha"
-            sitekey="6Lc_SB8dAAAAABI3k64xPazZNubPBbC2HUJscBRA"
-            :loadRecaptchaScript="true"
-            @verify="showButton = true"
-          ></vue-recaptcha
-          ><br />
-          <v-btn
-            v-show="showButton"
-            color="primary"
-            :disabled="!valid"
-            elevation="3"
-            @click="
-              setUserID();
-              randomCondition();
-              login();
-              $router.push('inbox');
-            "
-            >Continue</v-btn
-          >
-        </v-form>
-      </v-row>
-    </v-col>
+    <p v-show="!isProlificUser">
+      Your unique ID is: <b>{{ this.$user }}</b>
+
+      <!-- condition: {{ this.$condition }} -->
+    </p>
+    <br />
+
+    <vue-recaptcha
+      ref="recaptcha"
+      sitekey="6Lc_SB8dAAAAABI3k64xPazZNubPBbC2HUJscBRA"
+      :loadRecaptchaScript="true"
+      @verify="showButton = true"
+    ></vue-recaptcha
+    ><br />
+    <v-btn
+      :disabled="showButton"
+      elevation="3"
+      @click="
+        login();
+        $router.push('inbox');
+      "
+      >Continue</v-btn
+    >
   </div>
 </template>
 
@@ -101,7 +89,8 @@
 import VueRecaptcha from "vue-recaptcha";
 import Vue from "vue";
 import { auth } from "../main";
-import { signInAnonymously } from 'firebase/auth';
+import { signInAnonymously } from "firebase/auth";
+// FOR SOME REASON, AUTH.CURRENTUSER IS NOT ACTUALLY SET
 
 export default {
   name: "consent",
@@ -112,32 +101,19 @@ export default {
   components: { VueRecaptcha },
   data() {
     return {
-      workerId: "",
-      valid: true,
-      showButton: true, // set to true for debugging locally
+      isProlificUser: false,
+      setID: null,
+      showButton: false, // set to true for debugging locally
     };
   },
   methods: {
-    randomCondition() {
-      if (Vue.prototype.$condition) return;
-      else {
-        var conditions = ["ivBtn", "ivNudge", "ivScore"];
-        var random = Math.floor(Math.random() * conditions.length);
-        Vue.prototype.$condition = conditions[random];
-      }
-    },
     login() {
-      // update to reflect version 9 firebase anonymous signin
-      signInAnonymously(auth)
-    },
-    setUserID() {
-      if (!this.$user) {
-        let uuid = [...Array(32)]
-          .map(() => Math.random().toString(36)[2])
-          .join("");
-        Vue.prototype.$user = uuid;
-        Vue.prototype.$workerId = this.workerId;
-      } else return;
+      try {
+        signInAnonymously(auth);
+      }
+      catch {
+        console.log("Error signing in anonymously.")
+      }
     },
   },
   beforeMount() {
@@ -147,16 +123,22 @@ export default {
     if (urlParams.has("PROLIFIC_PID")) {
       let uuid = urlParams.get("PROLIFIC_PID");
       Vue.prototype.$user = uuid;
-      this.workerId = uuid;
-      Vue.prototype.$workerId = this.workerId;
-      Vue.prototype.$isProlificUser = true;
+      this.isProlificUser = true;
     } else {
-      Vue.prototype.$isProlificUser = false;
+      let uuid = [...Array(32)]
+        .map(() => Math.random().toString(36)[2])
+        .join("");
+      this.setID = uuid;
+      Vue.prototype.$user = uuid;
     }
 
     if (urlParams.has("cond")) {
       let cond = urlParams.get("cond");
       Vue.prototype.$condition = cond;
+    } else {
+      var conditions = ["ivBtn", "ivNudge", "ivScore", "control"];
+      var random = Math.floor(Math.random() * conditions.length);
+      Vue.prototype.$condition = conditions[random];
     }
   },
 };
