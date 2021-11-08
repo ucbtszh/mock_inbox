@@ -181,9 +181,9 @@ export default {
     labels: {},
     showReply: false,
     replyTxt: null,
-    ivBtn: false, // handle at global Vue attribute
-    ivScore: false, // handle at global Vue attribute
-    ivNudge: false, // handle at global Vue attribute
+    ivBtn: this.$condition === "ivBtn" ? true : false,
+    ivScore:  this.$condition === "ivScore" ? true : false,
+    ivNudge:  this.$condition === "ivNudge" ? true : false,
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
