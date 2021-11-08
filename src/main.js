@@ -4,8 +4,9 @@ import vuetify from "./plugins/vuetify";
 import router from "./router";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import "firebase/compat/database";
+// import { getFirestore } from "firebase/firestore";
+import firebase from "firebase/compat/app"
+import "firebase/compat/firestore"
 import "./assets/base.css";
 
 // Firebase configuration
@@ -20,16 +21,22 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
-
 const auth = getAuth(firebaseApp);
-const db = getFirestore(firebaseApp);
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 export { db, auth };
 
 Vue.config.productionTip = false;
 
-new Vue({
-  vuetify,
-  router,
-  render: (h) => h(App),
-}).$mount("#app");
+let app
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = new Vue ({
+      vuetify,
+      router,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+})
