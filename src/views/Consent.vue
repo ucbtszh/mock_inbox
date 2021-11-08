@@ -86,11 +86,11 @@
             @click="
               setUserID();
               randomCondition();
+              login();
               $router.push('inbox');
             "
             >Continue</v-btn
           >
-          <!-- login(); -->
         </v-form>
       </v-row>
     </v-col>
@@ -100,8 +100,8 @@
 <script>
 import VueRecaptcha from "vue-recaptcha";
 import Vue from "vue";
-
-// import { auth } from "../main";
+import { auth } from "../main";
+import { signInAnonymously } from 'firebase/auth';
 
 export default {
   name: "consent",
@@ -128,6 +128,7 @@ export default {
     },
     login() {
       // update to reflect version 9 firebase anonymous signin
+      signInAnonymously(auth)
     },
     setUserID() {
       if (!this.$user) {
