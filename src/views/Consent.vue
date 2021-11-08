@@ -61,11 +61,6 @@
     <v-col md="8">
       <v-row>
         <v-form ref="consentForm" v-model="valid">
-          <v-checkbox
-            v-model="gaOptIn"
-            label="Check this box if you agree to enable tracking through Google Analytics."
-          >
-          </v-checkbox>
           <v-text-field
             label="Your Worker ID *"
             hint="* Required to make sure your participation in this study is backed up correctly."
@@ -78,7 +73,7 @@
           ><br />
           <vue-recaptcha
             ref="recaptcha"
-            sitekey="6Ldh5G4aAAAAAEHos3fj-ICnwn37wRGkg8FHtrgq"
+            sitekey="6Lc_SB8dAAAAABI3k64xPazZNubPBbC2HUJscBRA"
             :loadRecaptchaScript="true"
             @verify="showButton = true"
           ></vue-recaptcha
@@ -90,13 +85,12 @@
             elevation="3"
             @click="
               setUserID();
-              login();
               randomCondition();
-              disableTracking();
-              $router.push('instruct');
+              $router.push('inbox');
             "
             >Continue</v-btn
           >
+          <!-- login(); -->
         </v-form>
       </v-row>
     </v-col>
@@ -107,7 +101,7 @@
 import VueRecaptcha from "vue-recaptcha";
 import Vue from "vue";
 
-import { auth } from "../firebaseConfig";
+// import { auth } from "../main";
 
 export default {
   name: "consent",
@@ -120,34 +114,20 @@ export default {
     return {
       workerId: "",
       valid: true,
-      showButton: false, // set to true for debugging locally
-      gaOptIn: false,
+      showButton: true, // set to true for debugging locally
     };
   },
   methods: {
     randomCondition() {
       if (Vue.prototype.$condition) return;
       else {
-        var conditions = ["cless", "hless", "bless"];
+        var conditions = ["ivBtn", "ivNudge", "ivScore"];
         var random = Math.floor(Math.random() * conditions.length);
         Vue.prototype.$condition = conditions[random];
       }
     },
-    disableTracking() {
-      if (this.gaOptIn) {
-        this.$ga.enable();
-        Vue.prototype.$GA = 1
-      }
-      if (!this.gaOptIn) {
-        this.$ga.disable();
-        Vue.prototype.$GA = 0
-      }
-    },
     login() {
-      auth.signInAnonymously();
-      // .catch(function(error) {
-      //   console.log(error)
-      // });
+      // update to reflect version 9 firebase anonymous signin
     },
     setUserID() {
       if (!this.$user) {
@@ -162,7 +142,7 @@ export default {
   beforeMount() {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    
+
     if (urlParams.has("PROLIFIC_PID")) {
       let uuid = urlParams.get("PROLIFIC_PID");
       Vue.prototype.$user = uuid;
@@ -185,5 +165,7 @@ export default {
 #welcome {
   margin-top: 5%;
   overflow: hidden;
+  width: 960px;
+  text-align: center;
 }
 </style>
