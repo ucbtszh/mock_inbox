@@ -221,7 +221,8 @@ export default {
       this.replies[this.emlViewSrc] = this.replyTxt;
       // console.log(this.replies);
       this.writeResponseData("testuser", "replyMsg", this.replies);
-      this.showReply = false
+      this.showReply = false;
+      this.replyTxt = null;
     },
   },
 };

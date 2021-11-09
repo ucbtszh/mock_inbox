@@ -35,8 +35,7 @@ Vue.config.productionTip = false;
 // https://firebase.google.com/docs/auth/web/anonymous-auth 
 
 let app
-onAuthStateChanged(auth, (user) => {
-  console.log(user)
+onAuthStateChanged(auth, () => {
   if (!app) {
     app = new Vue ({
       vuetify,
