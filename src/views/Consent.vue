@@ -88,7 +88,8 @@
 <script>
 import VueRecaptcha from "vue-recaptcha";
 import Vue from "vue";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { auth } from "../main"
+import { signInAnonymously } from "firebase/auth";
 
 export default {
   name: "consent",
@@ -107,7 +108,6 @@ export default {
   methods: {
     login() {
       try {
-        const auth = getAuth()
         signInAnonymously(auth);
       }
       catch {

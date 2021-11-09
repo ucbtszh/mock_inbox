@@ -168,7 +168,6 @@
 import emails from "../assets/stimuli_eml_full_shuffled.json";
 import { VueEditor } from "vue2-editor";
 import db from "../utils/firestore";
-import { auth } from "../main"
 
 export default {
   components: {
@@ -191,14 +190,13 @@ export default {
       [{ align: "" }, { align: "center" }, { align: "right" }],
     ],
   }),
-  // mixins: [db],
   methods: {
     displayEml(src) {
       this.emlViewSrc = src;
       try {
         document.getElementById("eml-msg").src = src;
       } catch (TypeError) {
-        console.log("iframe is null");
+        // console.log("iframe is null");
       }
     },
     labelEml(label) {
@@ -221,13 +219,11 @@ export default {
     sendReply() {
       // SEND REPLY MESSAGE TO DB
       this.replies[this.emlViewSrc] = this.replyTxt;
-      console.log(this.replies);
+      // console.log(this.replies);
       this.writeResponseData("testuser", "replyMsg", this.replies);
+      this.showReply = false
     },
   },
-  mounted() {
-    console.log(auth.currentUser)
-  }
 };
 </script>
 
