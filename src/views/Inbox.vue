@@ -3,6 +3,7 @@
     <v-toolbar height="50" color="rgb(0,120,212)">
       <p id="outlook-sign">Outlook</p>
       <v-spacer></v-spacer>
+      <v-icon dark>mdi-help</v-icon>&nbsp;&nbsp;
       <v-icon dark>mdi-account</v-icon>
     </v-toolbar>
 
@@ -26,7 +27,7 @@
         ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
-      <v-btn depressed color="secondary" @click="sendLabels()">DONE</v-btn>
+      <v-btn depressed color="secondary" @click="sendLabels();$router.push('surveys')">DONE</v-btn>
     </v-toolbar>
 
     <v-alert

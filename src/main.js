@@ -32,8 +32,6 @@ export { db, auth };
 
 Vue.config.productionTip = false;
 
-// https://firebase.google.com/docs/auth/web/anonymous-auth 
-
 let app
 onAuthStateChanged(auth, () => {
   if (!app) {
