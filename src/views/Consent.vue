@@ -3,12 +3,8 @@
     <b>Welcome!</b><br /><br />
     <p>
       Thank you for your interest in this research.<br />
-      We are interested in whether a new job application assessment task could
-      be used in real job application assessments for administrative roles. In
-      this study, you will be asked to categorize e-mails as an executive
-      assistant into a number of categories.<br />
-      For each accurately categorized e-mail, you will receive a bonus payment
-      of £0.05, up to a total of £2.35.<br /><br />
+      We are testing new designs for the Outlook e-mail client. You will be
+      asked to process e-mails in a simulated Outlook inbox. <br />
       This study is being undertaken by researchers from University College
       London (UCL).<br />
       Before proceeding, please carefully read the following.<br /><br />
@@ -73,13 +69,16 @@
       @verify="showButton = true"
     ></vue-recaptcha
     ><br />
+
     <v-btn
       :disabled="showButton"
       elevation="3"
+      color="primary"
       @click="
         login();
-        $router.push('inbox');
+        $router.push('instruct');
       "
+      width="100px"
       >Continue</v-btn
     >
   </div>
@@ -88,7 +87,7 @@
 <script>
 import VueRecaptcha from "vue-recaptcha";
 import Vue from "vue";
-import { auth } from "../main"
+import { auth } from "../main";
 import { signInAnonymously } from "firebase/auth";
 
 export default {
@@ -102,20 +101,19 @@ export default {
     return {
       isProlificUser: false,
       setID: null,
-      showButton: false
+      showButton: false,
     };
   },
   methods: {
     login() {
       try {
         signInAnonymously(auth);
-      }
-      catch {
-        console.log("Error signing in anonymously.")
+      } catch {
+        console.log("Error signing in anonymously.");
       }
     },
   },
-  beforeMount() {
+  beforeCreate() {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
 
@@ -146,8 +144,9 @@ export default {
 <style scoped>
 #welcome {
   margin-top: 5%;
-  overflow: hidden;
   width: 960px;
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
