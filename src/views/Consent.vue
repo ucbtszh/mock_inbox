@@ -57,23 +57,20 @@
 
     <p v-show="!isProlificUser">
       Your unique ID is: <b>{{ this.$user }}</b>
-
-      <!-- condition: {{ this.$condition }} -->
     </p>
     <br />
 
-    <vue-recaptcha
+    <VueRecaptcha
       ref="recaptcha"
-      sitekey="6Lc_SB8dAAAAABI3k64xPazZNubPBbC2HUJscBRA"
+      sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
       :loadRecaptchaScript="true"
       @verify="showButton = true"
-    ></vue-recaptcha
-    ><br />
+    /><br />
 
     <v-btn
-      :disabled="showButton"
+      :disabled="!showButton"
       elevation="3"
-      color="primary"
+      color="success"
       @click="
         login();
         $router.push('instruct');
@@ -101,7 +98,7 @@ export default {
     return {
       isProlificUser: false,
       setID: null,
-      showButton: false,
+      showButton: true,
     };
   },
   methods: {
