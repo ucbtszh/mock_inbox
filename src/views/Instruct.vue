@@ -7,7 +7,9 @@
 
     Click "START" below to go to the inbox.
     <br /><br /><br />
-    <v-btn elevation="3" @click="$router.push('inbox')">Start</v-btn>
+    <v-btn elevation="3" @click="$router.push('inbox')" color="success"
+      >Start</v-btn
+    >
   </div>
 </template>
 
@@ -19,7 +21,7 @@ export default {
     return {};
   },
   components: {
-    InstructTxt
+    InstructTxt,
   },
   mounted() {
     window.scrollTo(0, 0);
