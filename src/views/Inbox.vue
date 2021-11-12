@@ -11,23 +11,55 @@
       <v-btn depressed @click="showReply = true"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
-      <v-btn depressed @click="labelEml('fw')"
+      <v-btn
+        depressed
+        @click="
+          labelEml('fw');
+          snackbarTxt = 'E-mail forwarded to executive assistant';
+          snackbar = true;
+        "
         ><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
       >
-      <v-btn depressed @click="labelEml('del')"
+      <v-btn
+        depressed
+        @click="
+          labelEml('del');
+          snackbarTxt = 'E-mail forwarded to executive assistant';
+          snackbar = true;
+        "
         ><v-icon>mdi-delete</v-icon>&nbsp;Delete</v-btn
       >
-      <v-btn depressed @click="labelEml('arch')"
+      <v-btn
+        depressed
+        @click="
+          labelEml('arch');
+          snackbarTxt = 'E-mail moved to archive';
+          snackbar = true;
+        "
         ><v-icon>mdi-archive-outline</v-icon>&nbsp;Archive</v-btn
       >
-      <v-btn depressed @click="labelEml('junk')"
+      <v-btn
+        depressed
+        @click="
+          labelEml('junk');
+          snackbarTxt = 'E-mail reported as junk';
+          snackbar = true;
+        "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
       <v-btn depressed @click="labelEml('mali')" v-if="$condition == 'ivBtn'"
         ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
-      <v-btn depressed color="secondary" @click="sendLabels();$router.push('surveys')">DONE</v-btn>
+      <v-btn
+        depressed
+        color="secondary"
+        @click="
+          sendLabels();
+          $router.push('surveys');
+        "
+        >DONE</v-btn
+      >
     </v-toolbar>
 
     <v-alert
@@ -99,6 +131,16 @@
               </v-list-item-group>
             </v-list>
           </v-card>
+
+          <v-snackbar v-model="snackbar" :timeout="timeout">
+            {{ snackbarTxt }}
+
+            <template v-slot:action="{ attrs }">
+              <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+                Close
+              </v-btn>
+            </template>
+          </v-snackbar>
         </v-col>
 
         <v-col style="height: 100vh; overflow: auto">
@@ -119,6 +161,8 @@
                   @click="
                     labelEml('re');
                     sendReply();
+                    snackbarTxt = 'Reply sent';
+                    snackbar = true;
                   "
                   >Send</v-btn
                 >
@@ -132,9 +176,14 @@
                 type="warning"
                 dense
                 border="left"
-                v-if="$condition == 'ivScore'"
+                v-if="($condition == 'ivScore') & (eml.junkScore > 0.5)"
+                class="iv"
               >
-                {{ eml.junkScore }}
+                Are you sure you can trust this e-mail is legitimate?<br />
+                Junk filters rate this e-mail as {{ eml.junkScore }} on a scale
+                of 0 (trustworthy) to 1 (highly suspicious).<br />
+                Please double check the sender's e-mail address and any URLs in
+                the e-mail before communicating further with them.
               </v-alert>
 
               <div class="initial">
@@ -184,12 +233,16 @@ export default {
     showReply: false,
     replyTxt: null,
     replies: {},
-    nudgeTxt: "PLACE HOLDER",
+    nudgeTxt:
+      "This e-mail was reported as suspicious today by one of our colleagues:",
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
       [{ align: "" }, { align: "center" }, { align: "right" }],
     ],
+    timeout: 2000,
+    snackbar: false,
+    snackbarTxt: "E-mail",
   }),
   methods: {
     displayEml(src) {
@@ -224,6 +277,29 @@ export default {
       this.writeResponseData("testuser", "replyMsg", this.replies);
       this.showReply = false;
       this.replyTxt = null;
+    },
+    addEventListeners() {
+      // TODO: WRITE TO REAL-TIME DATABASE
+
+      let ivs = document.getElementsByClassName("iv"); // we know what IV these events relate to because we know the conditional display of each user
+      let events = [
+        "click",
+        "dblclick",
+        "pointerover",
+        "pointerout",
+        "selectionchange",
+        "pointermove",
+      ];
+      for (let iv in ivs) {
+        events.forEach(
+          iv.addEventListener((event) => {
+            this.writeResponseData(this.$user, event, { ts: event.timeStamp });
+          })
+        );
+      }
+    },
+    mounted() {
+      window.scrollTo(0, 0);
     },
   },
 };
