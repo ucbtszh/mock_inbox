@@ -3,7 +3,30 @@
     <v-toolbar height="50" color="rgb(0,120,212)">
       <p id="outlook-sign">Outlook</p>
       <v-spacer></v-spacer>
-      <v-icon dark>mdi-help</v-icon>&nbsp;&nbsp;
+
+      <v-dialog v-model="showHelp" persistent max-width="860px">
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon v-bind="attrs" @click="showHelp = true" v-on="on" dark
+            >mdi-help</v-icon
+          >
+        </template>
+        <v-card>
+          <v-card-title>
+            Instructions
+          </v-card-title>
+          <v-card-text>
+            <InstructTxt />
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="showHelp = false">
+              <b>Close</b>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      &nbsp;&nbsp;
+
       <v-icon dark>mdi-account</v-icon>
     </v-toolbar>
 
@@ -24,7 +47,7 @@
         depressed
         @click="
           labelEml('del');
-          snackbarTxt = 'E-mail forwarded to executive assistant';
+          snackbarTxt = 'Deleted e-mail';
           snackbar = true;
         "
         ><v-icon>mdi-delete</v-icon>&nbsp;Delete</v-btn
@@ -51,15 +74,7 @@
         ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
-      <v-btn
-        depressed
-        color="secondary"
-        @click="
-          sendLabels();
-          $router.push('surveys');
-        "
-        >DONE</v-btn
-      >
+      <v-btn depressed color="secondary" @click="sendLabels()">DONE</v-btn>
     </v-toolbar>
 
     <v-dialog v-model="nudge" persistent max-width="860">
@@ -78,7 +93,7 @@
         </v-alert>
       </template>
       <v-card>
-        <img src="../assets/ss_nudge_ex.png"><br /><br />
+        <img src="../assets/ss_nudge_ex.png" /><br /><br />
         <v-card-text>
           <b>Why it is suspicious:</b>
           <ul>
@@ -97,8 +112,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="nudge = false">
-            Close
+          <v-btn text @click="nudge = false">
+            <b>Close</b>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -249,10 +264,12 @@
 import emails from "../assets/stimuli_eml_full_shuffled.json";
 import { VueEditor } from "vue2-editor";
 import db from "../utils/firestore";
+import InstructTxt from "../components/InstructTxt.vue";
 
 export default {
   components: {
     VueEditor,
+    InstructTxt,
   },
   mixins: [db],
   data: () => ({
@@ -260,6 +277,7 @@ export default {
     emlViewSrc: "",
     emlViewIndex: null,
     emlHoverIndex: null,
+    showHelp: false,
     labels: {},
     showReply: false,
     replyTxt: null,
@@ -300,6 +318,7 @@ export default {
       } else {
         this.writeResponseData("testuser", "emlLabels", this.labels);
         this.writeResponseData("testuser", "replyMsg", this.replies);
+        this.$router.push("surveys");
       }
     },
     sendReply() {
