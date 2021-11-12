@@ -62,16 +62,47 @@
       >
     </v-toolbar>
 
-    <v-alert
-      outlined
-      type="warning"
-      dense
-      border="left"
-      dismissible
-      v-if="$condition == 'ivNudge'"
-    >
-      {{ nudgeTxt }}
-    </v-alert>
+    <v-dialog v-model="nudge" persistent max-width="860">
+      <template v-slot:activator="{ on, attrs }">
+        <v-alert
+          outlined
+          type="warning"
+          dense
+          border="left"
+          dismissible
+          v-if="$condition == 'ivNudge'"
+          v-bind="attrs"
+          v-on="on"
+        >
+          {{ nudgeTxt }}
+        </v-alert>
+      </template>
+      <v-card>
+        <img src="../assets/ss_nudge_ex.png"><br /><br />
+        <v-card-text>
+          <b>Why it is suspicious:</b>
+          <ul>
+            <li>
+              The e-mail claims to be from Zoom, but the e-mail domain is
+              'formidable.it'.
+            </li>
+            <li>
+              The link displayed in the e-mail is not the same as the actual
+              destination when you hover over the link.
+            </li>
+            <li>The actual link is from a suspicious domain, 'ngrok.io'.</li>
+          </ul>
+          <br />
+          <u>Do not interact with similar e-mails.</u>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="nudge = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-main>
       <v-row>
@@ -179,9 +210,9 @@
                 v-if="($condition == 'ivScore') & (eml.junkScore > 0.5)"
                 class="iv"
               >
-                Are you sure you can trust this e-mail is legitimate?<br />
-                Junk filters rate this e-mail as {{ eml.junkScore }} on a scale
-                of 0 (trustworthy) to 1 (highly suspicious).<br />
+                <b>Are you sure you can trust this e-mail?</b><br />
+                Junk filters rate this e-mail as <b>{{ eml.junkScore }}</b> on a
+                scale of 0 (trustworthy) to 1 (highly suspicious).<br />
                 Please double check the sender's e-mail address and any URLs in
                 the e-mail before communicating further with them.
               </v-alert>
@@ -233,8 +264,9 @@ export default {
     showReply: false,
     replyTxt: null,
     replies: {},
+    nudge: false,
     nudgeTxt:
-      "This e-mail was reported as suspicious today by one of our colleagues:",
+      "This e-mail was reported as suspicious today by one of our colleagues (click to show):",
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
