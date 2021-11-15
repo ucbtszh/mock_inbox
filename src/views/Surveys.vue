@@ -1,13 +1,11 @@
 <template>
-  <div>
-    You have finished processing all e-mails. Below you will be asked several
-    questions about your experience in doing so.
+  <div id="surveys">
     <div v-show="showNASA">
-      <NASA />
+      <NASA @done="showDemos = true; showNASA = false; scrollUp()" />
     </div>
-    <div v-show="showUsab">
+    <!-- <div v-show="showUsab">
       <Usab />
-    </div>
+    </div> -->
     <div v-show="showDemos">
       <Demos />
     </div>
@@ -16,13 +14,13 @@
 
 <script>
 import Demos from "../components/Demos.vue";
-import Usab from "../components/Usability.vue";
+// import Usab from "../components/Usability.vue";
 import NASA from "../components/NASA-TLX.vue";
 
 export default {
   components: {
     Demos,
-    Usab,
+    // Usab,
     NASA,
   },
   data() {
@@ -32,5 +30,20 @@ export default {
       showDemos: false,
     };
   },
+  methods: {
+    scrollUp() {
+      window.scrollTo(0,0)
+    }
+  }
 };
 </script>
+
+<style scoped>
+#surveys {
+  margin-top: 3%;
+  width: 950px;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
