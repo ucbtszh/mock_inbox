@@ -117,6 +117,7 @@ export default {
     if (urlParams.has("PROLIFIC_PID")) {
       let uuid = urlParams.get("PROLIFIC_PID");
       Vue.prototype.$user = uuid;
+      Vue.prototype.$isProlificUser = true;
       this.isProlificUser = true;
     } else {
       let uuid = [...Array(32)]
@@ -124,6 +125,7 @@ export default {
         .join("");
       this.setID = uuid;
       Vue.prototype.$user = uuid;
+      Vue.prototype.$isProlificUser = false;
     }
 
     if (urlParams.has("cond")) {

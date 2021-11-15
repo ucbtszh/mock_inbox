@@ -20,9 +20,7 @@
           v-model="feedbackResponse"
         ></v-textarea>
         <v-btn
-          color="primary"
           elevation="3"
-          :disabled="!isValid"
           @click="saveFeedback()"
           >NEXT</v-btn
         >
@@ -58,11 +56,8 @@ export default {
     saveFeedback() {
       this.showFeedback = false;
       this.showEnd = true;
-      let responses = {
-        feedback: this.feedbackResponse,
-      };
       // console.log("feedback", responses)
-      this.writeResponseData(this.$user, "feedback", responses);
+      this.writeResponseData(this.$user, "feedback", this.feedbackResponse);
     },
   },
 };
