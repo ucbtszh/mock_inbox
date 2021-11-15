@@ -1,6 +1,6 @@
 <template>
   <div id="demographics">
-    <v-form v-model="isValid">
+    <v-form v-model="isValid" ref="form">
       <v-radio-group
         v-model="formResponse.gender"
         :rules="[(v) => !!v || 'Gender is required']"
@@ -11,13 +11,6 @@
           :key="index"
           :label="g.label"
           :value="g.value"
-          @click="
-            trackResponse({
-              name: 'gender',
-              ts: Date.now(),
-              response: formResponse.gender,
-            })
-          "
         ></v-radio>
       </v-radio-group>
       <v-radio-group
@@ -30,13 +23,6 @@
           :key="index"
           :label="s.label"
           :value="s.value"
-          @click="
-            trackResponse({
-              name: 'occupation',
-              ts: Date.now(),
-              response: formResponse.occ_status,
-            })
-          "
         ></v-radio>
       </v-radio-group>
       <v-radio-group
@@ -49,13 +35,6 @@
           :key="index"
           :label="i.label"
           :value="i.value"
-          @click="
-            trackResponse({
-              name: 'income',
-              ts: Date.now(),
-              response: formResponse.income,
-            })
-          "
         ></v-radio>
       </v-radio-group>
       <v-radio-group
@@ -72,13 +51,6 @@
           :key="index"
           :label="e.label"
           :value="e.value"
-          @click="
-            trackResponse({
-              name: 'edlev',
-              ts: Date.now(),
-              response: formResponse.edLev,
-            })
-          "
         ></v-radio> </v-radio-group
       ><br /><br />
       <v-text-field
@@ -87,24 +59,8 @@
         style="width: 200px"
         label="What is your age?"
         :rules="[(v) => (v >= 18 && v < 100) || 'You entered an invalid age.']"
-        @change="
-          trackResponse({
-            name: 'age',
-            ts: Date.now(),
-            response: formResponse.age,
-          })
-        "
       ></v-text-field>
-      <v-btn
-        color="primary"
-        :disabled="!isValid"
-        @click="
-          $router.push('end');
-          saveResponses();
-        "
-      >
-        NEXT
-      </v-btn>
+      <v-btn color="primary" :disabled="!isValid" @click="validate()"> NEXT </v-btn>
     </v-form>
   </div>
 </template>
@@ -120,11 +76,11 @@ export default {
   mixins: [db],
   data() {
     return {
-      isValid: false,
+      isValid: true,
       formResponse: {
         age: "",
         gender: "",
-        occ_status: "",
+        occStatus: "",
         income: "",
         edLev: "",
       },
@@ -224,8 +180,13 @@ export default {
     };
   },
   methods: {
-    saveResponses() {
-      this.writeResponseData(this.$user, "demos", this.formResponse);
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.writeResponseData(this.$user, "demos", this.formResponse);
+        this.$router.push("end");
+      } else {
+        return;
+      }
     },
   },
   mounted() {
