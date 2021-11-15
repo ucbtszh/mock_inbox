@@ -65,6 +65,10 @@ export default {
 
 <style scoped>
 #end {
-  margin-top: 10%;
+  margin-top: 3%;
+  width: 950px;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
