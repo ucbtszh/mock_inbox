@@ -11,9 +11,7 @@
           >
         </template>
         <v-card>
-          <v-card-title>
-            Instructions
-          </v-card-title>
+          <v-card-title> Instructions </v-card-title>
           <v-card-text>
             <InstructTxt />
           </v-card-text>
@@ -31,11 +29,12 @@
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
-      <v-btn depressed @click="showReply = true"
+      <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
       <v-btn
         depressed
+        :disabled="!emlViewSrc"
         @click="
           labelEml('fw');
           snackbarTxt = 'E-mail forwarded to executive assistant';
@@ -45,6 +44,7 @@
       >
       <v-btn
         depressed
+        :disabled="!emlViewSrc"
         @click="
           labelEml('del');
           snackbarTxt = 'Deleted e-mail';
@@ -54,6 +54,7 @@
       >
       <v-btn
         depressed
+        :disabled="!emlViewSrc"
         @click="
           labelEml('arch');
           snackbarTxt = 'E-mail moved to archive';
@@ -63,6 +64,7 @@
       >
       <v-btn
         depressed
+        :disabled="!emlViewSrc"
         @click="
           labelEml('junk');
           snackbarTxt = 'E-mail reported as junk';
@@ -70,7 +72,7 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <v-btn depressed @click="labelEml('mali')" v-if="$condition == 'ivBtn'"
+      <v-btn depressed :disabled="!emlViewSrc" @click="labelEml('mali')" v-if="$condition == 'ivBtn'"
         ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
@@ -305,8 +307,11 @@ export default {
     },
     labelEml(label) {
       this.labels[this.emlViewSrc] = label;
-      document.getElementById(this.emlViewSrc).style.display = "none";
-      document.getElementById(this.emlViewIndex).style.display = "none";
+      this.emlViewSrc = null;
+      this.emlViewIndex = null;
+
+      // document.getElementById(this.emlViewSrc).style.display = "none";
+      // document.getElementById(this.emlViewIndex).style.display = "none";
       // console.log(this.labels);
     },
     sendLabels() {
@@ -316,8 +321,8 @@ export default {
           "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
         );
       } else {
-        this.writeResponseData("testuser", "emlLabels", this.labels);
-        this.writeResponseData("testuser", "replyMsg", this.replies);
+        this.writeResponseData(this.$user, "emlLabels", this.labels);
+        this.writeResponseData(this.$user, "replyMsg", this.replies);
         this.$router.push("surveys");
       }
     },
@@ -325,7 +330,7 @@ export default {
       // SEND REPLY MESSAGE TO DB
       this.replies[this.emlViewSrc] = this.replyTxt;
       // console.log(this.replies);
-      this.writeResponseData("testuser", "replyMsg", this.replies);
+      this.writeResponseData(this.$user, "replyMsg", this.replies);
       this.showReply = false;
       this.replyTxt = null;
     },
