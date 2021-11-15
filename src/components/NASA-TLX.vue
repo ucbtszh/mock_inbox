@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-row>
       <v-col>
         We are not only interested in assessing your use of the inbox, but also
@@ -200,7 +200,7 @@
         >Submit</v-btn
       >
     </v-form>
-  </v-app>
+  </div>
 </template>
 
 <script>

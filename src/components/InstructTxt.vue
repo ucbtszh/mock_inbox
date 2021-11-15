@@ -23,7 +23,7 @@
       <li><b>Archive</b>: will move the e-mail to an archive</li>
       <li><b>Delete</b>: will delete the e-mail</li>
       <li>
-        <b>Junk</b>: will mark the e-mail as junk and move it to the junk folder
+        <b>Junk</b>: will report the e-mail as junk and move it to a junk archive
       </li>
     </ul>
     <br />

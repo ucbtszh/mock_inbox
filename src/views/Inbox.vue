@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inbox">
+  <div id="inbox">
     <v-toolbar height="50" color="rgb(0,120,212)">
       <p id="outlook-sign">Outlook</p>
       <v-spacer></v-spacer>
@@ -259,7 +259,7 @@
         </v-col>
       </v-row>
     </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -307,11 +307,10 @@ export default {
     },
     labelEml(label) {
       this.labels[this.emlViewSrc] = label;
+      document.getElementById(this.emlViewSrc).style.display = "none";
+      document.getElementById(this.emlViewIndex).style.display = "none";
       this.emlViewSrc = null;
       this.emlViewIndex = null;
-
-      // document.getElementById(this.emlViewSrc).style.display = "none";
-      // document.getElementById(this.emlViewIndex).style.display = "none";
       // console.log(this.labels);
     },
     sendLabels() {
