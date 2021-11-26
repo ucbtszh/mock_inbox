@@ -72,7 +72,12 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <v-btn depressed :disabled="!emlViewSrc" @click="labelEml('mali')" v-if="$condition == 'ivBtn'"
+      <v-btn
+        depressed
+        :disabled="!emlViewSrc"
+        @click="labelEml('mali')"
+        v-if="$condition == 'ivBtn'"
+        class="iv"
         ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
@@ -90,11 +95,12 @@
           v-if="$condition == 'ivNudge'"
           v-bind="attrs"
           v-on="on"
+          class="iv"
         >
           {{ nudgeTxt }}
         </v-alert>
       </template>
-      <v-card>
+      <v-card class="iv">
         <img src="../assets/ss_nudge_ex.png" /><br /><br />
         <v-card-text>
           <b>Why it is suspicious:</b>
@@ -345,13 +351,14 @@ export default {
         "selectionchange",
         "pointermove",
       ];
-      for (let iv in ivs) {
+
+      ivs.forEach((iv) => {
         events.forEach(
           iv.addEventListener((event) => {
             this.writeResponseData(this.$user, event, { ts: event.timeStamp });
           })
         );
-      }
+      });
     },
     mounted() {
       window.scrollTo(0, 0);
