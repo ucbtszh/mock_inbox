@@ -272,6 +272,7 @@
 import emails from "../assets/stimuli_eml_full_shuffled.json";
 import { VueEditor } from "vue2-editor";
 import db from "../utils/firestore";
+import tracking from "../utils/track_ui";
 import InstructTxt from "../components/InstructTxt.vue";
 
 export default {
@@ -279,7 +280,7 @@ export default {
     VueEditor,
     InstructTxt,
   },
-  mixins: [db],
+  mixins: [db, tracking],
   data: () => ({
     emls: emails,
     emlViewSrc: "",

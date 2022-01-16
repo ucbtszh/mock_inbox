@@ -10,7 +10,7 @@
     All above event types are tracked at the parent context level.
     Categories 1 and 5 are also applied at iframe context levels from within Task.vue.  */
 
-    import rt from "../mixin/realtime_utils";
+    import rt from "../utils/rtdb";
 
     let events_screensize = [
       "onresize",
@@ -42,17 +42,15 @@
             ts: event.timeStamp,
             event_name: event.type,
             DOM_element: selection.focusNode.nodeValue,
+            DOM_id: event.target.id,
             char_start_index: selection.focusOffset,
             text_selection: selection.toString(),
-            selection_type: selection.type,
-            page_X: event.pageX,
-            page_Y: event.pageY,
+            selection_type: selection.type
           };
           if (selection.toString() === "" || !selection.focusNode.nodeValue) return;
           else {
-            // rt.methods.writeEvent(this.$user, "selection", eventData);
+            rt.methods.writeEvent(this.$user, "selection", eventData);
           }
-          console.log(eventData);
         };
         this.clickHandler = (event) => {
           // handle click events on main window
@@ -63,11 +61,8 @@
             DOM_element: event.target.tagName,
             DOM_id: event.target.id,
             page_X: event.pageX,
-            page_Y: event.pageY,
+            page_Y: event.pageY
           };
-          // console.log(
-          //   eventData
-          // );
           rt.methods.writeEvent(this.$user, "clicks", eventData);
         };
         this.hoverHandler = (event) => {
@@ -83,10 +78,10 @@
             pointer_type: event.pointerType,
             inner_width: window.innerWidth,
             inner_height: window.innerHeight,
-            pixel_ratio: window.devicePixelRatio,
+            pixel_ratio: window.devicePixelRatio
           };
-          console.log(eventData);
-          // rt.methods.writeEvent(this.$user, "hovers", eventData);
+          // console.log(eventData);
+          rt.methods.writeEvent(this.$user, "hovers", eventData);
         };
         this.keylogHandler = (event) => {
           // handle key press events on main window
@@ -97,8 +92,8 @@
             DOM_element: event.target.tagName,
             key_value: event.key,
           };
-          console.log(eventData);
-          // rt.methods.writeEvent(this.$user, "keylog", eventData);
+          // console.log(eventData);
+          rt.methods.writeEvent(this.$user, "keylog", eventData);
         };
         this.pointerCoordsHandler = (event) => {
           // handle pointer movement events on main window
@@ -108,11 +103,11 @@
             event_name: event.type,
             page_X: event.pageX,
             page_Y: event.pageY,
-            pressure: event.pressure,
-            pointer_type: event.pointerType,
+            // pressure: event.pressure,
+            // pointer_type: event.pointerType,
           };
-          console.log(eventData);
-          // rt.methods.writeEvent(this.$user, "pointer_coords", eventData);
+          // console.log(eventData);
+          rt.methods.writeEvent(this.$user, "pointer_coords", eventData);
         };
         this.screensizeHandler = (event) => {
           // handle screen size events on main window
@@ -124,8 +119,8 @@
             inner_height: window.innerHeight,
             pixel_ratio: window.devicePixelRatio,
           };
-          console.log(eventData);
-          // rt.methods.writeEvent(this.$user, "screen_resize", eventData);
+          // console.log(eventData);
+          rt.methods.writeEvent(this.$user, "screen_resize", eventData);
         };
         this.scrollHandler = (event) => {
           // handle scroll events on main window
@@ -136,8 +131,8 @@
             scroll_X: window.pageXOffset,
             scroll_Y: window.pageYOffset,
           };
-          console.log(eventData);
-          // rt.methods.writeEvent(this.$user, "scrolls", eventData);
+          // console.log(eventData);
+          rt.methods.writeEvent(this.$user, "scrolls", eventData);
         };
         this.visibilityHandler = (event) => {
           // handle visibility change events on main window
@@ -154,12 +149,14 @@
             event_name: event.type,
             visibility_state: status,
           };
-          console.log("visibility", eventData);
-          // rt.methods.writeEvent(this.$user, "visibility", eventData);
+          // console.log("visibility", eventData);
+          rt.methods.writeEvent(this.$user, "visibility", eventData);
         };
     
         document.addEventListener(events_visibility, this.visibilityHandler);
+
         document.addEventListener(events_pointermove, this.pointerCoordsHandler);
+
         document.addEventListener(events_selection, this.selectionHandler);
     
         Object.keys(window).forEach((key) => {
@@ -172,21 +169,21 @@
             document.addEventListener(key.slice(2), this.hoverHandler);
           }
         });
-        Object.keys(window).forEach((key) => {
-          if (events_keylog.includes(key)) {
-            document.addEventListener(key.slice(2), this.keylogHandler);
-          }
-        });
-        Object.keys(window).forEach((key) => {
-          if (events_screensize.includes(key)) {
-            window.addEventListener(key.slice(2), this.screensizeHandler);
-          }
-        });
-        Object.keys(window).forEach((key) => {
-          if (events_scroll.includes(key)) {
-            document.addEventListener(key.slice(2), this.scrollHandler);
-          }
-        });
+        // Object.keys(window).forEach((key) => {
+        //   if (events_keylog.includes(key)) {
+        //     document.addEventListener(key.slice(2), this.keylogHandler);
+        //   }
+        // });
+        // Object.keys(window).forEach((key) => {
+        //   if (events_screensize.includes(key)) {
+        //     window.addEventListener(key.slice(2), this.screensizeHandler);
+        //   }
+        // });
+        // Object.keys(window).forEach((key) => {
+        //   if (events_scroll.includes(key)) {
+        //     document.addEventListener(key.slice(2), this.scrollHandler);
+        //   }
+        // });
     
         history.pushState(null, null, location.href);
         window.onpopstate = function() {
