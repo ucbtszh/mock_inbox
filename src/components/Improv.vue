@@ -1,6 +1,6 @@
 <template>
   <div id="end">
-    <div v-show="showFeedback">
+    <div>
       <b>You made it.</b> This is the end of the study.<br /><br />
 
       <b>Could this study be improved in any way?</b><br />
@@ -26,38 +26,29 @@
         >
       </v-form>
     </div>
-
-    <div id="end" v-show="showEnd">
-        <CompletionCode />
-    </div>
   </div>
 </template>
 
 <script>
 import db from "../utils/firestore";
-import CompletionCode from "../components/CompletionCode.vue";
 
 export default {
   name: "end",
   metaInfo: {
     titleTemplate: "End of study",
   },
-  components: { CompletionCode },
   mixins: [db],
   data() {
     return {
       isValid: true,
-      showFeedback: true,
-      showEnd: false,
       feedbackResponse: "",
     };
   },
   methods: {
     saveFeedback() {
-      this.showFeedback = false;
-      this.showEnd = true;
       // console.log("feedback", responses)
-      this.writeResponseData(this.$user, "feedback", this.feedbackResponse);
+      this.writeResponseData(this.$user, "feedback", {"feedback": this.feedbackResponse});
+      this.$emit("done")
     },
   },
 };

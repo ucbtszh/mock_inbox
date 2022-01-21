@@ -183,7 +183,7 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.writeResponseData(this.$user, "demos", this.formResponse);
-        this.$router.push("end");
+        this.$emit("done")
       } else {
         return;
       }
