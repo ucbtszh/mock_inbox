@@ -12,7 +12,7 @@
     <img src="../assets/ss_inbox_control.png" width="100%" /><br /><br />
 
     The inbox has similar functionalities as what you typically would find in an
-    actual inbox.<br />
+    actual e-mail inbox.<br />
     To process an e-mail, click on an e-mail in the list on the left.<br />
     The full e-mail will be displayed on the right. <br /><br />
 
@@ -36,7 +36,7 @@
     <br />
     Your task is to choose what you think is the best applicable action for each
     e-mail.<br />
-    Please note that this task should not take more than 30-60 minutes.<br /><br />
+    Please note that this task should not take more than 30-45 minutes.<br /><br />
 
     When you are done processing all e-mails, click "DONE":<br /><br />
     <img src="../assets/ss_done.png" width="100%" />
