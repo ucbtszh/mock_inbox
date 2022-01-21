@@ -28,7 +28,7 @@
       "onauxclick"
     ];
     let events_selection = "selectionchange";
-    let events_keylog = ["onkeydown", "onkeyup"];
+    let events_keylog = ["onkeydown", "onkeyup"]; // keep just in case
     let events_scroll = ["onwheel", "onscroll"];
     let events_hover = ["onpointerover", "onpointerout"];
     
@@ -169,21 +169,21 @@
             document.addEventListener(key.slice(2), this.hoverHandler);
           }
         });
-        // Object.keys(window).forEach((key) => {
-        //   if (events_keylog.includes(key)) {
-        //     document.addEventListener(key.slice(2), this.keylogHandler);
-        //   }
-        // });
-        // Object.keys(window).forEach((key) => {
-        //   if (events_screensize.includes(key)) {
-        //     window.addEventListener(key.slice(2), this.screensizeHandler);
-        //   }
-        // });
-        // Object.keys(window).forEach((key) => {
-        //   if (events_scroll.includes(key)) {
-        //     document.addEventListener(key.slice(2), this.scrollHandler);
-        //   }
-        // });
+        Object.keys(window).forEach((key) => {
+          if (events_keylog.includes(key)) {
+            document.addEventListener(key.slice(2), this.keylogHandler);
+          }
+        });
+        Object.keys(window).forEach((key) => {
+          if (events_screensize.includes(key)) {
+            window.addEventListener(key.slice(2), this.screensizeHandler);
+          }
+        });
+        Object.keys(window).forEach((key) => {
+          if (events_scroll.includes(key)) {
+            document.addEventListener(key.slice(2), this.scrollHandler);
+          }
+        });
     
         history.pushState(null, null, location.href);
         window.onpopstate = function() {
