@@ -34,17 +34,8 @@ const routes = [
       import(/* webpackChunkName: "inbox" */ "../views/Surveys.vue"),
     meta: {
       requiresAuth: true,
-    },
-  },
-  {
-    path: "/end",
-    name: "End",
-    component: () =>
-      import(/* webpackChunkName: "inbox" */ "../views/End.vue"),
-    meta: {
-      requiresAuth: true,
-    },
-  },
+    }
+  }
 ];
 
 const router = new VueRouter({
