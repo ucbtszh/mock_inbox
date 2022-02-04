@@ -4,8 +4,6 @@ import vuetify from "./plugins/vuetify";
 import router from "./router";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-// import { getFirestore } from "firebase/firestore";
 import firebase from "firebase/compat/app"
 import "firebase/compat/firestore"
 
@@ -15,19 +13,19 @@ import "./assets/base.css";
 const firebaseConfig = {
   apiKey: "AIzaSyAEJIpYYSBk-S2iWKXgJNAxOpeBKiNgZ3M",
   authDomain: "mock-inbox.firebaseapp.com",
+  databaseURL: "https://mock-inbox-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "mock-inbox",
-  databaseURL: "https://mock-inbox-default-rtdb.europe-west1.firebasedatabase.app/",
   storageBucket: "mock-inbox.appspot.com",
   messagingSenderId: "787393509996",
-  appId: "1:787393509996:web:0e91453e8c2f323bb1b649",
+  appId: "1:787393509996:web:0e91453e8c2f323bb1b649"
 };
 
-// Initialize Firebase
+// Initialize Firebase modular style
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 
+// non-modular part for Firestore
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.firestore();
 
 export { db, auth };
