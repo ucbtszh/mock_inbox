@@ -98,7 +98,7 @@ export default {
     return {
       isProlificUser: false,
       setID: null,
-      showButton: true,
+      showButton: false,
     };
   },
   methods: {
