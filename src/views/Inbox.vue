@@ -6,7 +6,7 @@
 
       <v-dialog v-model="showHelp" persistent max-width="860px">
         <template v-slot:activator="{ on, attrs }">
-          <v-icon v-bind="attrs" @click="showHelp = true" v-on="on" dark
+          <v-icon v-bind="attrs" @click="showHelp = true" v-on="on" dark id="help_icon"
             >mdi-help</v-icon
           >
         </template>
@@ -78,6 +78,7 @@
         @click="labelEml('mali')"
         v-if="$condition == 'ivBtn'"
         class="iv"
+        :id="'iv_btn_' + index"
         ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
@@ -96,11 +97,12 @@
           v-bind="attrs"
           v-on="on"
           class="iv"
+          id="iv_nudge"
         >
           {{ nudgeTxt }}
         </v-alert>
       </template>
-      <v-card class="iv">
+      <v-card class="iv" id="iv_nudge_pop">
         <img src="../assets/ss_nudge_ex.png" /><br /><br />
         <v-card-text>
           <b>Why it is suspicious:</b>
@@ -143,7 +145,7 @@
                     :key="index"
                     @click="displayEml(eml.bodyURL)"
                     @pointerover="emlHoverIndex = index"
-                    :id="eml.bodyURL"
+                    :id="'eml_tn_' + index"
                   >
                     <template v-slot:default="{ active }">
                       <v-row>
@@ -161,20 +163,31 @@
                         </v-col>
 
                         <v-col style="margin-top: 5px; margin-bottom: 5px">
-                          <v-list-item-title style="line-height: 1.5em">{{
-                            eml.fromName
-                          }}</v-list-item-title>
+                          <v-list-item-title
+                            style="line-height: 1.5em"
+                            :id="'eml_tn_from_name_' + index"
+                            >{{ eml.fromName }}</v-list-item-title
+                          >
 
                           <v-list-item-subtitle>
-                            <div style="float: left; line-height: 1.5em">
+                            <div
+                              style="float: left; line-height: 1.5em"
+                              :id="'eml_tn_subj_' + index"
+                            >
                               {{ eml.subject.substr(0, 57) }}
                             </div>
-                            <div style="float: right; line-height: 1.5em">
+                            <div
+                              style="float: right; line-height: 1.5em"
+                              :id="'eml_tn_time_' + index"
+                            >
                               {{ eml.date }}
                             </div>
                           </v-list-item-subtitle>
 
-                          <div style="font-size: 14px; line-height: 1.5em">
+                          <div
+                            style="font-size: 14px; line-height: 1.5em"
+                            :id="'eml_tn_preview_' + index"
+                          >
                             {{ eml.previewTxt }}
                           </div>
                         </v-col>
@@ -198,7 +211,11 @@
         </v-col>
 
         <v-col style="height: 100vh; overflow: auto">
-          <v-card v-for="(eml, index) in emls" :key="index" :id="index">
+          <v-card
+            v-for="(eml, index) in emls"
+            :key="index"
+            :id="'reply_' + index"
+          >
             <div v-if="index == emlViewIndex">
               <div v-if="showReply">
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
@@ -223,7 +240,9 @@
               </div>
 
               <v-card-title
-                ><div class="subject">{{ eml.subject }}</div></v-card-title
+                ><div class="subject" :id="'eml_head_subj_' + index">
+                  {{ eml.subject }}
+                </div></v-card-title
               >
               <v-alert
                 outlined
@@ -232,6 +251,7 @@
                 border="left"
                 v-if="($condition == 'ivScore') & (eml.junkScore > 0.5)"
                 class="iv"
+                :id="'iv_score_' + index"
               >
                 <b>Are you sure you can trust this e-mail?</b><br />
                 Junk filters rate this e-mail as <b>{{ eml.junkScore }}</b> on a
@@ -240,17 +260,17 @@
                 the e-mail before communicating further with them.
               </v-alert>
 
-              <div class="initial">
+              <div class="initial" :id="'eml_head_initial_' + index">
                 {{ eml.fromName.substr(0, 1) }}
               </div>
-              <div id="header" style="margin-left: 65px">
-                <div class="from-name" id="eml_from_name">
+              <div style="margin-left: 65px">
+                <div class="from-name" :id="'eml_head_from_name_' + index">
                   {{ eml.fromName }}&nbsp;&lt;{{ eml.fromEml }}&gt;
                 </div>
-                <div class="time" id="eml_timing">
+                <div class="time" :id="'eml_head_time_' + index">
                   {{ eml.date }}&nbsp;{{ eml.time }}
                 </div>
-                <div class="to" id="eml_to">
+                <div class="to" :id="'eml_head_to_' + index">
                   To:&nbsp;&nbsp;{{ eml.toEml }}<br />
                   <p v-if="eml.CCeml.length > 0">CC: {{ eml.CCeml }}</p>
                 </div>
@@ -258,7 +278,7 @@
               <iframe
                 :src="eml.bodyURL"
                 :height="eml.height + 26"
-                id="eml-msg"
+                :id="'eml_body_' + index"
               />
             </div>
           </v-card>
@@ -340,29 +360,14 @@ export default {
       this.showReply = false;
       this.replyTxt = null;
     },
-    addEventListeners() {
-      // TODO: WRITE TO REAL-TIME DATABASE
-
-      let ivs = document.getElementsByClassName("iv"); // we know what IV these events relate to because we know the conditional display of each user
-      let events = [
-        "click",
-        "dblclick",
-        "pointerover",
-        "pointerout",
-        "selectionchange",
-        "pointermove",
-      ];
-
-      ivs.forEach((iv) => {
-        events.forEach(
-          iv.addEventListener((event) => {
-            this.writeResponseData(this.$user, event, { ts: event.timeStamp });
-          })
-        );
-      });
-    },
     mounted() {
       window.scrollTo(0, 0);
+
+      // prevent participants from navigating back to the instructions page
+      history.pushState(null, null, location.href);
+      window.onpopstate = function () {
+        history.go(1);
+      };
     },
   },
 };
