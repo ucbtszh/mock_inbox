@@ -6,7 +6,12 @@
 
       <v-dialog v-model="showHelp" persistent max-width="860px">
         <template v-slot:activator="{ on, attrs }">
-          <v-icon v-bind="attrs" @click="showHelp = true" v-on="on" dark id="help_icon"
+          <v-icon
+            v-bind="attrs"
+            @click="showHelp = true"
+            v-on="on"
+            dark
+            id="help_icon"
             >mdi-help</v-icon
           >
         </template>
@@ -214,10 +219,10 @@
           <v-card
             v-for="(eml, index) in emls"
             :key="index"
-            :id="'reply_' + index"
+            :id="'eml_' + index"
           >
             <div v-if="index == emlViewIndex">
-              <div v-if="showReply">
+              <div v-if="showReply" :id="'reply_' + index">
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                   To: {{ eml.fromEml }}
                 </p>
@@ -239,8 +244,8 @@
                 >
               </div>
 
-              <v-card-title
-                ><div class="subject" :id="'eml_head_subj_' + index">
+              <v-card-title :id="'eml_head_subj_' + index"
+                ><div class="subject">
                   {{ eml.subject }}
                 </div></v-card-title
               >
@@ -327,15 +332,15 @@ export default {
     displayEml(src) {
       this.emlViewSrc = src;
       try {
-        document.getElementById("eml-msg").src = src;
+        document.getElementById("eml_body_"+this.emlViewIndex).src = src;
       } catch (TypeError) {
         // console.log("iframe is null");
       }
     },
     labelEml(label) {
       this.labels[this.emlViewSrc] = label;
-      document.getElementById(this.emlViewSrc).style.display = "none";
-      document.getElementById(this.emlViewIndex).style.display = "none";
+      document.getElementById('eml_'+this.emlViewIndex).style.display = "none";
+      document.getElementById('eml_tn_'+this.emlViewIndex).style.display = "none";
       this.emlViewSrc = null;
       this.emlViewIndex = null;
       // console.log(this.labels);

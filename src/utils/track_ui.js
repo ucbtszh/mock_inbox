@@ -43,15 +43,14 @@ export default {
         ts: event.timeStamp,
         event_name: event.type,
         DOM_element: selection.focusNode.nodeValue,
-        DOM_id: event.target.id,
         char_start_index: selection.focusOffset,
         text_selection: selection.toString(),
         selection_type: selection.type
       };
       if (selection.toString() === "" || !selection.focusNode.nodeValue) return;
       else {
-        // this.writeEvent(this.$user, "selection", eventData);
-        console.log("selection", eventData)
+        this.writeEvent(this.$user, "selection", eventData);
+        // console.log("selection", eventData)
       }
     };
     this.clickHandler = (event) => {
@@ -66,7 +65,7 @@ export default {
         page_Y: event.pageY
       };
       this.writeEvent(this.$user, "clicks", eventData);
-      console.log("click", eventData)
+      // console.log("click", eventData)
     };
     this.hoverHandler = (event) => {
       // handle hover events on main window
@@ -78,7 +77,7 @@ export default {
         DOM_id: event.target.id,
         page_X: event.pageX,
         page_Y: event.pageY,
-        // inner_width: window.innerWidth,
+        // inner_width: window.innerWidth, STORE SEPARATELY W/POINTER TYPE WHEN ENTERING CONSENT FORM?
         // inner_height: window.innerHeight,
         pixel_ratio: window.devicePixelRatio
       };
@@ -94,8 +93,8 @@ export default {
         DOM_element: event.target.tagName,
         key_value: event.key,
       };
-      // this.writeEvent(this.$user, "keylog", eventData);
-      console.log("key", eventData);
+      this.writeEvent(this.$user, "keylog", eventData);
+      // console.log("key", eventData);
     };
     this.pointerCoordsHandler = (event) => {
       // handle pointer movement events on main window
@@ -121,8 +120,8 @@ export default {
         inner_height: window.innerHeight,
         pixel_ratio: window.devicePixelRatio,
       };
-      // this.writeEvent(this.$user, "screen_resize", eventData);
-      console.log("resize", eventData);
+      this.writeEvent(this.$user, "screen_resize", eventData);
+      // console.log("resize", eventData);
     };
     this.scrollHandler = (event) => {
       // handle scroll events on main window
@@ -133,8 +132,8 @@ export default {
         scroll_X: window.pageXOffset,
         scroll_Y: window.pageYOffset,
       };
-      // this.writeEvent(this.$user, "scrolls", eventData);
-      console.log("scroll", eventData);
+      this.writeEvent(this.$user, "scrolls", eventData);
+      // console.log("scroll", eventData);
     };
     this.visibilityHandler = (event) => {
       // handle visibility change events on main window
@@ -151,8 +150,8 @@ export default {
         event_name: event.type,
         visibility_state: status,
       };
-      // this.writeEvent(this.$user, "visibility", eventData);
-      console.log("visibility", eventData);
+      this.writeEvent(this.$user, "visibility", eventData);
+      // console.log("visibility", eventData);
     };
 
     document.addEventListener(events_visibility, this.visibilityHandler);
