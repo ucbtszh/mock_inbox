@@ -105,8 +105,9 @@ export default {
     login() {
       try {
         signInAnonymously(auth);
+        // console.log("signed in anonymously")
       } catch {
-        console.log("Error signing in anonymously.");
+        // console.log("error signing in anonymously");
       }
     },
   },
