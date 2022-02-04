@@ -353,7 +353,6 @@ export default {
         );
       } else {
         this.writeResponseData(this.$user, "emlLabels", this.labels);
-        this.writeResponseData(this.$user, "replyMsg", this.replies);
         this.$router.push("surveys");
       }
     },
