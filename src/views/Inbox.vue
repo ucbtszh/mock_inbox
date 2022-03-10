@@ -136,7 +136,7 @@
 
     <v-main>
       <v-row>
-        <v-col cols="4">
+        <v-col cols="4" style="min-width:525px;">
           <v-card style="height: 100vh; overflow: auto">
             <v-card-title>Inbox</v-card-title>
 
@@ -176,7 +176,7 @@
 
                           <v-list-item-subtitle>
                             <div
-                              style="float: left; line-height: 1.5em"
+                              style="float: left; line-height: 1.5em;"
                               :id="'eml_tn_subj_' + index"
                             >
                               {{ eml.subject.substr(0, 57) }}
@@ -190,7 +190,15 @@
                           </v-list-item-subtitle>
 
                           <div
-                            style="font-size: 14px; line-height: 1.5em"
+                            style="
+                              font-size: 14px;
+                              line-height: 1.5em;
+                              width: 400px;
+                              display: inline-block;
+                              text-overflow: ellipsis;
+                              overflow: hidden;
+                              white-space: nowrap;
+                            "
                             :id="'eml_tn_preview_' + index"
                           >
                             {{ eml.previewTxt }}
@@ -280,6 +288,7 @@
                   <p v-if="eml.CCeml.length > 0">CC: {{ eml.CCeml }}</p>
                 </div>
               </div>
+
               <iframe
                 :src="eml.bodyURL"
                 :height="eml.height + 26"
@@ -332,15 +341,17 @@ export default {
     displayEml(src) {
       this.emlViewSrc = src;
       try {
-        document.getElementById("eml_body_"+this.emlViewIndex).src = src;
+        document.getElementById("eml_body_" + this.emlViewIndex).src = src;
       } catch (TypeError) {
         // console.log("iframe is null");
       }
     },
     labelEml(label) {
       this.labels[this.emlViewSrc] = label;
-      document.getElementById('eml_'+this.emlViewIndex).style.display = "none";
-      document.getElementById('eml_tn_'+this.emlViewIndex).style.display = "none";
+      document.getElementById("eml_" + this.emlViewIndex).style.display =
+        "none";
+      document.getElementById("eml_tn_" + this.emlViewIndex).style.display =
+        "none";
       this.emlViewSrc = null;
       this.emlViewIndex = null;
       // console.log(this.labels);
