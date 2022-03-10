@@ -1,5 +1,13 @@
 <template>
   <div id="welcome">
+    <v-alert v-if="usesMouse()">
+      <!-- https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pointerType -->
+      It seems that you are not using a mouse to interact with your computer.
+      <br />
+      It is important for this study that you use a mouse. If you cannot do so,
+      please return to Prolific. If you can, please use your mouse to continue.
+    </v-alert>
+
     <b>Welcome!</b><br /><br />
     <p>
       Thank you for your interest in this research.<br />
@@ -109,6 +117,11 @@ export default {
       } catch {
         // console.log("error signing in anonymously");
       }
+    },
+    usesMouse() {
+      document.addEventListener("pointermove", (ev) =>
+        ev.pointerType === "mouse" ? true : false
+      );
     },
   },
   beforeCreate() {
