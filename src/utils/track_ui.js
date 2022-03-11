@@ -10,7 +10,7 @@
     All above event types are tracked at the parent context level.
     Categories 1 and 5 are also applied at iframe context levels from within Task.vue.  */
 
-import rt from "../utils/rtdb";
+import { writeEvent } from "../utils/rtdb";
 
 let events_screensize = [
   "onresize",
@@ -33,7 +33,6 @@ let events_scroll = ["onwheel", "onscroll"];
 let events_hover = ["onpointerover", "onpointerout"];
 
 export default {
-  mixins: [rt],
   mounted() {
     this.selectionHandler = (event) => {
       // handle text selection events on main window
@@ -49,7 +48,7 @@ export default {
       };
       if (selection.toString() === "" || !selection.focusNode.nodeValue) return;
       else {
-        this.writeEvent(this.$user, "selection", eventData);
+        writeEvent(this.$user, "selection", eventData);
         // console.log("selection", eventData)
       }
     };
@@ -64,7 +63,7 @@ export default {
         page_X: event.pageX,
         page_Y: event.pageY
       };
-      this.writeEvent(this.$user, "clicks", eventData);
+      writeEvent(this.$user, "clicks", eventData);
       // console.log("click", eventData)
     };
     this.hoverHandler = (event) => {
@@ -77,11 +76,9 @@ export default {
         DOM_id: event.target.id,
         page_X: event.pageX,
         page_Y: event.pageY,
-        // inner_width: window.innerWidth, STORE SEPARATELY W/POINTER TYPE WHEN ENTERING CONSENT FORM?
-        // inner_height: window.innerHeight,
         pixel_ratio: window.devicePixelRatio
       };
-      this.writeEvent(this.$user, "hovers", eventData);
+      writeEvent(this.$user, "hovers", eventData);
       // console.log("hover", eventData);
     };
     this.keylogHandler = (event) => {
@@ -93,7 +90,7 @@ export default {
         DOM_element: event.target.tagName,
         key_value: event.key,
       };
-      this.writeEvent(this.$user, "keylog", eventData);
+      writeEvent(this.$user, "keylog", eventData);
       // console.log("key", eventData);
     };
     this.pointerCoordsHandler = (event) => {
@@ -107,7 +104,7 @@ export default {
         // pressure: event.pressure,
         // pointer_type: event.pointerType,
       };
-      this.writeEvent(this.$user, "pointer_coords", eventData);
+      writeEvent(this.$user, "pointer_coords", eventData);
       // console.log("pointermove", eventData);
     };
     this.screensizeHandler = (event) => {
@@ -120,7 +117,7 @@ export default {
         inner_height: window.innerHeight,
         pixel_ratio: window.devicePixelRatio,
       };
-      this.writeEvent(this.$user, "screen_resize", eventData);
+      writeEvent(this.$user, "screen_resize", eventData);
       // console.log("resize", eventData);
     };
     this.scrollHandler = (event) => {
@@ -132,7 +129,7 @@ export default {
         scroll_X: window.pageXOffset,
         scroll_Y: window.pageYOffset,
       };
-      this.writeEvent(this.$user, "scrolls", eventData);
+      writeEvent(this.$user, "scrolls", eventData);
       // console.log("scroll", eventData);
     };
     this.visibilityHandler = (event) => {
@@ -150,7 +147,7 @@ export default {
         event_name: event.type,
         visibility_state: status,
       };
-      this.writeEvent(this.$user, "visibility", eventData);
+      writeEvent(this.$user, "visibility", eventData);
       // console.log("visibility", eventData);
     };
 

@@ -4,9 +4,8 @@ import vuetify from "./plugins/vuetify";
 import router from "./router";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import firebase from "firebase/compat/app"
-import "firebase/compat/firestore"
-
+import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 import "./assets/base.css";
 
 // Firebase configuration
@@ -23,12 +22,14 @@ const firebaseConfig = {
 // Initialize Firebase modular style
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
+const dbfs = getFirestore(firebaseApp)
+const rtdb = getDatabase(firebaseApp);
 
 // non-modular part for Firestore
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// firebase.initializeApp(firebaseConfig);
+// const db = firebase.firestore();
 
-export { db, auth };
+export { auth, dbfs, rtdb };
 
 Vue.config.productionTip = false;
 

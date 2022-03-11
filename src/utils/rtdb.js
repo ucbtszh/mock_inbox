@@ -1,11 +1,10 @@
-import { getDatabase, ref, push } from "firebase/database";
-
-const db = getDatabase();
+import { rtdb } from "../main";
+import { ref, push } from "firebase/database";
 
 export default {
-    methods: {
-        writeEvent(uid, event_class, event_data) {
-            push(ref(db, 'users/' + uid + '/' + event_class), { event_data })
-        }
-    }
-}
+  methods: {
+    writeEvent(uid, event_class, event_data) {
+      push(ref(rtdb, "users/" + uid + "/" + event_class), { event_data });
+    },
+  },
+};
