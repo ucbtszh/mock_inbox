@@ -77,13 +77,14 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
+      <!-- TODO: implement iv Btn funcionalities -->
       <v-btn
         depressed
         :disabled="!emlViewSrc"
         @click="labelEml('mali')"
         v-if="$condition == 'ivBtn'"
         class="iv"
-        :id="'iv_btn_' + index"
+        id="iv_btn"
         ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
@@ -354,6 +355,7 @@ export default {
         "none";
       this.emlViewSrc = null;
       this.emlViewIndex = null;
+      this.showReply = false;
       // console.log(this.labels);
     },
     sendLabels() {

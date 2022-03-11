@@ -1,13 +1,13 @@
 import { dbfs } from "../main";
-import { setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 export default {
   methods: {
     writeMetaUser(uid, data) {
-      setDoc(dbfs, "users/" + uid, { data });
+      setDoc(doc(dbfs, "users", uid), data);
     },
     writeResponseData(uid, response_class, data) {
-      setDoc(dbfs, "users/" + uid + "/" + response_class, { data });
+      setDoc(doc(dbfs, "users", uid, "responses", response_class), data);
     },
   },
 };

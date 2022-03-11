@@ -15,12 +15,13 @@
 
 <script>
 import InstructTxt from "../components/InstructTxt.vue";
-import { writeMetaUser } from "../utils/firestore";
+import db from "../utils/firestore";
 
 export default {
   data() {
     return {};
   },
+  mixins: [db],
   components: {
     InstructTxt,
   },
@@ -36,7 +37,7 @@ export default {
       screen_width: window.screen.width,
       screen_height: window.screen.height,
     };
-    writeMetaUser(this.$user, metaInfo);
+    this.writeMetaUser(this.$user, metaInfo);
   },
 };
 </script>
