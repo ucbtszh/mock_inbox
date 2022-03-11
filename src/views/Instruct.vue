@@ -15,6 +15,7 @@
 
 <script>
 import InstructTxt from "../components/InstructTxt.vue";
+import { writeMetaUser } from "../utils/firestore";
 
 export default {
   data() {
@@ -25,6 +26,17 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0);
+
+    let metaInfo = {
+      starttime: Date.now(),
+      condition: this.$condition,
+      prolific_user: this.$isProlificUser,
+      browser_width: window.innerWidth,
+      browser_height: window.innerHeight,
+      screen_width: window.screen.width,
+      screen_height: window.screen.height,
+    };
+    writeMetaUser(this.$user, metaInfo);
   },
 };
 </script>

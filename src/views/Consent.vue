@@ -63,7 +63,7 @@
     </ul>
     <br />
 
-    <p v-show="!isProlificUser">
+    <p v-show="!$isProlificUser">
       Your unique ID is: <b>{{ this.$user }}</b>
     </p>
     <br />
@@ -104,7 +104,6 @@ export default {
   components: { VueRecaptcha },
   data() {
     return {
-      isProlificUser: false,
       setID: null,
       showButton: false,
     };
@@ -132,7 +131,6 @@ export default {
       let uuid = urlParams.get("PROLIFIC_PID");
       Vue.prototype.$user = uuid;
       Vue.prototype.$isProlificUser = true;
-      this.isProlificUser = true;
     } else {
       let uuid = [...Array(32)]
         .map(() => Math.random().toString(36)[2])
@@ -150,8 +148,8 @@ export default {
       var random = Math.floor(Math.random() * conditions.length);
       Vue.prototype.$condition = conditions[random];
     }
-  },
-};
+  }
+  }
 </script>
 
 <style scoped>
