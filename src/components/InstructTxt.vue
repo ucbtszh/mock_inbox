@@ -1,7 +1,7 @@
 <template>
   <div>
     Imagine that you are a renowned professor named Alex Carter in the field of health informatics, working at University of London (UOL).<br /><br />
-    In this study, you will see a mock inbox with 47 e-mails adapted from actual e-mails received by academics.<br/>
+    In this study, you will see a mock inbox with e-mails adapted from actual e-mails received by academics.<br/>
     Your task is to process these e-mails as if you received them in your role of Prof. Carter.<br /><br/>
 
     <img src="../assets/ss_inbox_control.png" width="100%" /><br /><br />
@@ -31,9 +31,10 @@
     <br />
     Your task is to choose what you think is the <b>best applicable action</b> for each
     e-mail.<br />
-    Please note that all links in e-mails have been disabled and that this task should not take more than 30-45 minutes.<br /><br />
+    Please note that all links in e-mails have been disabled.
+     <!-- and that this task should not take more than 30-45 minutes.<br /><br />
 
     When you are done processing all e-mails, click "DONE":<br /><br />
-    <img src="../assets/ss_done.png" width="100%" />
+    <img src="../assets/ss_done.png" width="100%" /> -->
   </div>
 </template>

@@ -18,11 +18,47 @@ const routes = [
     name: "Instruction",
     component: Instruct,
   },
+  // {
+  //   path: "/inbox",
+  //   name: "Inbox",
+  //   component: () =>
+  //     import(/* webpackChunkName: "inbox" */ "../views/Inbox.vue"),
+  //   meta: {
+  //     requiresAuth: true,
+  //   }
+  // },
   {
-    path: "/inbox",
-    name: "Inbox",
+    path: "/UI1",
+    name: "UI1",
     component: () =>
-      import(/* webpackChunkName: "inbox" */ "../views/Inbox.vue"),
+      import(/* webpackChunkName: "inbox" */ "../views/UI1.vue"),
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/UI2",
+    name: "UI2",
+    component: () =>
+      import(/* webpackChunkName: "inbox" */ "../views/UI2.vue"),
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/UI3",
+    name: "UI3",
+    component: () =>
+      import(/* webpackChunkName: "inbox" */ "../views/UI3.vue"),
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/UI4",
+    name: "UI4",
+    component: () =>
+      import(/* webpackChunkName: "inbox" */ "../views/UI4.vue"),
     meta: {
       requiresAuth: true,
     }

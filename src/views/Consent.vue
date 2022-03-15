@@ -1,7 +1,6 @@
 <template>
   <div id="welcome">
     <v-alert v-if="usesMouse()">
-      <!-- https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pointerType -->
       It seems that you are not using a mouse to interact with your computer.
       <br />
       It is important for this study that you use a mouse. If you cannot do so,
@@ -62,35 +61,50 @@
       <li>This study is expected to take no longer than 30 minutes.</li>
     </ul>
     <br />
+    <v-form v-model="showButton">
+      <v-text-field
+        v-model="uuid"
+        :rules="[(v) => !!v || 'enter unique ID']"
+        id="uuid"
+        label="Participant ID:"
+      ></v-text-field>
+      <v-text-field
+        v-model="cond"
+        :rules="[(v) => !!v || 'enter order number']"
+        id="cond"
+        label="Order:"
+      ></v-text-field>
 
-    <p v-show="!$isProlificUser">
+      <!-- <p v-show="!$isProlificUser">
       Your unique ID is: <b>{{ this.$user }}</b>
     </p>
-    <br />
+    <br /> -->
 
-    <VueRecaptcha
+      <!-- <VueRecaptcha
       ref="recaptcha"
       sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
       :loadRecaptchaScript="true"
       @verify="showButton = true"
-    /><br />
+    /><br /> -->
 
-    <v-btn
-      :disabled="!showButton"
-      elevation="3"
-      color="success"
-      @click="
-        login();
-        $router.push('instruct');
-      "
-      width="100px"
-      >Continue</v-btn
-    >
+      <v-btn
+        :disabled="!showButton"
+        elevation="3"
+        color="success"
+        @click="
+          login();
+          setCondOrder(cond);
+          $router.push('instruct');
+        "
+        width="100px"
+        >Continue</v-btn
+      >
+    </v-form>
   </div>
 </template>
 
 <script>
-import VueRecaptcha from "vue-recaptcha";
+// import VueRecaptcha from "vue-recaptcha";
 import Vue from "vue";
 import { auth } from "../main";
 import { signInAnonymously } from "firebase/auth";
@@ -101,17 +115,20 @@ export default {
     title: "Consent form | Online e-mail filter study",
     titleTemplate: null,
   },
-  components: { VueRecaptcha },
+  // components: { VueRecaptcha },
   data() {
     return {
       setID: null,
       showButton: false,
+      uuid: null,
+      cond: null,
     };
   },
   methods: {
     login() {
       try {
         signInAnonymously(auth);
+        Vue.prototype.$user = this.uuid
         // console.log("signed in anonymously")
       } catch {
         // console.log("error signing in anonymously");
@@ -122,34 +139,49 @@ export default {
         ev.pointerType === "mouse" ? true : false
       );
     },
+    setCondOrder(value) {
+      value === 1
+        ? (Vue.prototype.$order = ["control", "ivBtn", "ivNudge", "ivScore"])
+        : value === 2
+        ? (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"])
+        : value === 3
+        ? (Vue.prototype.$order = ["control", "ivNudge", "ivBtn", "ivScore"])
+        : value === 4
+        ? (Vue.prototype.$order = ["control", "ivBtn", "ivScore", "ivNudge"])
+        : value === 5
+        ? (Vue.prototype.$order = ["control", "ivScore", "ivNudge", "ivBtn"])
+        : (Vue.prototype.$order = ["control", "ivScore", "ivBtn", "ivNudge"]);
+
+      // console.log("ORDER", this.$order);
+    },
   },
-  beforeCreate() {
-    let queryString = window.location.search;
-    let urlParams = new URLSearchParams(queryString);
+  // beforeCreate() {
+  //   let queryString = window.location.search;
+  //   let urlParams = new URLSearchParams(queryString);
 
-    if (urlParams.has("PROLIFIC_PID")) {
-      let uuid = urlParams.get("PROLIFIC_PID");
-      Vue.prototype.$user = uuid;
-      Vue.prototype.$isProlificUser = true;
-    } else {
-      let uuid = [...Array(32)]
-        .map(() => Math.random().toString(36)[2])
-        .join("");
-      this.setID = uuid;
-      Vue.prototype.$user = uuid;
-      Vue.prototype.$isProlificUser = false;
-    }
+  //   if (urlParams.has("PROLIFIC_PID")) {
+  //     let uuid = urlParams.get("PROLIFIC_PID");
+  //     Vue.prototype.$user = uuid;
+  //     Vue.prototype.$isProlificUser = true;
+  //   } else {
+  //     let uuid = [...Array(32)]
+  //       .map(() => Math.random().toString(36)[2])
+  //       .join("");
+  //     this.setID = uuid;
+  //     Vue.prototype.$user = uuid;
+  //     Vue.prototype.$isProlificUser = false;
+  //   }
 
-    if (urlParams.has("cond")) {
-      let cond = urlParams.get("cond");
-      Vue.prototype.$condition = cond;
-    } else {
-      var conditions = ["ivBtn", "ivNudge", "ivScore", "control"];
-      var random = Math.floor(Math.random() * conditions.length);
-      Vue.prototype.$condition = conditions[random];
-    }
-  }
-  }
+  //   if (urlParams.has("cond")) {
+  //     let cond = urlParams.get("cond");
+  //     Vue.prototype.$condition = cond;
+  //   } else {
+  //     var conditions = ["ivBtn", "ivNudge", "ivScore", "control"];
+  //     var random = Math.floor(Math.random() * conditions.length);
+  //     Vue.prototype.$condition = conditions[random];
+  //   }
+  // },
+};
 </script>
 
 <style scoped>

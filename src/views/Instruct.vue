@@ -7,7 +7,7 @@
 
     Click "START" below to go to the inbox.
     <br /><br /><br />
-    <v-btn elevation="3" @click="$router.push('inbox')" color="success"
+    <v-btn elevation="3" @click="$router.push('UI1')" color="success"
       >Start</v-btn
     >
   </div>
@@ -30,8 +30,8 @@ export default {
 
     let metaInfo = {
       starttime: Date.now(),
-      condition: this.$condition,
-      prolific_user: this.$isProlificUser,
+      condition: this.$order,
+      // prolific_user: this.$isProlificUser,
       browser_width: window.innerWidth,
       browser_height: window.innerHeight,
       screen_width: window.screen.width,
