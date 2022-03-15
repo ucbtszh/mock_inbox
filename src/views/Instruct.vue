@@ -31,8 +31,8 @@ export default {
 
     let metaInfo = {
       starttime: Date.now(),
-      condition: this.$condition,
-      prolific_user: this.$isProlificUser,
+      condition: this.$order,
+      // prolific_user: this.$isProlificUser,
       browser_width: window.innerWidth,
       browser_height: window.innerHeight,
       screen_width: window.screen.width,

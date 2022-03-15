@@ -89,13 +89,13 @@
         depressed
         :disabled="!emlViewSrc"
         @click="labelEml('mali')"
-        v-if="$condition == 'ivBtn'"
+        v-if="condition == 'ivBtn'"
         class="iv"
         id="iv_btn"
         ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
       >
       <v-spacer></v-spacer>
-      <v-btn depressed color="secondary" @click="sendLabels()">DONE</v-btn>
+      <!-- <v-btn depressed color="secondary" @click="sendLabels()">DONE</v-btn> -->
     </v-toolbar>
 
     <v-dialog v-model="nudge" persistent max-width="860">
@@ -106,7 +106,7 @@
           dense
           border="left"
           dismissible
-          v-if="$condition == 'ivNudge'"
+          v-if="condition == 'ivNudge'"
           v-bind="attrs"
           v-on="on"
           class="iv"
@@ -270,7 +270,7 @@
                 type="warning"
                 dense
                 border="left"
-                v-if="($condition == 'ivScore') & (eml.junkScore > 0.5)"
+                v-if="(condition == 'ivScore') & (eml.junkScore > 0.5)"
                 class="iv"
                 :id="'iv_score_' + index"
               >
@@ -341,20 +341,19 @@
 </template>
 
 <script>
-import emails from "../assets/stimuli_eml_full_shuffled.json";
 import { VueEditor } from "vue2-editor";
 import db from "../utils/firestore";
 import tracking from "../utils/track_ui";
-import InstructTxt from "../components/InstructTxt.vue";
+import InstructTxt from "./InstructTxt.vue";
 
 export default {
   components: {
     VueEditor,
-    InstructTxt,
+    InstructTxt
   },
+  props: ["condition", "emls"],
   mixins: [db, tracking],
   data: () => ({
-    emls: emails,
     emlViewSrc: "",
     emlViewIndex: null,
     emlHoverIndex: null,
