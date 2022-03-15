@@ -1,13 +1,8 @@
 <template>
   <div>
-    Imagine that you are Alex Carter, an executive director of a fictive company
-    called Anneon.<br /><br />
-
-    Your task in this study is to process Alex' e-mails as you would do as an
-    executive director.<br /><br />
-
-    You will see a snapshot of Alex Carter's inbox.<br />
-    It contains 47 e-mails that need to be processed adequately:<br /><br />
+    Imagine that you are a renowned professor named Alex Carter in the field of health informatics, working at University of London (UOL).<br /><br />
+    In this study, you will see a mock inbox with 47 e-mails adapted from actual e-mails received by academics.<br/>
+    Your task is to process these e-mails as if you received them in your role of Prof. Carter.<br /><br/>
 
     <img src="../assets/ss_inbox_control.png" width="100%" /><br /><br />
 
@@ -23,20 +18,20 @@
       <li><b>Reply</b>: allows you to reply to the sender of the e-mail.</li>
       <li>
         <b>Forward</b>: forward the e-mail to your executive assistant (EA), so
-        your EA can take care of it. You do not need to type an extra message
+        the EA can take care of it. You do not need to type an extra message
         for this action.
       </li>
       <li><b>Archive</b>: move the e-mail to an archive.</li>
       <li><b>Delete</b>: delete the e-mail.</li>
       <li>
-        <b>Junk</b>: report the e-mail as junk and move it to a junk
-        archive.
+        <b>Junk</b>: report the e-mail as junk and move it to the junk
+        folder.
       </li>
     </ul>
     <br />
-    Your task is to choose what you think is the best applicable action for each
+    Your task is to choose what you think is the <b>best applicable action</b> for each
     e-mail.<br />
-    Please note that this task should not take more than 30-45 minutes.<br /><br />
+    Please note that all links in e-mails have been disabled and that this task should not take more than 30-45 minutes.<br /><br />
 
     When you are done processing all e-mails, click "DONE":<br /><br />
     <img src="../assets/ss_done.png" width="100%" />
