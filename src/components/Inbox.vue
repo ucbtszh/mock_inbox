@@ -137,7 +137,7 @@
 
     <v-main>
       <v-row>
-        <v-col cols="4" style="min-width:525px;">
+        <v-col cols="4" style="min-width: 525px">
           <v-card style="height: 100vh; overflow: auto">
             <v-card-title>Inbox</v-card-title>
 
@@ -177,7 +177,7 @@
 
                           <v-list-item-subtitle>
                             <div
-                              style="float: left; line-height: 1.5em;"
+                              style="float: left; line-height: 1.5em"
                               :id="'eml_tn_subj_' + index"
                             >
                               {{ eml.subject.substr(0, 57) }}
@@ -312,7 +312,7 @@ import InstructTxt from "./InstructTxt.vue";
 export default {
   components: {
     VueEditor,
-    InstructTxt
+    InstructTxt,
   },
   props: ["condition", "emls"],
   mixins: [db, tracking],
@@ -376,15 +376,16 @@ export default {
       this.showReply = false;
       this.replyTxt = null;
     },
-    mounted() {
-      window.scrollTo(0, 0);
+  },
+  mounted() {
+    window.scrollTo(0, 0);
+    // console.log("ORDER RECEIVED IN INBOX", this.condition)
 
-      // prevent participants from navigating back to the instructions page
-      history.pushState(null, null, location.href);
-      window.onpopstate = function () {
-        history.go(1);
-      };
-    },
+    // prevent participants from navigating back to the instructions page
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
   },
 };
 </script>
