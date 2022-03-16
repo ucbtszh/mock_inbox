@@ -6,7 +6,7 @@
 
 <script>
 import Inbox from "../components/Inbox.vue";
-import emails from "../assets/stimuli_eml_full_shuffled.json";
+import emails from "../assets/ui2_emls.json";
 
 export default {
   components: {
