@@ -77,16 +77,128 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <!-- TODO: implement iv Btn funcionalities -->
-      <v-btn
-        depressed
-        :disabled="!emlViewSrc"
-        @click="labelEml('mali')"
-        v-if="condition == 'ivBtn'"
-        class="iv"
-        id="iv_btn"
-        ><v-icon>mdi-check</v-icon>&nbsp;Check for malice</v-btn
-      >
+
+      <v-menu open-on-hover top :close-on-content-click="closeOnContentClick">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-if="condition == 'ivBtn'"
+            depressed
+            :disabled="!emlViewSrc"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-check</v-icon>&nbsp; Check for malice
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item>
+            <v-list-item-title @click="scanURLs()"
+              ><v-icon>mdi-shield-link-variant-outline</v-icon>&nbsp; Scan
+              e-mail URLs</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="scanNames()"
+              ><v-icon>mdi-magnify-scan</v-icon>&nbsp; Scan sender
+              name(s)</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="showSenderPrevEmls()"
+              ><v-icon>mdi-format-list-text</v-icon>&nbsp; Show past sender
+              e-mails</v-list-item-title
+            >
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <div v-for="(eml, index) in emls" :key="index">
+        <v-dialog
+          v-model="URLScanResult"
+          hide-overlay
+          width="750"
+          v-if="index == emlViewIndex"
+        >
+          <v-card>
+            <v-card-title>
+              This e-mail contains {{ eml.nURL }} unique links.
+            </v-card-title>
+            <v-card-text>
+              PLACEHOLDER: FILL IN DISPLAY FROM E-MAIL SOURCE INFO Displayed
+              link: Actual link: Actual link domain: Sender e-mail address
+              domain:
+            </v-card-text>
+            <v-card-actions>
+              <v-btn text @click="URLScanResult = false">
+                <b>Close</b>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog
+          v-model="nameScanResult"
+          hide-overlay
+          width="750"
+          v-if="index == emlViewIndex"
+        >
+          <v-card>
+            <v-card-title
+              >Information found about this e-mail sender name ({{
+                eml.fromName
+              }})</v-card-title
+            >
+            <v-card-text>
+              PLACEHOLDER: FILL IN DISPLAY FROM SENDER NAME COMPARISONS "From"
+              name displayed in e-mail header:
+              {{ eml.fromName }}<br />
+
+              Name found in e-mail message signature: <br />
+
+              E-mail address domain:<br />
+
+              Top Google search results for {{ eml.fromName }}:<br />
+            </v-card-text>
+            <v-card-actions>
+              <v-btn text @click="nameScanResult = false">
+                <b>Close</b>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog
+          v-model="prevEmlsResult"
+          hide-overlay
+          width="750"
+          v-if="index == emlViewIndex"
+        >
+          <v-card>
+            <v-card-title>
+              Here are the last five e-mails you received from
+              {{ eml.fromEml }}:
+            </v-card-title>
+            <v-card-text>
+              <!-- CONDITIONAL: if 0 past e-mails from sender address, display "You have not received anything from this e-mail address before." -->
+              PLACEHOLDER: FILL IN DISPLAY OF PREVIOUS E-MAILS FROM SENDER
+              E-MAIL
+
+              <!-- REPLICATE 5 EML THUMBNAILS 
+              folder:
+          time:
+          message:
+           -->
+            </v-card-text>
+            <v-card-actions>
+              <v-btn text @click="prevEmlsResult = false">
+                <b>Close</b>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+
       <v-spacer></v-spacer>
       <!-- <v-btn depressed color="secondary" @click="sendLabels()">DONE</v-btn> -->
     </v-toolbar>
@@ -336,6 +448,10 @@ export default {
     timeout: 2000,
     snackbar: false,
     snackbarTxt: "E-mail",
+    closeOnContentClick: true,
+    URLScanResult: false,
+    nameScanResult: false,
+    prevEmlsResult: false,
   }),
   methods: {
     displayEml(src) {
@@ -375,6 +491,15 @@ export default {
       this.writeResponseData(this.$user, "replyMsg", this.replies);
       this.showReply = false;
       this.replyTxt = null;
+    },
+    scanURLs() {
+      this.URLScanResult = true;
+    },
+    scanNames() {
+      this.nameScanResult = true;
+    },
+    showSenderPrevEmls() {
+      this.prevEmlsResult = true;
     },
   },
   mounted() {
