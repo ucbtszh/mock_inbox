@@ -21,7 +21,7 @@ const firebaseConfig = {
 
 // Initialize Firebase modular style
 const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
+const auth = getAuth();
 const dbfs = getFirestore(firebaseApp)
 const rtdb = getDatabase(firebaseApp);
 
