@@ -481,7 +481,7 @@ export default {
     VueEditor,
     InstructTxt,
   },
-  props: ["condition", "emls"],
+  props: ["condition", "emls", "UI"],
   mixins: [db, tracking],
   data: () => ({
     emlViewSrc: "",
@@ -545,13 +545,13 @@ export default {
     },
     sendLabels() {
       // SEND EML LABELS TO DB
-      if ((this.labels.length < 47) | (this.labels.length == null)) {
+      if (this.labels.length < this.emls.length) {
         alert(
           "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
         );
       } else {
-        this.writeResponseData(this.$user, "emlLabels", this.labels);
-        this.$router.push("surveys");
+        this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
+        this.$emit("next");
       }
     },
     sendReply() {
@@ -578,6 +578,10 @@ export default {
     window.onpopstate = function () {
       history.go(1);
     };
+
+    setTimeout(() => {
+      this.sendLabels();
+    }, 2000);
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Inbox :condition="$order[1]" :emls="emails" />
+    <Inbox
+      :condition="$order[1]"
+      :emls="emails"
+      :UI="'UI2'"
+      @next="$router.push('UI3')"
+    />
   </div>
 </template>
 
@@ -16,9 +21,6 @@ export default {
     return {
       emails: emails,
     };
-  },
-  mounted() {
-    setTimeout(() => this.$router.push("UI3"), 420000);
   },
 };
 </script>
