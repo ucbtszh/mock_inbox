@@ -16,29 +16,16 @@
 
 <script>
 import InstructTxt from "../components/InstructTxt.vue";
-import db from "../utils/firestore";
 
 export default {
   data() {
     return {};
   },
-  mixins: [db],
   components: {
     InstructTxt,
   },
   mounted() {
     window.scrollTo(0, 0);
-
-    let metaInfo = {
-      starttime: Date.now(),
-      condition: this.$order,
-      // prolific_user: this.$isProlificUser,
-      browser_width: window.innerWidth,
-      browser_height: window.innerHeight,
-      screen_width: window.screen.width,
-      screen_height: window.screen.height,
-    };
-    this.writeMetaUser(this.$user, metaInfo);
   },
 };
 </script>
