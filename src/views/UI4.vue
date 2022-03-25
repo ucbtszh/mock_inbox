@@ -1,7 +1,13 @@
 <template>
   <div>
-    <Inbox :condition="$order[3]" :emls="emails" v-if="!end" />
-    <div>You have completed the task.</div>
+    <Inbox
+      :condition="$order[3]"
+      :emls="emails"
+      :UI="'UI4'"
+      @next="end = true"
+      v-if="!end"
+    />
+    <h2 style="text-align: center">You have completed the task.</h2>
   </div>
 </template>
 
@@ -18,9 +24,6 @@ export default {
       emails: emails,
       end: false,
     };
-  },
-  mounted() {
-    setTimeout(() => (this.end = true), 420000);
   },
 };
 </script>
