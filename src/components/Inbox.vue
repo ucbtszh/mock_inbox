@@ -84,7 +84,6 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-
       <v-menu
         top
         :close-on-content-click="closeOnContentClick"
@@ -103,19 +102,19 @@
         </template>
 
         <v-list>
-          <v-list-item>
+          <v-list-item class="scanResult">
             <v-list-item-title @click="showURLScanResult = true"
               ><v-icon>mdi-shield-link-variant-outline</v-icon>&nbsp; Scan URLs
               in e-mail</v-list-item-title
             >
           </v-list-item>
-          <v-list-item>
+          <v-list-item class="scanResult">
             <v-list-item-title @click="showNameScanResult = true"
               ><v-icon>mdi-magnify-scan</v-icon>&nbsp; Scan sender
               details</v-list-item-title
             >
           </v-list-item>
-          <v-list-item>
+          <v-list-item class="scanResult">
             <v-list-item-title @click="showPrevEmlsResult = true"
               ><v-icon>mdi-format-list-text</v-icon>&nbsp; Past e-mails from
               this sender</v-list-item-title
@@ -581,7 +580,7 @@ export default {
 
     setTimeout(() => {
       this.sendLabels();
-    }, 2000);
+    }, 420000); // automatically go to the next UI after 7 min
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);
@@ -651,5 +650,9 @@ iframe {
   display: block;
   margin-left: 58px;
   padding: 0;
+}
+
+.scanResult {
+  cursor: pointer;
 }
 </style>
