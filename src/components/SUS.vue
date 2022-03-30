@@ -7,6 +7,8 @@
         v-for="(item, index) in items"
         :key="'item' + index"
         :item="item.item"
+        :leftExtreme="'Strongly disagree'"
+        :rightExtreme="'Strongly agree'"
         @answered="saveResponse"
       />
       <v-btn
