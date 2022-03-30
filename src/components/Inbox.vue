@@ -85,8 +85,7 @@
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
       <v-menu top :close-on-content-click="closeOnContentClick">
-        <!-- v-if="condition == 'ivBtn'" -->
-        <template v-slot:activator="{ on, attrs }">
+        <template v-slot:activator="{ on, attrs }" v-if="condition == 'ivBtn'">
           <v-btn
             depressed
             :disabled="!emlViewSrc"
@@ -135,8 +134,7 @@
         <v-card>
           <v-card-title>
             This e-mail contains {{ scanResult["URLscan"].length }} unique link
-            <div v-if="scanResult['URLscan'].length !== 1">s</div>
-            .
+            <div v-if="scanResult['URLscan'].length !== 1">s</div>.
           </v-card-title>
           <v-card-text v-if="scanResult['URLscan'].length > 0">
             <v-data-table
@@ -170,7 +168,7 @@
             {{ eml.fromName }}<br /><br />
 
             <b>Name found in e-mail message signature:</b>
-            {{ scanResult["nameScan"] }} <br /><br />
+            {{ eml.msgName }} <br /><br />
 
             <b>Sender e-mail address name:</b>
             {{ eml.fromEml.substring(0, eml.fromEml.lastIndexOf("@"))
@@ -180,7 +178,11 @@
             {{ eml.fromEml.substring(eml.fromEml.lastIndexOf("@") + 1)
             }}<br /><br />
 
-            <b>Top Google search results for {{ eml.fromEml }}:</b><br /><br />
+            <a
+              :href="'https://www.google.com/search?q=' + eml.fromEml"
+              target="_blank"
+              ><b>Search for {{ eml.fromEml }} on Google (click).</b></a
+            ><br /><br />
           </v-card-text>
           <v-card-actions>
             <v-btn text @click="showNameScanResult = false">
@@ -518,7 +520,7 @@ export default {
     ],
     pastEmlHeaders: [
       { text: "Date:", value: "date" },
-      { text: "Subject:", value: "subject" }
+      { text: "Subject:", value: "subject" },
     ],
   }),
   methods: {
@@ -580,7 +582,7 @@ export default {
 
     setTimeout(() => {
       this.sendLabels();
-    }, 420000); // automatically go to the next UI after 7 min
+    }, 420000); // automatically go to the next UI after 7 min = 420000ms
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);
