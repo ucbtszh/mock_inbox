@@ -77,11 +77,8 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <v-menu
-        top
-        :close-on-content-click="closeOnContentClick"
-        v-if="condition == 'ivBtn'"
-      >
+      <v-menu top :close-on-content-click="closeOnContentClick">
+        <!-- v-if="condition == 'ivBtn'" -->
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             depressed
@@ -199,16 +196,15 @@
             {{ eml.fromEml }}:
           </v-card-title>
           <v-card-text>
-            <!-- TODO -->
-
-            <!-- CONDITIONAL: if 0 past e-mails from sender address, display "You have not received anything from this e-mail address before." -->
-            PLACEHOLDER: FILL IN DISPLAY OF PREVIOUS E-MAILS FROM SENDER E-MAIL
-
-            <!-- REPLICATE 5 EML THUMBNAILS 
-              folder:
-          time:
-          message:
-           -->
+            <div v-if="eml.pastEmls.length == 0">
+              You have not received any e-mails from this e-mail address before.
+            </div>
+            <v-data-table
+              hide-default-footer
+              :headers="pastEmlHeaders"
+              :items="eml.pastEmls"
+            >
+            </v-data-table>
           </v-card-text>
           <v-card-actions>
             <v-btn text @click="showPrevEmlsResult = false">
@@ -474,6 +470,10 @@ export default {
       { text: "Displayed link text", value: "urlDisplayTxt" },
       { text: "Actual URL", value: "urlRaw" },
       { text: "Actual URL domain", value: "urlDomain" },
+    ],
+    pastEmlHeaders: [
+      { text: "Date:", value: "date" },
+      { text: "Subject:", value: "subject" }
     ],
   }),
   methods: {
