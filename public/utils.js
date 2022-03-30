@@ -13,8 +13,8 @@ function scanEml(event) {
     return;
   } else {
     let URLRes = scanURLs();
-    let NameRes = scanName();
-    let result = { URLscan: URLRes, nameScan: NameRes };
+    // let NameRes = scanName();
+    let result = { URLscan: URLRes } //, nameScan: NameRes };
 
     event.source.postMessage(result);
   }
@@ -41,10 +41,13 @@ function scanURLs() {
   return data;
 }
 
-function scanName() {
-  let emlBody = document.body.innerHTML.split(/\r?\n/);
-  let lastSent = emlBody[emlBody.length - 1];
-  // console.log("last sentence", lastSent);
+// function scanName() {
+//   let emlBody = document.body.innerText.split(/\n/);
+//   // console.log("inner HTML", emlBody);
+  
+//   // TODO: change to look for words not in common English dictionary -> names -> display as "names found in e-mail message"?
+//   let lastSent = emlBody[emlBody.length - 1].split(/\s/)[0];
+//   console.log("last sentence", lastSent);
 
-  return lastSent;
-}
+//   return lastSent;
+// }
