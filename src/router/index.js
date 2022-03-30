@@ -30,38 +30,43 @@ const routes = [
   {
     path: "/UI1",
     name: "UI1",
-    component: () =>
-      import(/* webpackChunkName: "inbox" */ "../views/UI1.vue"),
+    component: () => import(/* webpackChunkName: "inbox" */ "../views/UI1.vue"),
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     path: "/UI2",
     name: "UI2",
-    component: () =>
-      import(/* webpackChunkName: "inbox" */ "../views/UI2.vue"),
+    component: () => import(/* webpackChunkName: "inbox" */ "../views/UI2.vue"),
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     path: "/UI3",
     name: "UI3",
-    component: () =>
-      import(/* webpackChunkName: "inbox" */ "../views/UI3.vue"),
+    component: () => import(/* webpackChunkName: "inbox" */ "../views/UI3.vue"),
     meta: {
       requiresAuth: true,
-    }
+    },
   },
   {
     path: "/UI4",
     name: "UI4",
-    component: () =>
-      import(/* webpackChunkName: "inbox" */ "../views/UI4.vue"),
+    component: () => import(/* webpackChunkName: "inbox" */ "../views/UI4.vue"),
     meta: {
       requiresAuth: true,
-    }
+    },
+  },
+  {
+    path: "/usab",
+    name: "Usability",
+    component: () =>
+      import(/* webpackChunkName: "inbox" */ "../views/Usabil.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/surveys",
@@ -70,8 +75,8 @@ const routes = [
       import(/* webpackChunkName: "inbox" */ "../views/Surveys.vue"),
     meta: {
       requiresAuth: true,
-    }
-  }
+    },
+  },
 ];
 
 const router = new VueRouter({

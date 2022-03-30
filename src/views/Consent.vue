@@ -128,7 +128,7 @@ export default {
     login() {
       try {
         signInAnonymously(auth);
-        Vue.prototype.$user = this.uuid
+        Vue.prototype.$user = this.uuid;
         // console.log("signed in anonymously")
       } catch {
         // console.log("error signing in anonymously");
@@ -142,15 +142,15 @@ export default {
     setCondOrder(value) {
       value === 1
         ? (Vue.prototype.$order = ["control", "ivBtn", "ivNudge", "ivScore"])
-        : value === 2
-        ? (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"])
-        : value === 3
-        ? (Vue.prototype.$order = ["control", "ivNudge", "ivBtn", "ivScore"])
-        : value === 4
-        ? (Vue.prototype.$order = ["control", "ivBtn", "ivScore", "ivNudge"])
-        : value === 5
-        ? (Vue.prototype.$order = ["control", "ivScore", "ivNudge", "ivBtn"])
-        : (Vue.prototype.$order = ["control", "ivScore", "ivBtn", "ivNudge"]);
+        : (Vue.prototype.$order = ["control", "ivBtn", "ivScore", "ivNudge"]);
+      // ? (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"])
+      // : value === 3
+      // ? (Vue.prototype.$order = ["control", "ivNudge", "ivBtn", "ivScore"])
+      // : value === 4
+      // ? (Vue.prototype.$order = ["control", "ivBtn", "ivScore", "ivNudge"])
+      // : value === 5
+      // ? (Vue.prototype.$order = ["control", "ivScore", "ivNudge", "ivBtn"])
+      // : (Vue.prototype.$order = ["control", "ivScore", "ivBtn", "ivNudge"]);
 
       // console.log("ORDER", this.$order);
     },
