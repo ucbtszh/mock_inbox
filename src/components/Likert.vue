@@ -7,7 +7,7 @@
       :rules="[(v) => !!v || 'Please answer this item.']"
     >
       <v-layout row wrap>
-        <v-flex column> Strongly disagree </v-flex>
+        <v-flex column> {{ leftExtreme }} </v-flex>
         <v-flex column>
           <v-radio
             value="1"
@@ -48,7 +48,7 @@
           ></v-radio>
           <p>5</p>
         </v-flex>
-        <v-flex column> Strongly agree </v-flex>
+        <v-flex column>{{ rightExtreme }}</v-flex>
       </v-layout>
     </v-radio-group>
   </div>
@@ -56,10 +56,10 @@
 
 <script>
 export default {
-  props: ["item"],
+  props: ["item", "leftExtreme", "rightExtreme"],
   data() {
     return {
-      response: null
+      response: null,
     };
   },
 };
@@ -67,6 +67,6 @@ export default {
 
 <style scoped>
 p {
-  margin-left:7px;
+  margin-left: 7px;
 }
 </style>
