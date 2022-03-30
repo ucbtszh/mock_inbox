@@ -14,6 +14,7 @@
     "CCeml": "",
     "height": 360,
     "previewTxt": "Dear Alex, I do apologise for the delay in responding to your email below. I have been away",
+    "msgName": "Nafisa",
     "pastEmls": [
       {
         "date": "Tue 05/10/2021",
@@ -48,6 +49,7 @@
     "CCeml": "",
     "height": 1008,
     "previewTxt": "Dear Alex, I hope all is well with you? We’re hosting a hackathon as part of one",
+    "msgName": "Joy Hoffman",
     "pastEmls": [
       {
         "date": "Tue 21/11/2020",
@@ -74,6 +76,7 @@
     "CCeml": "",
     "height": 144,
     "previewTxt": "Dear Alex, Via this e-mail I would like to ask if you could allow me to audit course ",
+    "msgName": "Jacob",
     "pastEmls": []
   },
   {
@@ -91,6 +94,7 @@
     "CCeml": "",
     "height": 180,
     "previewTxt": "I need you for something real quick Professor Rose Blackfield",
+    "msgName": "Rose Blackfield",
     "pastEmls": []
   },
   {
@@ -107,7 +111,8 @@
     "bodyURL": "/l1.html",
     "CCeml": "",
     "height": 378,
-    "previewTxt": "Dear Prof. arter, Via this e-mail I would like to ask if you would have some time in the",
+    "previewTxt": "Dear Prof. Carter, Via this e-mail I would like to ask if you would have some time in the",
+    "msgName": "Sarah McAllen",
     "pastEmls": []
   },
   {
@@ -125,6 +130,7 @@
     "CCeml": "",
     "height": 468,
     "previewTxt": "Dear friends Please advertise this postdoc job ad to anyone who might be interested:",
+    "msgName": "Sofia Iaquinta",
     "pastEmls": [
       {
         "date": "Wed 07/04/2021",
@@ -151,6 +157,7 @@
     "CCeml": "",
     "height": 108,
     "previewTxt": "Hi Alex, I was wondering if you had a chance to put together that slide for us. I",
+    "msgName": "Savita",
     "pastEmls": [
       {
         "date": "Fri 01/10/2021",
@@ -158,9 +165,27 @@
       },
       {
         "date": "Mon 17/09/2021",
-        "subject": "Invitation to IBM Industrial Informatics event"
+        "subject": "IBM Industrial Informatics event"
       }
     ]
+  },
+  {
+    "id": 6,
+    "fromEml": "zoom@anneon.formidable.it",
+    "fromName": "anneon.com ZoomCall",
+    "subject": "ZOOM Conference Call - October 04, 2021 @ 8:30 - 9:15am",
+    "date": "Fri 08/10/2021",
+    "time": "07:54",
+    "junkScore": 0.89,
+    "toEml": "a.carter@uol.ac.uk",
+    "gtLabel": "p",
+    "folder": "inbox",
+    "bodyURL": "/p6.html",
+    "CCeml": "",
+    "height": 474,
+    "previewTxt": "Hi Alex, You missed a scheduled Zoom conference meeting from 020-2085-5***.",
+    "msgName": "",
+    "pastEmls": []
   },
   {
     "id": 18,
@@ -177,6 +202,7 @@
     "CCeml": "",
     "height": 378,
     "previewTxt": "Dear all, This Friday at 9:30am in the seminar room, Gary Wong from McGill University will",
+    "msgName": "Don Lee",
     "pastEmls": [
       {
         "date": "Wed 25/08/2021",
@@ -187,7 +213,7 @@
         "subject": "cake in the kitchen!"
       }
     ]
-  },
+  }, 
   {
     "id": 28,
     "fromEml": "egrigsby@rub.edu",
@@ -203,6 +229,7 @@
     "CCeml": "",
     "height": 216,
     "previewTxt": "Hi Alex, Having set up a new lab at RUB, I can offer some input/expertise on lab design ",
+    "msgName": "Emmanuel",
     "pastEmls": [
       {
         "date": "Tue 01/09/2021",
@@ -229,6 +256,7 @@
     "CCeml": "",
     "height": 1134,
     "previewTxt": "Dear colleagues, Many thanks for the warm welcome that I have had from colleagues over the last",
+    "msgName": "John Smith",
     "pastEmls": []
   }
 ]

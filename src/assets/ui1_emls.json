@@ -13,7 +13,8 @@
       "bodyURL": "/l19.html",
       "CCeml": "",
       "height": 286,
-      "previewTxt": "Dear Prof. Carter, Via this e-mail I would like to ask if you would have some time"
+      "previewTxt": "Dear Prof. Carter, Via this e-mail I would like to ask if you would have some time",
+      "pastEmls": []
     },
     {
       "id": 34,
@@ -29,7 +30,8 @@
       "bodyURL": "/l26.html",
       "CCeml": "",
       "height": 484,
-      "previewTxt": "Sorry for multiple posting, reminder of this presentation tomorrow in case there is interest."
+      "previewTxt": "Sorry for multiple posting, reminder of this presentation tomorrow in case there is interest.",
+      "pastEmls": []
     },
     {
       "id": 11,
@@ -45,7 +47,8 @@
       "bodyURL": "/l3.html",
       "CCeml": "",
       "height": 412,
-      "previewTxt": "With our MSc Informatics module starting next week, we are still in desperate need of volunteers to help run journal clubs."
+      "previewTxt": "With our MSc Informatics module starting next week, we are still in desperate need of volunteers to help run journal clubs.",
+      "pastEmls": []
     },
     {
       "id": 38,
@@ -61,7 +64,8 @@
       "bodyURL": "/l30.html",
       "CCeml": "",
       "height": 198,
-      "previewTxt": "Dear all, I am looking for a TA for Bioinformatics II (COMP0055) in Term 2, for approximately"
+      "previewTxt": "Dear all, I am looking for a TA for Bioinformatics II (COMP0055) in Term 2, for approximately",
+      "pastEmls": []
     },
     {
       "id": 46,
@@ -77,7 +81,8 @@
       "bodyURL": "/l38.html",
       "CCeml": "a.carter@uol.ac.uk, h.arora@uol.ac.uk, b.cavazos@uol.ac.uk",
       "height": 612,
-      "previewTxt": "Dear colleagues Although you’re likely to be already aware of this event, we wanted to send"
+      "previewTxt": "Dear colleagues Although you’re likely to be already aware of this event, we wanted to send",
+      "pastEmls": []
     },
     {
       "id": 5,
@@ -93,7 +98,8 @@
       "bodyURL": "/p5.html",
       "CCeml": "",
       "height": 373,
-      "previewTxt": "Hi I'm planning to surprise some of the staff with Gifts, Your"
+      "previewTxt": "Hi I'm planning to surprise some of the staff with Gifts, Your",
+      "pastEmls": []
     },
     {
       "id": 47,
@@ -109,7 +115,8 @@
       "bodyURL": "/l39.html",
       "CCeml": "",
       "height": 684,
-      "previewTxt": "Dear Prof Carter, We are delighted to have you as the keynote speaker for the"
+      "previewTxt": "Dear Prof Carter, We are delighted to have you as the keynote speaker for the",
+      "pastEmls": []
     },
     {
       "id": 37,
@@ -125,23 +132,8 @@
       "bodyURL": "/l29.html",
       "CCeml": "",
       "height": 622,
-      "previewTxt": "Hello, Tomorrow's seminar will be held by Dr. Michael Veale on The use and (potential) abuse"
-    },
-    {
-      "id": 6,
-      "fromEml": "zoom@anneon.formidable.it",
-      "fromName": "anneon.com ZoomCall",
-      "subject": "ZOOM Conference Call - October 04, 2021 @ 8:30 - 9:15am",
-      "date": "Mon 11/10/2021",
-      "time": "15:54",
-      "junkScore": 0.89,
-      "toEml": "a.carter@uol.ac.uk",
-      "gtLabel": "p",
-      "folder": "inbox",
-      "bodyURL": "/p6.html",
-      "CCeml": "",
-      "height": 474,
-      "previewTxt": "Hi Alex, You missed a scheduled Zoom conference meeting from 020-2085-5***."
+      "previewTxt": "Hello, Tomorrow's seminar will be held by Dr. Michael Veale on The use and (potential) abuse",
+      "pastEmls": []
     },
     {
       "id": 35,
@@ -157,6 +149,7 @@
       "bodyURL": "/l27.html",
       "CCeml": "",
       "height": 180,
-      "previewTxt": "Hi Alex, Following the link you shared to the UOL-Dell discount vouchers, I would like to"
+      "previewTxt": "Hi Alex, Following the link you shared to the UOL-Dell discount vouchers, I would like to",
+      "pastEmls": []
     }
 ]
