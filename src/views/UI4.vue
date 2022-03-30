@@ -7,7 +7,9 @@
       @next="end = true"
       v-if="!end"
     />
-    <h2 style="text-align: center">You have completed the task.</h2>
+    <h2 style="text-align: center; margin-top: 5%">
+      You have completed the task.
+    </h2>
   </div>
 </template>
 
