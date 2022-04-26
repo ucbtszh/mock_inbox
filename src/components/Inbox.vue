@@ -127,7 +127,8 @@
         <v-card>
           <v-card-title>
             This e-mail contains {{ scanResult["URLscan"].length }} unique link
-            <div v-if="scanResult['URLscan'].length !== 1">s</div>.
+            <div v-if="scanResult['URLscan'].length !== 1">s</div>
+            .
           </v-card-title>
           <v-card-text v-if="scanResult['URLscan'].length > 0">
             <v-data-table
@@ -217,8 +218,13 @@
       </v-dialog>
     </div>
 
-    <v-dialog v-model="nudge" persistent max-width="860">
-      <template v-slot:activator="{ on, attrs }">
+    <v-dialog
+      v-model="nudge"
+      persistent
+      max-width="860"
+      v-if="condition == 'ivNudge'"
+    >
+      <!-- <template v-slot:activator="{ on, attrs }">
         <v-alert
           outlined
           type="warning"
@@ -233,7 +239,7 @@
         >
           {{ nudgeTxt }}
         </v-alert>
-      </template>
+      </template> -->
       <v-card class="iv" id="iv_nudge_pop">
         <img src="../assets/ss_nudge_ex.png" /><br /><br />
         <v-card-text>
@@ -452,7 +458,7 @@ export default {
     showReply: false,
     replyTxt: null,
     replies: {},
-    nudge: false,
+    nudge: true,
     nudgeTxt:
       "This e-mail was reported as suspicious today by one of our colleagues (click to show):",
     customToolbar: [
@@ -541,7 +547,7 @@ export default {
 
     setTimeout(() => {
       this.sendLabels();
-    }, 420000); // automatically go to the next UI after 7 min = 420000ms
+    }, 7000); // automatically go to the next UI after 7 min = 420000ms
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);
