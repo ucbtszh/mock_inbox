@@ -137,7 +137,7 @@ export default {
       );
     },
     setCondOrder(value) {
-      value === 1
+      value === "1"
         ? (Vue.prototype.$order = ["control", "ivBtn", "ivNudge", "ivScore"])
         : (Vue.prototype.$order = ["control", "ivBtn", "ivScore", "ivNudge"]);
       // ? (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"])
