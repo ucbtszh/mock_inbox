@@ -84,7 +84,7 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <v-btn depressed :disabled="!emlViewSrc" @click="sendScanMsg()">
+      <v-btn depressed :disabled="!emlViewSrc" v-if="condition == 'ivBtn'" @click="sendScanMsg()">
         <v-icon>mdi-check</v-icon>&nbsp; Check for malice
       </v-btn>
       <v-spacer></v-spacer>
