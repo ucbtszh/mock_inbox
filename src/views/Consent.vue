@@ -31,17 +31,14 @@
         this, any data I provided will be deleted;
       </li>
       <li>
-        Financial compensation for my participation in this study will only
-        happen upon full completion of the provided task;
+        Compensation for my participation in this study in the form of Amazon
+        vouchers will only happen upon full completion of the provided task;
       </li>
       <li>
         My participation in this study contributes to scientific development and
         is in no way benefiting commercial purposes;
       </li>
-      <li>
-        If I enable tracking through Google Analytics, my responses may be
-        analysed using information from third party cookies;
-      </li>
+      <li>The audio of today's session will be recorded;</li>
       <li>All my responses will be processed anonymously;</li>
       <li>
         The anonymous responses may be shared with other researchers and appear
