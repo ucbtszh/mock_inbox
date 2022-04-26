@@ -84,143 +84,108 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <v-menu top :close-on-content-click="closeOnContentClick">
-        <template v-slot:activator="{ on, attrs }" v-if="condition == 'ivBtn'">
-          <v-btn
-            depressed
-            :disabled="!emlViewSrc"
-            v-bind="attrs"
-            v-on="on"
-            @click="sendScanMsg()"
-          >
-            <v-icon>mdi-check</v-icon>&nbsp; Check for malice
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item class="scanResult">
-            <v-list-item-title @click="showURLScanResult = true"
-              ><v-icon>mdi-shield-link-variant-outline</v-icon>&nbsp; Scan URLs
-              in e-mail</v-list-item-title
-            >
-          </v-list-item>
-          <v-list-item class="scanResult">
-            <v-list-item-title @click="showNameScanResult = true"
-              ><v-icon>mdi-magnify-scan</v-icon>&nbsp; Scan sender
-              details</v-list-item-title
-            >
-          </v-list-item>
-          <v-list-item class="scanResult">
-            <v-list-item-title @click="showPrevEmlsResult = true"
-              ><v-icon>mdi-format-list-text</v-icon>&nbsp; Past e-mails from
-              this sender</v-list-item-title
-            >
-          </v-list-item>
-        </v-list>
-      </v-menu>
-
+      <v-btn depressed :disabled="!emlViewSrc" @click="sendScanMsg()">
+        <v-icon>mdi-check</v-icon>&nbsp; Check for malice
+      </v-btn>
       <v-spacer></v-spacer>
-      <!-- <v-btn depressed color="secondary" @click="sendLabels()">DONE</v-btn> -->
     </v-toolbar>
 
     <div v-for="(eml, index) in emls" :key="index">
       <v-dialog
         persistent
-        v-model="showURLScanResult"
+        v-model="showScanResult"
         hide-overlay
-        width="750"
+        width="960"
         v-if="index == emlViewIndex"
       >
         <v-card>
-          <v-card-title>
-            This e-mail contains {{ scanResult["URLscan"].length }} unique link
-            <div v-if="scanResult['URLscan'].length !== 1">s</div>
-            .
-          </v-card-title>
-          <v-card-text v-if="scanResult['URLscan'].length > 0">
-            <v-data-table
-              hide-default-footer
-              :headers="headers"
-              :items="scanResult['URLscan']"
-            >
-            </v-data-table>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn text @click="showURLScanResult = false">
-              <b>Close</b>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+          <v-container>
+            <v-row>
+              If you are in doubt whether to trust this e-mail, check these
+              indicators:
+            </v-row>
+            <v-row>
+              <v-col>
+                <h3>URLs</h3>
+                This e-mail contains
+                <b>{{ scanResult["URLscan"].length }}</b> link(s).<br />
+                <div v-if="scanResult['URLscan'].length > 0">
+                  )
+                  <v-data-table
+                    hide-default-footer
+                    :headers="headers"
+                    :items="scanResult['URLscan']"
+                  >
+                  </v-data-table>
+                </div>
+              </v-col>
+              <v-col>
+                <h3>Sender details</h3>
+                Look at what names this sender uses and what organisation they
+                are e-mailing from.<br />
+                E-mails from professional third parties should come from a
+                trustworthy e-mail domain.<br />
 
-      <v-dialog
-        persistent
-        v-model="showNameScanResult"
-        hide-overlay
-        width="750"
-        v-if="index == emlViewIndex"
-      >
-        <v-card>
-          <v-card-title
-            >Information found about this e-mail sender:</v-card-title
-          >
-          <v-card-text>
-            <b>"From" name display:</b>
-            {{ eml.fromName }}<br /><br />
+                Do you recognise the sender's e-mail domain:
+                <b>{{
+                  eml.fromEml.substring(eml.fromEml.lastIndexOf("@") + 1)
+                }}</b
+                ><br /><br />
 
-            <b>Name found in e-mail message signature:</b>
-            {{ eml.msgName }} <br /><br />
+                Do the displayed sender name and name in the e-mail signature
+                match?<br />
 
-            <b>Sender e-mail address name:</b>
-            {{ eml.fromEml.substring(0, eml.fromEml.lastIndexOf("@"))
-            }}<br /><br />
+                Displayed sender name:
+                <b>{{ eml.fromName }}</b
+                ><br /><br />
 
-            <b>Sender e-mail address domain:</b>
-            {{ eml.fromEml.substring(eml.fromEml.lastIndexOf("@") + 1)
-            }}<br /><br />
+                Name found in e-mail message signature:
+                <b>{{ eml.msgName }}</b
+                ><br /><br />
 
-            <a
-              :href="'https://www.google.com/search?q=' + eml.fromEml"
-              target="_blank"
-              ><b>Search for {{ eml.fromEml }} on Google (click).</b></a
-            ><br /><br />
-          </v-card-text>
-          <v-card-actions>
-            <v-btn text @click="showNameScanResult = false">
-              <b>Close</b>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+                Sender e-mail address name:
+                <b>{{
+                  eml.fromEml.substring(0, eml.fromEml.lastIndexOf("@"))
+                }}</b
+                ><br /><br />
 
-      <v-dialog
-        persistent
-        v-model="showPrevEmlsResult"
-        hide-overlay
-        width="750"
-        v-if="index == emlViewIndex"
-      >
-        <v-card>
-          <v-card-title>
-            Past e-mails you received from
-            {{ eml.fromEml }}:
-          </v-card-title>
-          <v-card-text>
-            <div v-if="eml.pastEmls.length == 0">
-              You have not received any e-mails from this e-mail address before.
-            </div>
-            <v-data-table
-              hide-default-footer
-              :headers="pastEmlHeaders"
-              :items="eml.pastEmls"
-            >
-            </v-data-table>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn text @click="showPrevEmlsResult = false">
-              <b>Close</b>
-            </v-btn>
-          </v-card-actions>
+                <a
+                  :href="'https://www.google.com/search?q=' + eml.fromEml"
+                  target="_blank"
+                  ><b>Search for {{ eml.fromEml }} on Google (click).</b></a
+                >
+              </v-col>
+              <v-col>
+                <h3>Past correspondence</h3>
+                <div v-if="eml.pastEmls.length == 0">
+                  You have <b>not</b> received any e-mails from
+                  {{ eml.fromEml }}
+                  before. <br /><br />
+                  <i>Were you expecting to communicate with this sender?</i
+                  ><br />
+                  If not, check the other scan results here to see if there is
+                  anything suspicious.
+                </div>
+                <div v-if="eml.pastEmls.length > 0">
+                  You have received {{ eml.pastEmls.length }} before from
+                  {{ eml.fromEml }}:<br />
+                  <v-data-table
+                    hide-default-footer
+                    :headers="pastEmlHeaders"
+                    :items="eml.pastEmls"
+                  >
+                  </v-data-table>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-card-actions>
+                <v-btn text @click="showScanResult = false" color="primary">
+                  <b>Close</b>
+                </v-btn>
+              </v-card-actions>
+            </v-row>
+          </v-container>
         </v-card>
       </v-dialog>
     </div>
@@ -231,23 +196,11 @@
       max-width="860"
       v-if="condition == 'ivNudge'"
     >
-      <!-- <template v-slot:activator="{ on, attrs }">
-        <v-alert
-          outlined
-          type="warning"
-          dense
-          border="left"
-          dismissible
-          v-if="condition == 'ivNudge'"
-          v-bind="attrs"
-          v-on="on"
-          class="iv"
-          id="iv_nudge"
-        >
-          {{ nudgeTxt }}
-        </v-alert>
-      </template> -->
       <v-card class="iv" id="iv_nudge_pop">
+        <v-card-title
+          >This e-mail was reported as suspicious today by one of our
+          colleagues:</v-card-title
+        >
         <img src="../assets/ss_nudge_ex.png" /><br /><br />
         <v-card-text>
           <b>Why it is suspicious:</b>
@@ -515,12 +468,10 @@ export default {
     snackbar: false,
     snackbarTxt: "E-mail",
     closeOnContentClick: true,
-    showURLScanResult: false,
-    showNameScanResult: false,
-    showPrevEmlsResult: false,
+    showScanResult: false,
     scanResult: { URLscan: 0, nameScan: 0 },
     headers: [
-      { text: "Displayed link text", value: "urlDisplayTxt" },
+      { text: "Link text", value: "urlDisplayTxt" },
       { text: "Actual URL", value: "urlRaw" },
       { text: "Actual URL domain", value: "urlDomain" },
     ],
@@ -588,7 +539,7 @@ export default {
 
     setTimeout(() => {
       this.sendLabels();
-    }, 7000); // automatically go to the next UI after 7 min = 420000ms
+    }, 42000); // automatically go to the next UI after 7 min = 420000ms
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);
