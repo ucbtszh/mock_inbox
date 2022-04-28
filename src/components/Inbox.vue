@@ -77,7 +77,12 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <v-btn depressed :disabled="!emlViewSrc" v-if="condition == 'ivBtn'" @click="sendScanMsg()">
+      <v-btn
+        depressed
+        :disabled="!emlViewSrc"
+        v-if="condition == 'ivBtn'"
+        @click="sendScanMsg()"
+      >
         <v-icon>mdi-check</v-icon>&nbsp; Check for malice
       </v-btn>
       <v-spacer></v-spacer>
@@ -103,7 +108,6 @@
                 This e-mail contains
                 <b>{{ scanResult["URLscan"].length }}</b> link(s).<br />
                 <div v-if="scanResult['URLscan'].length > 0">
-                  )
                   <v-data-table
                     hide-default-footer
                     :headers="headers"
@@ -115,38 +119,43 @@
               <v-col>
                 <h3>Sender details</h3>
                 Look at what names this sender uses and what organisation they
-                are e-mailing from.<br />
-                E-mails from professional third parties should come from a
-                trustworthy e-mail domain.<br />
+                are e-mailing from. <br/><br/>
+                
+                E-mails from professional third parties
+                should come from a trustworthy e-mail domain.<br /><br />
 
-                Do you recognise the sender's e-mail domain:
-                <b>{{
-                  eml.fromEml.substring(eml.fromEml.lastIndexOf("@") + 1)
-                }}</b
-                ><br /><br />
+                <ul>
+                  <li>
+                    Do you recognise the sender's e-mail domain?<br />
+                    <b>{{
+                      eml.fromEml.substring(eml.fromEml.lastIndexOf("@") + 1)
+                    }}</b>
+                  </li>
+                  <li>
+                    Do the displayed sender name and name in the e-mail
+                    signature match?<br />
 
-                Do the displayed sender name and name in the e-mail signature
-                match?<br />
-
-                Displayed sender name:
-                <b>{{ eml.fromName }}</b
-                ><br /><br />
-
-                Name found in e-mail message signature:
-                <b>{{ eml.msgName }}</b
-                ><br /><br />
-
-                Sender e-mail address name:
-                <b>{{
-                  eml.fromEml.substring(0, eml.fromEml.lastIndexOf("@"))
-                }}</b
-                ><br /><br />
-
-                <a
-                  :href="'https://www.google.com/search?q=' + eml.fromEml"
-                  target="_blank"
-                  ><b>Search for {{ eml.fromEml }} on Google (click).</b></a
-                >
+                    Displayed sender name:
+                    <b>{{ eml.fromName }}</b
+                    ><br />
+                    Name found in signature:
+                    <b>{{ eml.msgName }}</b>
+                  </li>
+                  <li>
+                    Sender e-mail address name:
+                    <b>{{
+                      eml.fromEml.substring(0, eml.fromEml.lastIndexOf("@"))
+                    }}</b>
+                  </li>
+                  <li>
+                    If you do not know this sender, try to
+                    <a
+                      :href="'https://www.google.com/search?q=' + eml.fromEml"
+                      target="_blank"
+                      ><b>search for {{ eml.fromEml }} on Google (click).</b></a
+                    >
+                  </li>
+                </ul>
               </v-col>
               <v-col>
                 <h3>Past correspondence</h3>
@@ -154,14 +163,13 @@
                   You have <b>not</b> received any e-mails from
                   {{ eml.fromEml }}
                   before. <br /><br />
-                  <i>Were you expecting to communicate with this sender?</i
-                  ><br />
+                  <b>Did you expect anything from this sender?</b><br />
                   If not, check the other scan results here to see if there is
                   anything suspicious.
                 </div>
                 <div v-if="eml.pastEmls.length > 0">
-                  You have received {{ eml.pastEmls.length }} before from
-                  {{ eml.fromEml }}:<br />
+                  You have received {{ eml.pastEmls.length }} e-mails before
+                  from {{ eml.fromEml }}:<br />
                   <v-data-table
                     hide-default-footer
                     :headers="pastEmlHeaders"
@@ -332,7 +340,7 @@
                   color="primary"
                   @click="
                     labelEml('re');
-                    sendReply();
+                    sendReply(eml.bodyURL);
                     snackbarTxt = 'Reply sent';
                     snackbar = true;
                   "
@@ -437,7 +445,9 @@ export default {
   }),
   methods: {
     displayEml(src) {
+      console.log("src", src)
       this.emlViewSrc = src;
+      console.log("emlviewsrc", this.emlViewSrc)
       try {
         document.getElementById("eml_body_" + this.emlViewIndex).src = src;
       } catch (TypeError) {
@@ -466,11 +476,10 @@ export default {
         this.$emit("next");
       }
     },
-    sendReply() {
+    sendReply(src) {
       // SEND REPLY MESSAGE TO DB
-      this.replies[this.emlViewSrc] = this.replyTxt;
-      // console.log(this.replies);
-      this.writeResponseData(this.$user, "replyMsg", this.replies);
+      this.replies[src] = this.replyTxt;
+      this.writeResponseData(this.$user, "replies", this.replies);
       this.showReply = false;
       this.replyTxt = null;
     },
@@ -499,7 +508,7 @@ export default {
 
     setTimeout(() => {
       this.sendLabels();
-    }, 42000); // automatically go to the next UI after 7 min = 420000ms
+    }, 420000); // automatically go to the next UI after 7 min = 420000ms
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);
