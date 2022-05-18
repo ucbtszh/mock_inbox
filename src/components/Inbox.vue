@@ -83,7 +83,7 @@
         v-if="condition == 'ivBtn'"
         @click="sendScanMsg()"
       >
-        <v-icon>mdi-check</v-icon>&nbsp; Check for malice
+        <v-icon>mdi-check</v-icon>&nbsp; Check past correspondence
       </v-btn>
       <v-spacer></v-spacer>
     </v-toolbar>
@@ -93,17 +93,17 @@
         persistent
         v-model="showScanResult"
         hide-overlay
-        width="960"
+        width="600"
         v-if="index == emlViewIndex"
       >
         <v-card>
           <v-container>
-            <v-row>
+            <!-- <v-row>
               If you are in doubt whether to trust this e-mail, check these
               indicators:
-            </v-row>
+            </v-row> -->
             <v-row>
-              <v-col>
+              <!-- <v-col>
                 <h3>URLs</h3>
                 This e-mail contains
                 <b>{{ scanResult["URLscan"].length }}</b> link(s).<br />
@@ -156,7 +156,7 @@
                     >
                   </li>
                 </ul>
-              </v-col>
+              </v-col> -->
               <v-col>
                 <h3>Past correspondence</h3>
                 <div v-if="eml.pastEmls.length == 0">
@@ -164,8 +164,12 @@
                   {{ eml.fromEml }}
                   before. <br /><br />
                   <b>Did you expect anything from this sender?</b><br />
-                  If not, check the other scan results here to see if there is
-                  anything suspicious.
+                  If not, do you recognise the sender's e-mail domain?<br/><br/>
+                   <a
+                      :href="'https://www.google.com/search?q=' + eml.fromEml"
+                      target="_blank"
+                      >Search for {{ eml.fromEml }} on Google (click).</a
+                    >
                 </div>
                 <div v-if="eml.pastEmls.length > 0">
                   You have received {{ eml.pastEmls.length }} e-mails before
@@ -364,9 +368,9 @@
               >
                 <b>Are you sure you can trust this e-mail?</b><br />
                 Junk filters rate this e-mail as <b>{{ eml.junkScore }}</b> on a
-                scale of 0 (trustworthy) to 1 (highly suspicious).<br />
-                Please double check the sender's e-mail address and any URLs in
-                the e-mail before communicating further with them.
+                scale of 0 (trustworthy) to 1 (highly suspicious).<br /><br />
+                <b>Double check the sender's e-mail address and any URLs in
+                the e-mail before communicating further with them.</b>
               </v-alert>
 
               <div class="initial" :id="'eml_head_initial_' + index">
@@ -445,9 +449,7 @@ export default {
   }),
   methods: {
     displayEml(src) {
-      console.log("src", src)
       this.emlViewSrc = src;
-      console.log("emlviewsrc", this.emlViewSrc)
       try {
         document.getElementById("eml_body_" + this.emlViewIndex).src = src;
       } catch (TypeError) {
@@ -479,7 +481,7 @@ export default {
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
       this.replies[src] = this.replyTxt;
-      this.writeResponseData(this.$user, "replies", this.replies);
+      this.writeResponseData(this.$user, "replies"+this.UI, this.replies);
       this.showReply = false;
       this.replyTxt = null;
     },
