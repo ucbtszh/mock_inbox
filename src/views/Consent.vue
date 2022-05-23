@@ -123,7 +123,7 @@ export default {
     setCondOrder(value) {
       value === "1"
         ? (Vue.prototype.$order = ["control", "ivBtn", "ivNudge", "ivScore"])
-        : (Vue.prototype.$order = ["control", "ivBtn", "ivScore", "ivNudge"]);
+        : (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"]);
       // ? (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"])
       // : value === 3
       // ? (Vue.prototype.$order = ["control", "ivNudge", "ivBtn", "ivScore"])
