@@ -77,14 +77,6 @@
         "
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
-      <v-btn
-        depressed
-        :disabled="!emlViewSrc"
-        v-if="condition == 'ivBtn'"
-        @click="sendScanMsg()"
-      >
-        <v-icon>mdi-check</v-icon>&nbsp; Check past correspondence
-      </v-btn>
       <v-spacer></v-spacer>
     </v-toolbar>
 
@@ -98,65 +90,7 @@
       >
         <v-card>
           <v-container>
-            <!-- <v-row>
-              If you are in doubt whether to trust this e-mail, check these
-              indicators:
-            </v-row> -->
             <v-row>
-              <!-- <v-col>
-                <h3>URLs</h3>
-                This e-mail contains
-                <b>{{ scanResult["URLscan"].length }}</b> link(s).<br />
-                <div v-if="scanResult['URLscan'].length > 0">
-                  <v-data-table
-                    hide-default-footer
-                    :headers="headers"
-                    :items="scanResult['URLscan']"
-                  >
-                  </v-data-table>
-                </div>
-              </v-col>
-              <v-col>
-                <h3>Sender details</h3>
-                Look at what names this sender uses and what organisation they
-                are e-mailing from. <br/><br/>
-                
-                E-mails from professional third parties
-                should come from a trustworthy e-mail domain.<br /><br />
-
-                <ul>
-                  <li>
-                    Do you recognise the sender's e-mail domain?<br />
-                    <b>{{
-                      eml.fromEml.substring(eml.fromEml.lastIndexOf("@") + 1)
-                    }}</b>
-                  </li>
-                  <li>
-                    Do the displayed sender name and name in the e-mail
-                    signature match?<br />
-
-                    Displayed sender name:
-                    <b>{{ eml.fromName }}</b
-                    ><br />
-                    Name found in signature:
-                    <b>{{ eml.msgName }}</b>
-                  </li>
-                  <li>
-                    Sender e-mail address name:
-                    <b>{{
-                      eml.fromEml.substring(0, eml.fromEml.lastIndexOf("@"))
-                    }}</b>
-                  </li>
-                  <li>
-                    If you do not know this sender, try to
-                    <a
-                      :href="'https://www.google.com/search?q=' + eml.fromEml"
-                      target="_blank"
-                      ><b>search for {{ eml.fromEml }} on Google (click).</b></a
-                    >
-                  </li>
-                </ul>
-              </v-col> -->
               <v-col>
                 <h3>Past correspondence</h3>
                 <div v-if="eml.pastEmls.length == 0">
@@ -164,12 +98,12 @@
                   {{ eml.fromEml }}
                   before. <br /><br />
                   <b>Did you expect anything from this sender?</b><br />
-                  If not, do you recognise the sender's e-mail domain?<br/><br/>
-                   <a
-                      :href="'https://www.google.com/search?q=' + eml.fromEml"
-                      target="_blank"
-                      >Search for {{ eml.fromEml }} on Google (click).</a
-                    >
+                  If not, do you recognise the sender's e-mail domain?<br /><br />
+                  <a
+                    :href="'https://www.google.com/search?q=' + eml.fromEml"
+                    target="_blank"
+                    >Search for {{ eml.fromEml }} on Google (click).</a
+                  >
                 </div>
                 <div v-if="eml.pastEmls.length > 0">
                   You have received {{ eml.pastEmls.length }} e-mails before
@@ -195,50 +129,21 @@
       </v-dialog>
     </div>
 
-    <v-dialog
-      v-model="nudge"
-      persistent
-      max-width="860"
-      v-if="condition == 'ivNudge'"
-    >
-      <v-card class="iv" id="iv_nudge_pop">
-        <v-card-title
-          >This e-mail was reported as suspicious today by one of our
-          colleagues:</v-card-title
-        >
-        <img src="../assets/ss_nudge_ex.png" /><br /><br />
-        <v-card-text>
-          <b>Why it is suspicious:</b>
-          <ul>
-            <li>
-              The e-mail claims to be from Zoom, but the e-mail domain is
-              'formidable.it'.
-            </li>
-            <li>
-              The link displayed in the e-mail is not the same as the actual
-              destination when you hover over the link.
-            </li>
-            <li>
-              The actual link is from a highly suspicious domain, 'ngrok.io'.
-            </li>
-          </ul>
-          <br />
-          <u>Do not interact with similar e-mails.</u>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="nudge = false">
-            <b>Close</b>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
     <v-main>
       <v-row>
         <v-col cols="4" style="min-width: 525px">
           <v-card style="height: 100vh; overflow: auto">
             <v-card-title>Inbox</v-card-title>
+
+            <div v-if="condition == 'ivNudge'">
+              <img
+                v-if="loadNudge"
+                src="../assets/ss_nudge_list.png"
+                @click="nudge = true"
+                style="cursor: pointer; width: 490px"
+                id="nudgeEml"
+              />
+            </div>
 
             <v-list>
               <v-list-item-group
@@ -324,6 +229,16 @@
         </v-col>
 
         <v-col style="height: 100vh; overflow: auto">
+          <img src="../assets/ss_nudge_ex.png" v-if="nudge" /><br />
+          <v-btn
+            v-if="nudge"
+            @click="
+              nudge = false;
+              loadNudge = false;
+            "
+            >Close</v-btn
+          >
+
           <v-card
             v-for="(eml, index) in emls"
             :key="index"
@@ -369,32 +284,55 @@
                 <b>Are you sure you can trust this e-mail?</b><br />
                 Junk filters rate this e-mail as <b>{{ eml.junkScore }}</b> on a
                 scale of 0 (trustworthy) to 1 (highly suspicious).<br /><br />
-                <b>Double check the sender's e-mail address and any URLs in
-                the e-mail before communicating further with them.</b>
+                <b
+                  >Double check the sender's e-mail address and any URLs in the
+                  e-mail before communicating further with them.</b
+                >
               </v-alert>
 
-              <div class="initial" :id="'eml_head_initial_' + index">
-                {{ eml.fromName.substr(0, 1) }}
-              </div>
-              <div style="margin-left: 65px">
-                <div class="from-name" :id="'eml_head_from_name_' + index">
-                  {{ eml.fromName }}&nbsp;&lt;{{ eml.fromEml }}&gt;
-                </div>
-                <div class="time" :id="'eml_head_time_' + index">
-                  {{ eml.date }}&nbsp;{{ eml.time }}
-                </div>
-                <div class="to" :id="'eml_head_to_' + index">
-                  To:&nbsp;&nbsp;{{ eml.toEml }}<br />
-                  <p v-if="eml.CCeml.length > 0">CC: {{ eml.CCeml }}</p>
-                </div>
-              </div>
+              <div>
+                <v-row>
+                  <v-col cols="11">
+                    <div class="initial" :id="'eml_head_initial_' + index">
+                      {{ eml.fromName.substr(0, 1) }}
+                    </div>
+                    <div style="margin-left: 65px">
+                      <div
+                        class="from-name"
+                        :id="'eml_head_from_name_' + index"
+                      >
+                        {{ eml.fromName }}&nbsp;&lt;{{ eml.fromEml }}&gt;
+                      </div>
+                      <div class="time" :id="'eml_head_time_' + index">
+                        {{ eml.date }}&nbsp;{{ eml.time }}
+                      </div>
+                      <div class="to" :id="'eml_head_to_' + index">
+                        To:&nbsp;&nbsp;{{ eml.toEml }}<br />
+                        <p v-if="eml.CCeml.length > 0">CC: {{ eml.CCeml }}</p>
+                      </div>
+                    </div>
+                  </v-col>
+                  <v-col cols="1">
+                    <v-btn
+                      v-if="condition == 'ivBtn'"
+                      fab
+                      x-small
+                      color="orange"
+                      @click="sendScanMsg()"
+                    >
+                      <v-icon>mdi-format-list-bulleted-square</v-icon>
+                      <!-- &nbsp; See past correspondence -->
+                    </v-btn>
+                  </v-col>
+                </v-row>
 
-              <iframe
-                :src="eml.bodyURL"
-                :height="eml.height + 26"
-                :id="'eml_body_' + index"
-                ref="iframe"
-              />
+                <iframe
+                  :src="eml.bodyURL"
+                  :height="eml.height + 26"
+                  :id="'eml_body_' + index"
+                  ref="iframe"
+                />
+              </div>
             </div>
           </v-card>
         </v-col>
@@ -425,7 +363,7 @@ export default {
     showReply: false,
     replyTxt: null,
     replies: {},
-    nudge: true,
+    nudge: false,
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
@@ -435,6 +373,7 @@ export default {
     snackbar: false,
     snackbarTxt: "E-mail",
     closeOnContentClick: true,
+    loadNudge: true,
     showScanResult: false,
     scanResult: { URLscan: 0, nameScan: 0 },
     headers: [
@@ -481,7 +420,7 @@ export default {
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
       this.replies[src] = this.replyTxt;
-      this.writeResponseData(this.$user, "replies"+this.UI, this.replies);
+      this.writeResponseData(this.$user, "replies" + this.UI, this.replies);
       this.showReply = false;
       this.replyTxt = null;
     },
@@ -580,9 +519,5 @@ iframe {
   display: block;
   margin-left: 58px;
   padding: 0;
-}
-
-.scanResult {
-  cursor: pointer;
 }
 </style>
