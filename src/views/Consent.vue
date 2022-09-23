@@ -1,7 +1,7 @@
 <template>
   <div id="welcome">
     <v-alert v-if="usesMouse()">
-      It seems that you are not using a mouse to interact with your computer.
+      It seems that you are not using a mouse to interact with your device.
       <br />
       It is important for this study that you use a mouse. If you cannot do so,
       please return to Prolific. If you can, please use your mouse to continue.
@@ -10,8 +10,9 @@
     <b>Welcome!</b><br /><br />
     <p>
       Thank you for your interest in this research.<br />
-      We are testing new designs for the Outlook e-mail client. You will be
-      asked to process e-mails in a simulated Outlook inbox. <br />
+      We are interested in how people process e-mails. You will be asked to
+      roleplay a chief executive at a fictive company and process their e-mails
+      in a simulated inbox. <br />
       This study is being undertaken by researchers from University College
       London (UCL).<br />
       Before proceeding, please carefully read the following.<br /><br />
@@ -55,34 +56,21 @@
         Research Ethics Committee at
         <a href="mailto:scs.ethics@ucl.ac.uk">scs.ethics@ucl.ac.uk</a>;
       </li>
-      <li>This study is expected to take no longer than 30 minutes.</li>
+      <li>This study is expected to take between 30-45 minutes.</li>
     </ul>
     <br />
     <v-form v-model="showButton">
-      <v-text-field
-        v-model="uuid"
-        :rules="[(v) => !!v || 'enter unique ID']"
-        id="uuid"
-        label="Participant ID:"
-      ></v-text-field>
-      <v-text-field
-        v-model="cond"
-        :rules="[(v) => !!v || 'enter order number']"
-        id="cond"
-        label="Order:"
-      ></v-text-field>
+      <p v-show="!$isProlificUser">
+        Your unique ID is: <b>{{ this.$user }}</b>
+      </p>
+      <br />
 
-      <!-- <p v-show="!$isProlificUser">
-      Your unique ID is: <b>{{ this.$user }}</b>
-    </p>
-    <br /> -->
-
-      <!-- <VueRecaptcha
-      ref="recaptcha"
-      sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
-      :loadRecaptchaScript="true"
-      @verify="showButton = true"
-    /><br /> -->
+      <VueRecaptcha
+        ref="recaptcha"
+        sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
+        :loadRecaptchaScript="true"
+        @verify="showButton = true"
+      /><br />
 
       <v-btn
         :disabled="!showButton"
@@ -90,18 +78,17 @@
         color="success"
         @click="
           login();
-          setCondOrder(cond);
           $router.push('instruct');
         "
         width="100px"
-        >Continue</v-btn
+        >I consent</v-btn
       >
     </v-form>
   </div>
 </template>
 
 <script>
-// import VueRecaptcha from "vue-recaptcha";
+import VueRecaptcha from "vue-recaptcha";
 import Vue from "vue";
 import { auth } from "../main";
 import { signInAnonymously } from "firebase/auth";
@@ -112,23 +99,20 @@ export default {
     title: "Consent form | Online e-mail filter study",
     titleTemplate: null,
   },
-  // components: { VueRecaptcha },
+  components: { VueRecaptcha },
   data() {
     return {
-      setID: null,
-      showButton: false,
-      uuid: null,
-      cond: null,
+      showButton: false
     };
   },
   methods: {
     login() {
       try {
         signInAnonymously(auth);
-        Vue.prototype.$user = this.uuid;
         // console.log("signed in anonymously")
       } catch {
         // console.log("error signing in anonymously");
+        alert("Something went wrong when trying to reach the task. Please refresh the page.")
       }
     },
     usesMouse() {
@@ -136,48 +120,23 @@ export default {
         ev.pointerType === "mouse" ? true : false
       );
     },
-    setCondOrder(value) {
-      value === "1"
-        ? (Vue.prototype.$order = ["control", "ivBtn", "ivNudge", "ivScore"])
-        : (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"]);
-      // ? (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"])
-      // : value === 3
-      // ? (Vue.prototype.$order = ["control", "ivNudge", "ivBtn", "ivScore"])
-      // : value === 4
-      // ? (Vue.prototype.$order = ["control", "ivBtn", "ivScore", "ivNudge"])
-      // : value === 5
-      // ? (Vue.prototype.$order = ["control", "ivScore", "ivNudge", "ivBtn"])
-      // : (Vue.prototype.$order = ["control", "ivScore", "ivBtn", "ivNudge"]);
-
-      // console.log("ORDER", this.$order);
-    },
   },
-  // beforeCreate() {
-  //   let queryString = window.location.search;
-  //   let urlParams = new URLSearchParams(queryString);
+  beforeCreate() {
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
 
-  //   if (urlParams.has("PROLIFIC_PID")) {
-  //     let uuid = urlParams.get("PROLIFIC_PID");
-  //     Vue.prototype.$user = uuid;
-  //     Vue.prototype.$isProlificUser = true;
-  //   } else {
-  //     let uuid = [...Array(32)]
-  //       .map(() => Math.random().toString(36)[2])
-  //       .join("");
-  //     this.setID = uuid;
-  //     Vue.prototype.$user = uuid;
-  //     Vue.prototype.$isProlificUser = false;
-  //   }
-
-  //   if (urlParams.has("cond")) {
-  //     let cond = urlParams.get("cond");
-  //     Vue.prototype.$condition = cond;
-  //   } else {
-  //     var conditions = ["ivBtn", "ivNudge", "ivScore", "control"];
-  //     var random = Math.floor(Math.random() * conditions.length);
-  //     Vue.prototype.$condition = conditions[random];
-  //   }
-  // },
+    if (urlParams.has("PROLIFIC_PID")) {
+      let uuid = urlParams.get("PROLIFIC_PID");
+      Vue.prototype.$user = uuid;
+      Vue.prototype.$isProlificUser = true;
+    } else {
+      let uuid = [...Array(32)]
+        .map(() => Math.random().toString(36)[2])
+        .join("");
+      Vue.prototype.$user = uuid;
+      Vue.prototype.$isProlificUser = false;
+    }
+  },
 };
 </script>
 
