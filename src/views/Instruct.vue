@@ -5,10 +5,11 @@
     "help" icon:<br /><br />
     <img src="../assets/ss_help.png" width="100%" /><br /><br />
 
-    Click "START" below to go to the inbox.
-    <br /><br /><br />
-    <v-btn elevation="3" @click="$router.push('UI1')" color="success"
-      >Start</v-btn
+    Click on the button below to confirm that you understood the task and are
+    ready to start the task.<br /><br /><br />
+
+    <v-btn elevation="3" @click="$router.push('inbox')" color="success"
+      >I understand</v-btn
     >
   </div>
 </template>
