@@ -78,72 +78,14 @@
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
       <v-spacer></v-spacer>
+      <v-btn depressed @click="sendLabels()" color="secondary"> DONE </v-btn>
     </v-toolbar>
-
-    <div v-for="(eml, index) in emls" :key="index">
-      <v-dialog
-        persistent
-        v-model="showScanResult"
-        hide-overlay
-        width="600"
-        v-if="index == emlViewIndex"
-      >
-        <v-card>
-          <v-container>
-            <v-row>
-              <v-col>
-                <h3>Past correspondence</h3>
-                <div v-if="eml.pastEmls.length == 0">
-                  You have <b>not</b> received any e-mails from
-                  {{ eml.fromEml }}
-                  before. <br /><br />
-                  <b>Did you expect anything from this sender?</b><br />
-                  If not, do you recognise the sender's e-mail domain?<br /><br />
-                  <a
-                    :href="'https://www.google.com/search?q=' + eml.fromEml"
-                    target="_blank"
-                    >Search for {{ eml.fromEml }} on Google (click).</a
-                  >
-                </div>
-                <div v-if="eml.pastEmls.length > 0">
-                  You have received {{ eml.pastEmls.length }} e-mails before
-                  from {{ eml.fromEml }}:<br />
-                  <v-data-table
-                    hide-default-footer
-                    :headers="pastEmlHeaders"
-                    :items="eml.pastEmls"
-                  >
-                  </v-data-table>
-                </div>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-card-actions>
-                <v-btn text @click="showScanResult = false" color="primary">
-                  <b>Close</b>
-                </v-btn>
-              </v-card-actions>
-            </v-row>
-          </v-container>
-        </v-card>
-      </v-dialog>
-    </div>
 
     <v-main>
       <v-row>
         <v-col cols="4" style="min-width: 525px">
           <v-card style="height: 100vh; overflow: auto">
             <v-card-title>Inbox</v-card-title>
-
-            <div v-if="condition == 'ivNudge'">
-              <img
-                v-if="loadNudge"
-                src="../assets/ss_nudge_list.png"
-                @click="nudge = true"
-                style="cursor: pointer; width: 490px"
-                id="nudgeEml"
-              />
-            </div>
 
             <v-list>
               <v-list-item-group
@@ -190,7 +132,7 @@
                               style="float: right; line-height: 1.5em"
                               :id="'eml_tn_time_' + index"
                             >
-                              {{ eml.date }}
+                              {{ eml.time }}
                             </div>
                           </v-list-item-subtitle>
 
@@ -229,16 +171,6 @@
         </v-col>
 
         <v-col style="height: 100vh; overflow: auto">
-          <img src="../assets/ss_nudge_ex.png" v-if="nudge" /><br />
-          <v-btn
-            v-if="nudge"
-            @click="
-              nudge = false;
-              loadNudge = false;
-            "
-            >Close</v-btn
-          >
-
           <v-card
             v-for="(eml, index) in emls"
             :key="index"
@@ -272,24 +204,6 @@
                   {{ eml.subject }}
                 </div></v-card-title
               >
-              <v-alert
-                outlined
-                type="warning"
-                dense
-                border="left"
-                v-if="(condition == 'ivScore') & (eml.junkScore > 0.5)"
-                class="iv"
-                :id="'iv_score_' + index"
-              >
-                <b>Are you sure you can trust this e-mail?</b><br />
-                Junk filters rate this e-mail as <b>{{ eml.junkScore }}</b> on a
-                scale of 0 (trustworthy) to 1 (highly suspicious).<br /><br />
-                <b
-                  >Double check the sender's e-mail address and any URLs in the
-                  e-mail before communicating further with them.</b
-                >
-              </v-alert>
-
               <div>
                 <v-row>
                   <v-col cols="11">
@@ -304,25 +218,13 @@
                         {{ eml.fromName }}&nbsp;&lt;{{ eml.fromEml }}&gt;
                       </div>
                       <div class="time" :id="'eml_head_time_' + index">
-                        {{ eml.date }}&nbsp;{{ eml.time }}
+                        {{ eml.date }}
                       </div>
                       <div class="to" :id="'eml_head_to_' + index">
                         To:&nbsp;&nbsp;{{ eml.toEml }}<br />
                         <p v-if="eml.CCeml.length > 0">CC: {{ eml.CCeml }}</p>
                       </div>
                     </div>
-                  </v-col>
-                  <v-col cols="1">
-                    <v-btn
-                      v-if="condition == 'ivBtn'"
-                      fab
-                      x-small
-                      color="orange"
-                      @click="sendScanMsg()"
-                    >
-                      <v-icon>mdi-format-list-bulleted-square</v-icon>
-                      <!-- &nbsp; See past correspondence -->
-                    </v-btn>
                   </v-col>
                 </v-row>
 
@@ -352,7 +254,7 @@ export default {
     VueEditor,
     InstructTxt,
   },
-  props: ["condition", "emls", "UI"],
+  props: ["emls", "UI"],
   mixins: [db, tracking],
   data: () => ({
     emlViewSrc: "",
@@ -363,7 +265,6 @@ export default {
     showReply: false,
     replyTxt: null,
     replies: {},
-    nudge: false,
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
@@ -372,19 +273,6 @@ export default {
     timeout: 2000,
     snackbar: false,
     snackbarTxt: "E-mail",
-    closeOnContentClick: true,
-    loadNudge: true,
-    showScanResult: false,
-    scanResult: { URLscan: 0, nameScan: 0 },
-    headers: [
-      { text: "Link text", value: "urlDisplayTxt" },
-      { text: "Actual URL", value: "urlRaw" },
-      { text: "Actual URL domain", value: "urlDomain" },
-    ],
-    pastEmlHeaders: [
-      { text: "Date:", value: "date" },
-      { text: "Subject:", value: "subject" },
-    ],
   }),
   methods: {
     displayEml(src) {
@@ -424,19 +312,6 @@ export default {
       this.showReply = false;
       this.replyTxt = null;
     },
-    sendScanMsg() {
-      document
-        .getElementById("eml_body_" + this.emlViewIndex)
-        .contentWindow.postMessage("scan e-mail", "/");
-      this.setScanRes = (obj) => {
-        this.scanResult = obj.data;
-      };
-      window.addEventListener("message", this.setScanRes);
-      this.showScanResult = true;
-    },
-    showSenderPrevEmls() {
-      return null;
-    },
   },
   mounted() {
     window.scrollTo(0, 0);
@@ -446,13 +321,6 @@ export default {
     window.onpopstate = function () {
       history.go(1);
     };
-
-    setTimeout(() => {
-      this.sendLabels();
-    }, 420000); // automatically go to the next UI after 7 min = 420000ms
-  },
-  beforeDestroy() {
-    window.removeEventListener("message", this.setScanRes);
   },
 };
 </script>
