@@ -272,7 +272,7 @@ export default {
     ],
     timeout: 2000,
     snackbar: false,
-    snackbarTxt: "E-mail",
+    snackbarTxt: "",
   }),
   methods: {
     displayEml(src) {
@@ -292,17 +292,18 @@ export default {
       this.emlViewSrc = null;
       this.emlViewIndex = null;
       this.showReply = false;
-      // console.log(this.labels);
     },
     sendLabels() {
       // SEND EML LABELS TO DB
-      if (this.labels.length < this.emls.length) {
+      var n_labelled = Object.keys(this.labels).length
+
+      if (n_labelled < this.emls.length) {
         alert(
           "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
-        );
-      } else {
+          );
+        } else {
         this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
-        this.$emit("next");
+        this.$router.push('surveys')
       }
     },
     sendReply(src) {

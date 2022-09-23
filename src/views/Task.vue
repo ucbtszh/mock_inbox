@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Inbox :emls="emails" :UI="'inbox_iv2'" @next="$router.push('surveys')" />
+    <Inbox :emls="emails" :UI="'inbox_iv2'"/>
   </div>
 </template>
 
