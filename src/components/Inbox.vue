@@ -34,51 +34,167 @@
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
-      <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
+      <v-btn depressed :disabled="!emlViewSrc" @click="secondBar = 're'"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
-      <v-btn
-        depressed
-        :disabled="!emlViewSrc"
-        @click="
-          labelEml('fw');
-          snackbarTxt = 'E-mail forwarded to executive assistant';
-          snackbar = true;
-        "
+      <v-btn depressed :disabled="!emlViewSrc" @click="secondBar = 'fw'"
         ><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
       >
-      <v-btn
-        depressed
-        :disabled="!emlViewSrc"
-        @click="
-          labelEml('del');
-          snackbarTxt = 'Deleted e-mail';
-          snackbar = true;
-        "
+      <v-btn depressed :disabled="!emlViewSrc" @click="secondBar = 'del'"
         ><v-icon>mdi-delete</v-icon>&nbsp;Delete</v-btn
       >
-      <v-btn
-        depressed
-        :disabled="!emlViewSrc"
-        @click="
-          labelEml('arch');
-          snackbarTxt = 'E-mail moved to archive';
-          snackbar = true;
-        "
-        ><v-icon>mdi-archive-outline</v-icon>&nbsp;Archive</v-btn
-      >
-      <v-btn
-        depressed
-        :disabled="!emlViewSrc"
-        @click="
-          labelEml('junk');
-          snackbarTxt = 'E-mail reported as junk';
-          snackbar = true;
-        "
-        ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
+      <v-btn depressed :disabled="!emlViewSrc" @click="secondBar = 'keep'"
+        ><v-icon>mdi-archive-outline</v-icon>&nbsp;Keep in inbox</v-btn
       >
       <v-spacer></v-spacer>
       <v-btn depressed @click="sendLabels()" color="secondary"> DONE </v-btn>
+    </v-toolbar>
+
+    <v-toolbar v-show="secondBar === 're'">
+      <v-btn
+        depressed
+        @click="
+          labelEml('re_request');
+          snackbarTxt = 'E-mail labelled as replied to.';
+          snackbar = true;
+        "
+        >Perform or answer request</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('re_urgent');
+          snackbarTxt = 'E-mail labelled as replied to.';
+          snackbar = true;
+        "
+        >Needs attention now</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('re_knowmore');
+          snackbarTxt = 'E-mail labelled as replied to.';
+          snackbar = true;
+        "
+        >Want to know more</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('re_other');
+          snackbarTxt = 'E-mail labelled as replied to.';
+          snackbar = true;
+        "
+        >Other:</v-btn
+      >
+    </v-toolbar>
+
+    <v-toolbar v-show="secondBar === 'fw'">
+      <v-btn
+        depressed
+        @click="
+          labelEml('fw_dissem');
+          snackbarTxt = 'E-mail labelled as forwarded.';
+          snackbar = true;
+        "
+        >Disseminate message</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('fw_outsource');
+          snackbarTxt = 'E-mail labelled as forwarded.';
+          snackbar = true;
+        "
+        >Give task to someone else</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('fw_other');
+          snackbarTxt = 'E-mail labelled as forwarded.';
+          snackbar = true;
+        "
+        >Other:
+      </v-btn>
+    </v-toolbar>
+
+    <v-toolbar v-show="secondBar === 'del'">
+      <v-btn
+        depressed
+        @click="
+          labelEml('del_irrel');
+          snackbarTxt = 'E-mail labelled as deleted.';
+          snackbar = true;
+        "
+        >Uninteresting or irrelevant</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('del_noact');
+          snackbarTxt = 'E-mail labelled as deleted.';
+          snackbar = true;
+        "
+        >No action required</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('del_spam');
+          snackbarTxt = 'E-mail labelled as deleted.';
+          snackbar = true;
+        "
+        >Spam</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('del_phish');
+          snackbarTxt = 'E-mail labelled as deleted.';
+          snackbar = true;
+        "
+        >Phishing</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          labelEml('del_other');
+          snackbarTxt = 'E-mail labelled as deleted.';
+          snackbar = true;
+        "
+        >Other:</v-btn
+      >
+    </v-toolbar>
+
+    <v-toolbar v-show="secondBar === 'keep'">
+      <v-btn
+        depressed
+        @click="
+          keepEml();
+          snackbarTxt = 'E-mail labelled as kept in inbox.';
+          snackbar = true;
+        "
+        >Deal with later</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          keepEml();
+          snackbarTxt = 'E-mail labelled as kept in inbox.';
+          snackbar = true;
+        "
+        >For future reference</v-btn
+      >
+      <v-btn
+        depressed
+        @click="
+          keepEml();
+          snackbarTxt = 'E-mail labelled as kept in inbox.';
+          snackbar = true;
+        "
+        >Other:
+      </v-btn>
     </v-toolbar>
 
     <v-main>
@@ -132,6 +248,7 @@
                               style="float: right; line-height: 1.5em"
                               :id="'eml_tn_time_' + index"
                             >
+                              {{ adjustDay(timeNow) }}
                               {{ eml.time }}
                             </div>
                           </v-list-item-subtitle>
@@ -177,28 +294,6 @@
             :id="'eml_' + index"
           >
             <div v-if="index == emlViewIndex">
-              <div v-if="showReply" :id="'reply_' + index">
-                <p style="height: 30px; padding-top: 10px; padding-left: 15px">
-                  To: {{ eml.fromEml }}
-                </p>
-                <vue-editor
-                  v-model="replyTxt"
-                  :editor-toolbar="customToolbar"
-                ></vue-editor>
-                <v-btn
-                  :disabled="replyTxt == null"
-                  type="submit"
-                  color="primary"
-                  @click="
-                    labelEml('re');
-                    sendReply(eml.bodyURL);
-                    snackbarTxt = 'Reply sent';
-                    snackbar = true;
-                  "
-                  >Send</v-btn
-                >
-              </div>
-
               <v-card-title :id="'eml_head_subj_' + index"
                 ><div class="subject">
                   {{ eml.subject }}
@@ -218,7 +313,7 @@
                         {{ eml.fromName }}&nbsp;&lt;{{ eml.fromEml }}&gt;
                       </div>
                       <div class="time" :id="'eml_head_time_' + index">
-                        {{ eml.date }}
+                        {{ adjustDate(timeNow) }}, {{ eml.time }}
                       </div>
                       <div class="to" :id="'eml_head_to_' + index">
                         To:&nbsp;&nbsp;{{ eml.toEml }}<br />
@@ -244,33 +339,24 @@
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
 import db from "../utils/firestore";
 import tracking from "../utils/track_ui";
 import InstructTxt from "./InstructTxt.vue";
 
 export default {
   components: {
-    VueEditor,
     InstructTxt,
   },
-  props: ["emls", "UI"],
+  props: ["emls", "UI", "timeNow"],
   mixins: [db, tracking],
   data: () => ({
     emlViewSrc: "",
     emlViewIndex: null,
     emlHoverIndex: null,
+    secondBar: "",
     showHelp: false,
     labels: {},
-    showReply: false,
-    replyTxt: null,
-    replies: {},
-    customToolbar: [
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ align: "" }, { align: "center" }, { align: "right" }],
-    ],
-    timeout: 2000,
+    timeout: 3000,
     snackbar: false,
     snackbarTxt: "",
   }),
@@ -291,31 +377,50 @@ export default {
         "none";
       this.emlViewSrc = null;
       this.emlViewIndex = null;
-      this.showReply = false;
+      this.secondBar = "";
+    },
+    keepEml() {
+      this.labels[this.emlViewSrc] = "keep";
+      this.emlViewSrc = null;
+      this.emlViewIndex = null;
+      this.secondBar = "";
     },
     sendLabels() {
       // SEND EML LABELS TO DB
-      var n_labelled = Object.keys(this.labels).length
+      var n_labelled = Object.keys(this.labels).length;
 
       if (n_labelled < this.emls.length) {
         alert(
           "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
-          );
-        } else {
+        );
+      } else {
         this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
-        this.$router.push('surveys')
+        this.$router.push("surveys");
       }
     },
-    sendReply(src) {
-      // SEND REPLY MESSAGE TO DB
-      this.replies[src] = this.replyTxt;
-      this.writeResponseData(this.$user, "replies" + this.UI, this.replies);
-      this.showReply = false;
-      this.replyTxt = null;
+    adjustDate(ts) {
+      let ms = ts - 86400000; // minus 1 day
+      let dateObject = new Date(ms);
+      let date =
+        dateObject.toLocaleString("en-UK", { weekday: "short" }) +
+        ", " +
+        dateObject.toLocaleString("en-UK", { day: "numeric" }) +
+        " " +
+        dateObject.toLocaleString("en-UK", { month: "short" }) +
+        " " +
+        dateObject.toLocaleString("en-UK", { year: "numeric" });
+      return date;
+    },
+    adjustDay(ts) {
+      let ms = ts - 86400000; // minus 1 day
+      let dateObject = new Date(ms);
+      return dateObject.toLocaleString("en-UK", { weekday: "short" });
     },
   },
   mounted() {
     window.scrollTo(0, 0);
+
+    console.log("time now from Task vue:", this.timeNow);
 
     // prevent participants from navigating back to the instructions page
     history.pushState(null, null, location.href);
