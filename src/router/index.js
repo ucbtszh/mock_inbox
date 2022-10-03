@@ -27,15 +27,6 @@ const routes = [
     },
   },
   {
-    path: "/usab",
-    name: "Usability",
-    component: () =>
-      import(/* webpackChunkName: "inbox" */ "../views/Usabil.vue"),
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
     path: "/surveys",
     name: "Surveys",
     component: () =>
