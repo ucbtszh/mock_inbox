@@ -11,8 +11,35 @@
           :key="index"
           :label="g.label"
           :value="g.value"
-        ></v-radio>
-      </v-radio-group>
+        ></v-radio> </v-radio-group
+      >
+
+      <v-radio-group
+        v-model="formResponse.edLev"
+        persistent-hint
+        :rules="[(v) => !!v || 'Education level is required']"
+      >
+        <!-- hint="If you are currently studying, select your current level of studies." -->
+        <div class="statement">
+          What is the highest education level that you completed?
+        </div>
+        <v-radio
+          v-for="(e, index) in edLev"
+          :key="index"
+          :label="e.label"
+          :value="e.value"
+        ></v-radio> </v-radio-group
+      ><br />
+
+      <v-text-field
+        outlined
+        v-model="formResponse.age"
+        style="width: 200px"
+        label="What is your age?"
+        :rules="[(v) => (v >= 18 && v < 100) || 'You entered an invalid age.']"
+      ></v-text-field
+      >
+
       <v-radio-group
         v-model="formResponse.occ_status"
         :rules="[(v) => !!v || 'Occupational status is required']"
@@ -26,7 +53,12 @@
         ></v-radio>
       </v-radio-group>
 
-      What industry is your primary working experience in?
+      <v-select
+        label="What industry is your current study/primary working experience in?"
+        outlined
+        :items="industry"
+      >
+      </v-select>
 
       <v-text-field
         v-model="formResponse.workExp"
@@ -35,7 +67,7 @@
         :rules="[(v) => !!v || 'Please answer this question']"
       ></v-text-field>
 
-      <v-radio-group
+      <!-- <v-radio-group
         v-model="formResponse.orgSize"
         :rules="[(v) => !!v || 'Orgnisational size is required']"
       >
@@ -48,8 +80,8 @@
           :label="o.label"
           :value="o.value"
         ></v-radio>
-      </v-radio-group>
-      <v-radio-group
+      </v-radio-group> -->
+      <!-- <v-radio-group
         v-model="formResponse.income"
         :rules="[(v) => !!v || 'Annual income is required']"
       >
@@ -60,30 +92,16 @@
           :label="i.label"
           :value="i.value"
         ></v-radio>
-      </v-radio-group>
-      <v-radio-group
-        v-model="formResponse.edLev"
-        persistent-hint
-        hint="If you are currently studying, select your current level of studies."
-        :rules="[(v) => !!v || 'Education level is required']"
-      >
-        <div class="statement">
-          What is the highest education level that you completed?
-        </div>
-        <v-radio
-          v-for="(e, index) in edLev"
-          :key="index"
-          :label="e.label"
-          :value="e.value"
-        ></v-radio> </v-radio-group
-      ><br /><br />
-      <v-text-field
+      </v-radio-group> -->
+
+      <v-textarea
         outlined
-        v-model="formResponse.age"
-        style="width: 200px"
-        label="What is your age?"
-        :rules="[(v) => (v >= 18 && v < 100) || 'You entered an invalid age.']"
-      ></v-text-field>
+        v-model="formResponse.purpose"
+        label="What do you think is the purpose of this study?"
+        :rules="[(v) => v.length > 5 || 'Please answer this question.']"
+      ></v-textarea
+      ><br /><br />
+
       <v-btn color="primary" :disabled="!isValid" @click="validate()">
         NEXT
       </v-btn>
@@ -112,6 +130,7 @@ export default {
         orgSize: "",
         income: "",
         edLev: "",
+        purpose: "",
       },
       gender: [
         {
@@ -151,28 +170,29 @@ export default {
         { label: "More than 250 employees", value: "3" },
         { label: "I currently do not work", value: "4" },
       ],
-      industry: [ // based on https://www.ilo.org/global/industries-and-sectors/lang--en/index.htm
-        { label: "Agriculture", value: "1" },
-        { label: "Basic metal production", value: "2" },
-        { label: "Chemical industries", value: "3" },
-        { label: "Commerce", value: "4" },
-        { label: "Construction", value: "5" },
-        { label: "Education", value: "6" },
-        { label: "Financial services", value: "7" },
-        { label: "Food, drink or tobacco", value: "8" },
-        { label: "Forestry", value: "9" },
-        { label: "Health services", value: "10" },
-        { label: "Hotels, tourism or catering", value: "11" },
-        { label: "Mining", value: "12" },
-        { label: "Mechanical and electrical engineering", value: "13" },
-        { label: "Media, culture", value: "14" },
-        { label: "Oil and gas production", value: "15" },
-        { label: "Postal and telecommunication services", value: "16" },
-        { label: "Public service", value: "17" },
-        { label: "Shipping", value: "18" },
-        { label: "Textiles", value: "19" },
-        { label: "Transport", value: "20" },
-        { label: "Utilities (water, gas, electricity)", value: "21" },
+      industry: [
+        // based on https://www.ilo.org/global/industries-and-sectors/lang--en/index.htm
+        "Agriculture",
+        "Basic metal production",
+        "Chemical industries",
+        "Commerce",
+        "Construction",
+        "Education",
+        "Financial services",
+        "Food, drink or tobacco",
+        "Forestry",
+        "Health services",
+        "Hotels, tourism or catering",
+        "Mining",
+        "Mechanical and electrical engineering",
+        "Media, culture",
+        "Oil and gas production",
+        "Postal and telecommunication services",
+        "Public service",
+        "Shipping",
+        "Textiles",
+        "Transport",
+        "Utilities (water, gas, electricity)",
       ],
       income: [
         {
