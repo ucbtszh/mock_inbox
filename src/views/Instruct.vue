@@ -6,7 +6,7 @@
     <img src="../assets/ss_help.png" width="100%" /><br /><br />
 
     Click on the button below to confirm that you understood the task and are
-    ready to start the task.<br /><br /><br />
+    ready to start.<br /><br /><br />
 
     <v-btn elevation="3" @click="$router.push('inbox')" color="success"
       >I understand</v-btn

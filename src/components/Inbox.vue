@@ -2,7 +2,7 @@
   <div id="inbox">
     <v-toolbar height="50" color="rgb(0,120,212)">
       <p id="outlook-sign">Outlook</p>
-      <v-spacer></v-spacer>
+      &nbsp;
 
       <v-dialog v-model="showHelp" persistent max-width="860px">
         <template v-slot:activator="{ on, attrs }">
@@ -21,7 +21,7 @@
             <InstructTxt />
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
+            &nbsp;
             <v-btn text @click="showHelp = false">
               <b>Close</b>
             </v-btn>
@@ -34,9 +34,6 @@
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
-      <!-- TODO: Tell us why you would reply to this: + add to instructions -->
-      <!-- TODO: add whitespace -->
-      <!-- TODO: add whitespace -->
       <v-btn depressed :disabled="!emlViewSrc" @click="secondBar = 're'"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
@@ -54,6 +51,7 @@
     </v-toolbar>
 
     <v-toolbar v-show="secondBar === 're'">
+      <b>Tell us why you would reply to this e-mail:</b>&nbsp;&nbsp;
       <v-btn
         depressed
         @click="
@@ -63,6 +61,7 @@
         "
         >Perform or answer request</v-btn
       >
+      &nbsp;
       <v-btn
         depressed
         @click="
@@ -72,6 +71,7 @@
         "
         >Needs attention now</v-btn
       >
+      &nbsp;
       <v-btn
         depressed
         @click="
@@ -81,6 +81,7 @@
         "
         >Want to know more</v-btn
       >
+      &nbsp;
       <v-btn
         depressed
         @click="
@@ -93,6 +94,7 @@
     </v-toolbar>
 
     <v-toolbar v-show="secondBar === 'fw'">
+      <b>Tell us why you would forward this e-mail:</b>&nbsp;&nbsp;
       <v-btn
         depressed
         @click="
@@ -102,6 +104,7 @@
         "
         >Disseminate message</v-btn
       >
+      &nbsp;
       <v-btn
         depressed
         @click="
@@ -111,6 +114,7 @@
         "
         >Give task to someone else</v-btn
       >
+      &nbsp;
       <v-btn
         depressed
         @click="
@@ -123,6 +127,7 @@
     </v-toolbar>
 
     <v-toolbar v-show="secondBar === 'del'">
+      <b>Tell us why you would delete this e-mail:</b>&nbsp;&nbsp;
       <v-btn
         depressed
         @click="
@@ -132,6 +137,7 @@
         "
         >Uninteresting or irrelevant</v-btn
       >
+      &nbsp;
       <v-btn
         depressed
         @click="
@@ -141,6 +147,7 @@
         "
         >No action required</v-btn
       >
+      &nbsp;
       <v-btn
         depressed
         @click="
@@ -159,6 +166,7 @@
         "
         >Phishing</v-btn
       >
+      &nbsp;
       <v-btn
         depressed
         @click="
@@ -170,35 +178,39 @@
       >
     </v-toolbar>
 
-    <v-toolbar v-show="secondBar === 'keep'">
-      <v-btn
-        depressed
-        @click="
-          keepEml();
-          snackbarTxt = 'E-mail labelled as kept in inbox.';
-          snackbar = true;
-        "
-        >Deal with later</v-btn
-      >
-      <v-btn
-        depressed
-        @click="
-          keepEml();
-          snackbarTxt = 'E-mail labelled as kept in inbox.';
-          snackbar = true;
-        "
-        >For future reference</v-btn
-      >
-      <v-btn
-        depressed
-        @click="
-          keepEml();
-          snackbarTxt = 'E-mail labelled as kept in inbox.';
-          snackbar = true;
-        "
-        >Other:
-      </v-btn>
-    </v-toolbar>
+    <div v-show="secondBar === 'keep'">
+      <v-toolbar>
+        <b>Tell us why you would keep this e-mail in the inbox:</b>&nbsp;&nbsp;
+        <v-btn
+          depressed
+          @click="
+            keepEml();
+            snackbarTxt = 'E-mail labelled as kept in inbox.';
+            snackbar = true;
+          "
+          >Deal with it later</v-btn
+        >&nbsp;
+        <v-btn
+          depressed
+          @click="
+            keepEml();
+            snackbarTxt = 'E-mail labelled as kept in inbox.';
+            snackbar = true;
+          "
+          >For future reference</v-btn
+        >
+        &nbsp;
+        <v-btn
+          depressed
+          @click="
+            keepEml();
+            snackbarTxt = 'E-mail labelled as kept in inbox.';
+            snackbar = true;
+          "
+          >Other
+        </v-btn>
+      </v-toolbar>
+    </div>
 
     <v-main>
       <v-row>

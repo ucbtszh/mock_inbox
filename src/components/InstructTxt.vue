@@ -46,8 +46,8 @@
         the bar displayed above the e-mails.
       </li>
       <li>
-        A secondary bar with buttons will appear. Click on the button that best
-        represents your reason to reply to, forward, delete or keep the e-mail.
+        A secondary bar with buttons will appear. Click on the button that <b>best
+        represents</b> your reason to reply to, forward, delete or keep the e-mail.
       </li>
       <li>
         If you chose to reply, forward or delete the e-mail, the e-mail will
@@ -66,6 +66,6 @@
     Process the e-mails with your role as an executive in mind.<br /><br />
 
     Note that all links in e-mails have been disabled and that this task should
-    not take more than 30-45 minutes.<br /><br />
+    not take more than 30-45 minutes.
   </div>
 </template>

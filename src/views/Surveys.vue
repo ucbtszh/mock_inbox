@@ -2,7 +2,7 @@
   <div id="surveys">
     <div v-show="showDemos">
       <Demos @done="showCode = true; showDemos = false; scrollUp()" />
-    </div>
+    </div> 
     <div v-show="showCode">
         <CompCode />
     </div>
