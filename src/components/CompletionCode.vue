@@ -14,41 +14,42 @@
         "
         >{{ copyText }}</v-btn
       >
-    <br /><br />
-    <b>Make sure to copy this unique code,</b> so you can log your participation
-    in this study in your account and obtain your compensation. <br />
+      <br /><br />
+      <b>Make sure to copy this unique code,</b> so you can log your
+      participation in this study in your account and obtain your compensation.
+      <br />
     </div>
 
     <div id="prolific-return" v-show="this.$isProlificUser">
-      Click the button below to go back to Prolific and log your participation in this study.<br /><br />
-      <v-btn color="primary" elevation="3" :href="ccURL" link>Go back to Prolific</v-btn>
+      Click the button below to go back to Prolific and log your participation
+      in this study.<br /><br />
+      <v-btn color="primary" elevation="3" :href="ccURL" link
+        >Go back to Prolific</v-btn
+      >
     </div>
   </div>
 </template>
 
 <script>
-import db from "../utils/firestore"
+import db from "../utils/firestore";
 
 export default {
   data() {
     return {
-      completionCode:
-        "EFS" +
-        this.$user.substr(0, 3) +
-        this.$condition.charAt(0),
+      completionCode: "IV22" + this.$user.substr(0, 3),
       copyText: "Copy",
-      ccURL: "https://prolific.co"
+      ccURL: "https://prolific.co",
     };
   },
   mixins: [db],
   methods: {
-    copyCode: function() {
+    copyCode: function () {
       navigator.clipboard.writeText(this.completionCode);
       let complete = {
         ts: Date.now(),
         code: this.completionCode,
-      }
-      this.writeResponseData(this.$user, 'completion_code', complete)
+      };
+      this.writeResponseData(this.$user, "completion_code", complete);
     },
   },
 };

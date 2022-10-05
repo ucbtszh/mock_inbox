@@ -2,8 +2,7 @@
   <div id="inbox">
     <v-toolbar height="50" color="rgb(0,120,212)">
       <p id="outlook-sign">Outlook</p>
-      &nbsp;
-
+      <v-spacer></v-spacer>
       <v-dialog v-model="showHelp" persistent max-width="860px">
         <template v-slot:activator="{ on, attrs }">
           <v-icon
@@ -89,7 +88,7 @@
           snackbarTxt = 'E-mail labelled as replied to.';
           snackbar = true;
         "
-        >Other:</v-btn
+        >Other</v-btn
       >
     </v-toolbar>
 
@@ -122,7 +121,7 @@
           snackbarTxt = 'E-mail labelled as forwarded.';
           snackbar = true;
         "
-        >Other:
+        >Other
       </v-btn>
     </v-toolbar>
 
@@ -174,7 +173,7 @@
           snackbarTxt = 'E-mail labelled as deleted.';
           snackbar = true;
         "
-        >Other:</v-btn
+        >Other</v-btn
       >
     </v-toolbar>
 
@@ -403,9 +402,7 @@ export default {
       var n_labelled = Object.keys(this.labels).length;
 
       if (n_labelled < this.emls.length) {
-        alert(
-          "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
-        );
+        alert("You have not processed all e-mails yet.");
       } else {
         this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
         this.$router.push("surveys");
