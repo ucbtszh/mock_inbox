@@ -34,6 +34,9 @@
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
+      <!-- TODO: Tell us why you would reply to this: + add to instructions -->
+      <!-- TODO: add whitespace -->
+      <!-- TODO: add whitespace -->
       <v-btn depressed :disabled="!emlViewSrc" @click="secondBar = 're'"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
@@ -248,7 +251,7 @@
                               style="float: right; line-height: 1.5em"
                               :id="'eml_tn_time_' + index"
                             >
-                              {{ adjustDay(timeNow) }}
+                              Wed
                               {{ eml.time }}
                             </div>
                           </v-list-item-subtitle>
@@ -313,7 +316,7 @@
                         {{ eml.fromName }}&nbsp;&lt;{{ eml.fromEml }}&gt;
                       </div>
                       <div class="time" :id="'eml_head_time_' + index">
-                        {{ adjustDate(timeNow) }}, {{ eml.time }}
+                        Wed 12 Oct, {{ eml.time }}
                       </div>
                       <div class="to" :id="'eml_head_to_' + index">
                         To:&nbsp;&nbsp;{{ eml.toEml }}<br />
@@ -347,7 +350,7 @@ export default {
   components: {
     InstructTxt,
   },
-  props: ["emls", "UI", "timeNow"],
+  props: ["emls", "UI"],
   mixins: [db, tracking],
   data: () => ({
     emlViewSrc: "",
@@ -381,8 +384,6 @@ export default {
     },
     keepEml() {
       this.labels[this.emlViewSrc] = "keep";
-      this.emlViewSrc = null;
-      this.emlViewIndex = null;
       this.secondBar = "";
     },
     sendLabels() {
@@ -398,29 +399,9 @@ export default {
         this.$router.push("surveys");
       }
     },
-    adjustDate(ts) {
-      let ms = ts - 86400000; // minus 1 day
-      let dateObject = new Date(ms);
-      let date =
-        dateObject.toLocaleString("en-UK", { weekday: "short" }) +
-        ", " +
-        dateObject.toLocaleString("en-UK", { day: "numeric" }) +
-        " " +
-        dateObject.toLocaleString("en-UK", { month: "short" }) +
-        " " +
-        dateObject.toLocaleString("en-UK", { year: "numeric" });
-      return date;
-    },
-    adjustDay(ts) {
-      let ms = ts - 86400000; // minus 1 day
-      let dateObject = new Date(ms);
-      return dateObject.toLocaleString("en-UK", { weekday: "short" });
-    },
   },
   mounted() {
     window.scrollTo(0, 0);
-
-    console.log("time now from Task vue:", this.timeNow);
 
     // prevent participants from navigating back to the instructions page
     history.pushState(null, null, location.href);
