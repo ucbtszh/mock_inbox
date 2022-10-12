@@ -55,7 +55,7 @@
         Research Ethics Committee at
         <a href="mailto:scs.ethics@ucl.ac.uk">scs.ethics@ucl.ac.uk</a>;
       </li>
-      <li>This study is expected to take between 30-45 minutes.</li>
+      <li>This study is expected to take no more than 30-45 minutes.</li>
     </ul>
     <br />
     <v-form v-model="showButton">

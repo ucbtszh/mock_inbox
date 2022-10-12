@@ -14,14 +14,14 @@
     Now imagine that it is Wednesday 12 October 2022.<br />
     You were at an event all day, so you could not process your e-mails
     before.<br />
-    You open your inbox and find 47 new e-mails from the day.<br />
+    You open your inbox in the evening and find 47 new e-mails from the day.<br />
     Your task is to process them all in your role as Alex Carter.<br /><br />
 
     You will see a mock inbox like this:<br /><br />
 
     <img src="../assets/ss_inbox.png" width="100%" /><br /><br />
 
-    The inbox has similar functionalities as what you typically would find in an
+    The inbox has similar functionalities as what you typically will find in an
     actual e-mail inbox:<br /><br />
 
     <ul>
@@ -46,8 +46,9 @@
         the bar displayed above the e-mails.
       </li>
       <li>
-        A secondary bar with buttons will appear. Click on the button that <b>best
-        represents</b> your reason to reply to, forward, delete or keep the e-mail.
+        A secondary bar with buttons will appear. Click on the button that
+        <b>best represents</b> your reason to reply to, forward, delete or keep
+        the e-mail.
       </li>
       <li>
         If you chose to reply, forward or delete the e-mail, the e-mail will
