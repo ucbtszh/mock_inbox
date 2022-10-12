@@ -32,14 +32,13 @@
         this, any data I provided will be deleted;
       </li>
       <li>
-        Compensation for my participation in this study in the form of Amazon
-        vouchers will only happen upon full completion of the provided task;
+        Compensation for my participation in this study will only happen upon
+        full completion of the provided task;
       </li>
       <li>
         My participation in this study contributes to scientific development and
         is in no way benefiting commercial purposes;
       </li>
-      <li>The audio of today's session will be recorded;</li>
       <li>All my responses will be processed anonymously;</li>
       <li>
         The anonymous responses may be shared with other researchers and appear
@@ -102,7 +101,7 @@ export default {
   components: { VueRecaptcha },
   data() {
     return {
-      showButton: false
+      showButton: false,
     };
   },
   methods: {
@@ -112,7 +111,9 @@ export default {
         // console.log("signed in anonymously")
       } catch {
         // console.log("error signing in anonymously");
-        alert("Something went wrong when trying to reach the task. Please refresh the page.")
+        alert(
+          "Something went wrong when trying to reach the task. Please refresh the page."
+        );
       }
     },
     usesMouse() {
