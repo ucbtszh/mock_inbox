@@ -19,7 +19,6 @@
         persistent-hint
         :rules="[(v) => !!v || 'Education level is required']"
       >
-        <!-- hint="If you are currently studying, select your current level of studies." -->
         <div class="statement">
           What is the highest education level that you completed?
         </div>
@@ -66,8 +65,7 @@
         type="number"
         :rules="[(v) => !!v || 'Please answer this question']"
       ></v-text-field>
-
-      <!-- <v-radio-group
+      <v-radio-group
         v-model="formResponse.orgSize"
         :rules="[(v) => !!v || 'Orgnisational size is required']"
       >
@@ -80,8 +78,8 @@
           :label="o.label"
           :value="o.value"
         ></v-radio>
-      </v-radio-group> -->
-      <!-- <v-radio-group
+      </v-radio-group>
+      <v-radio-group
         v-model="formResponse.income"
         :rules="[(v) => !!v || 'Annual income is required']"
       >
@@ -92,7 +90,7 @@
           :label="i.label"
           :value="i.value"
         ></v-radio>
-      </v-radio-group> -->
+      </v-radio-group>
 
       <v-textarea
         outlined
@@ -196,27 +194,27 @@ export default {
       ],
       income: [
         {
-          label: "Under $20,000",
+          label: "Under £20,000",
           value: 1,
         },
         {
-          label: "$20,001 – $40,000",
+          label: "£20,001 – £40,000",
           value: 2,
         },
         {
-          label: "$40,001 – $60,000",
+          label: "£40,001 – £60,000",
           value: 3,
         },
         {
-          label: "$60,001 – $80,000",
+          label: "£60,001 – £80,000",
           value: 4,
         },
         {
-          label: "$80,001 – $100,000",
+          label: "£80,001 – £100,000",
           value: 5,
         },
         {
-          label: "$100,001 or over",
+          label: "£100,001 or over",
           value: 6,
         },
         {
