@@ -59,10 +59,10 @@
     </ul>
     <br />
     <v-form v-model="showButton">
-      <p v-show="!$isProlificUser">
+      <!-- <p v-show="!$isProlificUser">
         Your unique ID is: <b>{{ this.$user }}</b>
       </p>
-      <br />
+      <br /> -->
 
       <VueRecaptcha
         ref="recaptcha"

@@ -11,8 +11,8 @@
           :key="index"
           :label="g.label"
           :value="g.value"
-        ></v-radio> </v-radio-group
-      >
+        ></v-radio>
+      </v-radio-group>
 
       <v-radio-group
         v-model="formResponse.edLev"
@@ -36,8 +36,7 @@
         style="width: 200px"
         label="What is your age?"
         :rules="[(v) => (v >= 18 && v < 100) || 'You entered an invalid age.']"
-      ></v-text-field
-      >
+      ></v-text-field>
 
       <v-radio-group
         v-model="formResponse.occ_status"
@@ -104,6 +103,7 @@
         NEXT
       </v-btn>
     </v-form>
+    <br /><br /><br />
   </div>
 </template>
 

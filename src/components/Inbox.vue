@@ -21,7 +21,7 @@
           </v-card-text>
           <v-card-actions>
             &nbsp;
-            <v-btn text @click="showHelp = false">
+            <v-btn color="success" text @click="showHelp = false">
               <b>Close</b>
             </v-btn>
           </v-card-actions>
@@ -244,7 +244,13 @@
                           </v-icon>
                         </v-col>
 
-                        <v-col style="margin-top: 5px; margin-bottom: 5px">
+                        <v-col
+                          style="
+                            margin-top: 5px;
+                            margin-bottom: 5px;
+                            width: 400px;
+                          "
+                        >
                           <v-list-item-title
                             style="line-height: 1.5em"
                             :id="'eml_tn_from_name_' + index"
