@@ -19,7 +19,7 @@
 
     You will see a mock inbox like this:<br /><br />
 
-    <img src="../assets/ss_inbox.png" width="100%" /><br /><br />
+    <img src="../assets/ss_inbox.png" width="100%" /><br />
 
     The inbox has similar functionalities as what you typically will find in an
     actual e-mail inbox:<br /><br />
@@ -43,7 +43,9 @@
       </li>
       <li>
         <b>Choose one of the available actions</b> for the selected e-mail from
-        the bar displayed above the e-mails.
+        the bar displayed above the e-mails. For example, when you click
+        "Reply", the following options will appear:<br /><br />
+        <img src="../assets/ss_closeup_menu.png" width="100%" /><br/><br/>
       </li>
       <li>
         A secondary bar with buttons will appear. Click on the button that
