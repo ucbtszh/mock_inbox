@@ -385,6 +385,7 @@ export default {
       this.emlViewSrc = src;
       try {
         document.getElementById("eml_body_" + this.emlViewIndex).src = src;
+        this.secondBar = "";
       } catch (TypeError) {
         // console.log("iframe is null");
       }
