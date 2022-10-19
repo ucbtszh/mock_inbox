@@ -323,7 +323,7 @@
                 <v-row>
                   <v-col cols="11">
                     <div class="initial" :id="'eml_head_initial_' + index">
-                      {{ eml.fromName.substr(0, 1) }}
+                      {{ eml.fromName.substr(0, 1).toUpperCase() }}
                     </div>
                     <div style="margin-left: 65px">
                       <div
