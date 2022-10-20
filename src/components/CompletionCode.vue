@@ -38,7 +38,7 @@ export default {
     return {
       completionCode: "IV22" + this.$user.substr(0, 3),
       copyText: "Copy",
-      ccURL: "https://prolific.co",
+      ccURL: "https://app.prolific.co/submissions/complete?cc=C19PJF77",
     };
   },
   mixins: [db],
