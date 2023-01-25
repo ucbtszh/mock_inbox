@@ -93,6 +93,13 @@
 
       <v-textarea
         outlined
+        v-model="formResponse.feedback"
+        label="Do you have any concerns or other feedback for this study?"
+        :rules="[(v) => v.length > 5 || 'Please answer this question.']"
+      ></v-textarea>
+
+      <v-textarea
+        outlined
         v-model="formResponse.purpose"
         label="What do you think is the purpose of this study?"
         :rules="[(v) => v.length > 5 || 'Please answer this question.']"
@@ -129,6 +136,7 @@ export default {
         income: "",
         edLev: "",
         purpose: "",
+        feedback: ""
       },
       gender: [
         {

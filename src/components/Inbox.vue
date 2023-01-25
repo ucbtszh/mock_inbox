@@ -183,7 +183,7 @@
         <v-btn
           depressed
           @click="
-            keepEml();
+            keepEml('keep_later');
             snackbarTxt = 'E-mail labelled as kept in inbox.';
             snackbar = true;
           "
@@ -192,7 +192,7 @@
         <v-btn
           depressed
           @click="
-            keepEml();
+            keepEml('keep_ref');
             snackbarTxt = 'E-mail labelled as kept in inbox.';
             snackbar = true;
           "
@@ -202,7 +202,7 @@
         <v-btn
           depressed
           @click="
-            keepEml();
+            keepEml('keep_other');
             snackbarTxt = 'E-mail labelled as kept in inbox.';
             snackbar = true;
           "
@@ -400,8 +400,8 @@ export default {
       this.emlViewIndex = null;
       this.secondBar = "";
     },
-    keepEml() {
-      this.labels[this.emlViewSrc] = "keep";
+    keepEml(label) {
+      this.labels[this.emlViewSrc] = label;
       this.secondBar = "";
     },
     sendLabels() {
