@@ -447,12 +447,21 @@ export default {
       history.go(1);
     };
 
-    setTimeout(() => {
-      this.sendLabels();
-    }, 420000); // automatically go to the next UI after 7 min = 420000ms
+    this.nextUI = (event) => {
+      // instead of using timeout, use following keypress combination to go to next UI
+      if (event.shiftKey & (event.key === "Q")) {
+        this.sendLabels();
+      }
+    };
+    window.addEventListener("keypress", this.nextUI);
+
+    // setTimeout(() => {
+    //   this.sendLabels();
+    // }, 42000); // automatically go to the next UI after 7 min = 420000ms
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);
+    window.removeEventListener("keypress", this.nextUI);
   },
 };
 </script>
