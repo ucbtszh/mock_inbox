@@ -1,6 +1,17 @@
 <template>
   <div id="demographics">
     <v-form v-model="isValid" ref="form">
+
+      <v-radio-group v-model="formResponse.age">
+        <div class="statement">What age bracket do you belong to?</div>
+        <v-radio
+          v-for="(age, index) in ageBracks"
+          :key="index"
+          :label="age.label"
+          :value="age.value"
+        ></v-radio>
+      </v-radio-group>
+
       <v-radio-group
         v-model="formResponse.gender"
         :rules="[(v) => !!v || 'Gender is required']"
@@ -29,67 +40,6 @@
           :value="e.value"
         ></v-radio> </v-radio-group
       ><br />
-
-      <v-text-field
-        outlined
-        v-model="formResponse.age"
-        style="width: 200px"
-        label="What is your age?"
-        :rules="[(v) => (v >= 18 && v < 100) || 'You entered an invalid age.']"
-      ></v-text-field>
-
-      <v-radio-group
-        v-model="formResponse.occ_status"
-        :rules="[(v) => !!v || 'Occupational status is required']"
-      >
-        <div class="statement">What is your occupational status?</div>
-        <v-radio
-          v-for="(s, index) in occStatus"
-          :key="index"
-          :label="s.label"
-          :value="s.value"
-        ></v-radio>
-      </v-radio-group>
-
-      <v-select
-        label="What industry is your current study/primary working experience in?"
-        outlined
-        :items="industry"
-      >
-      </v-select>
-
-      <v-text-field
-        v-model="formResponse.workExp"
-        label="'How many years of professional working experience do you have?'"
-        type="number"
-        :rules="[(v) => !!v || 'Please answer this question']"
-      ></v-text-field>
-      <v-radio-group
-        v-model="formResponse.orgSize"
-        :rules="[(v) => !!v || 'Orgnisational size is required']"
-      >
-        <div class="statement">
-          How many employees does the organisation you work in have?
-        </div>
-        <v-radio
-          v-for="(o, index) in orgSize"
-          :key="index"
-          :label="o.label"
-          :value="o.value"
-        ></v-radio>
-      </v-radio-group>
-      <v-radio-group
-        v-model="formResponse.income"
-        :rules="[(v) => !!v || 'Annual income is required']"
-      >
-        <div class="statement">What is your annual income?</div>
-        <v-radio
-          v-for="(i, index) in income"
-          :key="index"
-          :label="i.label"
-          :value="i.value"
-        ></v-radio>
-      </v-radio-group>
 
       <v-textarea
         outlined
@@ -129,15 +79,36 @@ export default {
       formResponse: {
         age: "",
         gender: "",
-        occStatus: "",
-        industry: "",
-        workExp: "",
-        orgSize: "",
-        income: "",
         edLev: "",
         purpose: "",
-        feedback: ""
+        feedback: "",
       },
+      ageBracks: [
+        {
+          label: "18-25",
+          value: 1,
+        },
+        {
+          label: "26-35",
+          value: 2,
+        },
+        {
+          label: "36-45",
+          value: 3,
+        },
+        {
+          label: "46-55",
+          value: 4,
+        },
+        {
+          label: "56-65",
+          value: 5,
+        },
+        {
+          label: "Over 65",
+          value: 6,
+        },
+      ],
       gender: [
         {
           label: "female",
@@ -151,83 +122,13 @@ export default {
           label: "non-binary",
           value: 3,
         },
-      ],
-      occStatus: [
         {
-          label: "student",
-          value: 1,
-        },
-        {
-          label: "(self-)employed",
-          value: 2,
-        },
-        {
-          label: "unemployed",
-          value: 3,
-        },
-        {
-          label: "retired",
-          value: 4,
-        },
-      ],
-      orgSize: [
-        { label: "Less than 50 employees", value: "1" },
-        { label: "50-250 employees", value: "2" },
-        { label: "More than 250 employees", value: "3" },
-        { label: "I currently do not work", value: "4" },
-      ],
-      industry: [
-        // based on https://www.ilo.org/global/industries-and-sectors/lang--en/index.htm
-        "Agriculture",
-        "Basic metal production",
-        "Chemical industries",
-        "Commerce",
-        "Construction",
-        "Education",
-        "Financial services",
-        "Food, drink or tobacco",
-        "Forestry",
-        "Health services",
-        "Hotels, tourism or catering",
-        "Mining",
-        "Mechanical and electrical engineering",
-        "Media, culture",
-        "Oil and gas production",
-        "Postal and telecommunication services",
-        "Public service",
-        "Shipping",
-        "Textiles",
-        "Transport",
-        "Utilities (water, gas, electricity)",
-      ],
-      income: [
-        {
-          label: "Under £20,000",
-          value: 1,
-        },
-        {
-          label: "£20,001 – £40,000",
-          value: 2,
-        },
-        {
-          label: "£40,001 – £60,000",
-          value: 3,
-        },
-        {
-          label: "£60,001 – £80,000",
+          label: "other",
           value: 4,
         },
         {
-          label: "£80,001 – £100,000",
+          label: "prefer not to say",
           value: 5,
-        },
-        {
-          label: "£100,001 or over",
-          value: 6,
-        },
-        {
-          label: "Prefer not to say",
-          value: 100,
         },
       ],
       edLev: [
