@@ -7,7 +7,7 @@
       please return to Prolific. If you can, please use your mouse to continue.
     </v-alert>
 
-<!-- TO DO: INSERT JPMC CONSENT FORM -->
+    <!-- TO DO: INSERT JPMC CONSENT FORM -->
 
     <br />
     <v-form v-model="showButton">
@@ -37,6 +37,7 @@
 import VueRecaptcha from "vue-recaptcha";
 import { auth } from "../main";
 import { signInAnonymously } from "firebase/auth";
+import Vue from 'vue'
 
 export default {
   name: "consent",
@@ -67,6 +68,18 @@ export default {
         ev.pointerType === "mouse" ? true : false
       );
     },
+  },
+  beforeCreate() {
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+
+    if (urlParams.has("cond")) {
+      let cond = urlParams.get("cond");
+      Vue.prototype.$cond = cond;
+    } else {
+      let cond = ["c", "t"]
+      Vue.prototype.$cond = cond[Math.floor(Math.random(cond.length))] // TODO: DOUBLE CHECK TYPE == STRING
+    }
   },
 };
 </script>

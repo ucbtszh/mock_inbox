@@ -319,6 +319,24 @@
                   {{ eml.subject }}
                 </div></v-card-title
               >
+
+              <v-alert
+                outlined
+                type="warning"
+                dense
+                border="left"
+                v-if="($cond == 't') & (eml.score > scoreThreshold)"
+                class="iv"
+                :id="'iv_score_' + index"
+              >
+                <b>Are you sure you can trust this e-mail?</b><br />
+                <!-- TODO: DETERMINE TEXT TO DISPLAY -->
+                <b
+                  >Double check the sender's e-mail address and any URLs in the
+                  e-mail before communicating further with them.</b
+                >
+              </v-alert>
+
               <div>
                 <v-row>
                   <v-col cols="11">
@@ -342,8 +360,6 @@
                     </div>
                   </v-col>
                 </v-row>
-
-                <!-- <div> TO DO: INSERT NUDGE  </div> -->
 
                 <iframe
                   :src="eml.bodyURL"
@@ -381,6 +397,7 @@ export default {
     timeout: 3000,
     snackbar: false,
     snackbarTxt: "",
+    scoreThreshold: 0.5, // TODO: DOUBLE CHECK ACCORDING TO EXPERIMENTS WHAT VALUE TO USE
   }),
   methods: {
     displayEml(src) {
