@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import Usab from "../components/Usability.vue"
-import Demos from "../components/Demos.vue";
+import Usab from "../components/Usability"
+import Demos from "../components/Demos";
 
 export default {
   components: {

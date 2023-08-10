@@ -8,9 +8,8 @@
         <v-slider
           v-model="formResponse.friendly"
           :max="6"
-          :rules="[
-            !isNaN(formResponse.friendly) || 'Please answer this question',
-          ]"
+          @click="friendlyCilck = true"
+          :rules="[friendlyCilck || 'Please answer this question']"
           step="1"
           ticks="always"
           tick-size="15"
@@ -30,10 +29,8 @@
           <v-slider
             v-model="formResponse.ease"
             :max="6"
-            @click="rated3 = true"
-            :rules="[
-              !isNaN(formResponse.ease) || 'Please answer this question',
-            ]"
+            @click="easeClick = true"
+            :rules="[easeClick || 'Please answer this question']"
             step="1"
             ticks="always"
             tick-size="15"
@@ -55,9 +52,8 @@
           <v-slider
             v-model="formResponse.useful"
             :max="6"
-            :rules="[
-              !isNaN(formResponse.useful) || 'Please answer this question',
-            ]"
+            @click="usefulClick = true"
+            :rules="[usefulClick || 'Please answer this question']"
             step="1"
             ticks="always"
             tick-size="15"
@@ -99,6 +95,9 @@ export default {
   data() {
     return {
       isValid: true,
+      easeClick: false,
+      friendlyCilck: false,
+      usefulClick: false,
       formResponse: {
         ease: "",
         friendly: 0,
