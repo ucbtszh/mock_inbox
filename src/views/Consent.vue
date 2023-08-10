@@ -105,6 +105,10 @@ export default {
     },
   },
   beforeCreate() {
+    // ASSIGN RANDOM USER ID
+    Vue.prototype.$user = [...Array(32)].map(() => Math.random().toString(36)[2]).join("");
+
+    // ASSIGN TEST CONDITION ACCORDING TO URL PARAM OR RANDOMLY
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
 
