@@ -22,7 +22,7 @@
 
 <script>
 import InstructTxt from "../components/InstructTxt.vue";
-import tracking from "../utils/track_ui";
+// import tracking from "../utils/track_ui";
 import fs from "../utils/firestore";
 
 export default {
@@ -31,7 +31,7 @@ export default {
       startInstruct: "",
     };
   },
-  mixins: [tracking, fs],
+  mixins: [fs],
   components: {
     InstructTxt,
   },
