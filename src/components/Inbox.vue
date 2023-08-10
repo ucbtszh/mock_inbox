@@ -224,10 +224,10 @@
               >
                 <template v-for="(eml, index) in emls">
                   <v-list-item
-                    :key="index"
                     @click="displayEml(eml.bodyURL)"
                     @pointerover="emlHoverIndex = index"
                     :id="'eml_tn_' + index"
+                    :key="index"
                   >
                     <template v-slot:default="{ active }">
                       <v-row>
@@ -331,10 +331,8 @@
               >
                 <b>Are you sure you can trust this e-mail?</b><br />
                 <!-- TODO: DETERMINE TEXT TO DISPLAY -->
-                <b
-                  >Double check the sender's e-mail address and any URLs in the
-                  e-mail before communicating further with them.</b
-                >
+                Double check the sender's e-mail address and any URLs in the
+                e-mail before communicating further with them.
               </v-alert>
 
               <div>
@@ -378,7 +376,7 @@
 
 <script>
 import db from "../utils/firestore";
-import tracking from "../utils/track_ui";
+// import tracking from "../utils/track_ui";
 import InstructTxt from "./InstructTxt.vue";
 
 export default {
@@ -386,7 +384,7 @@ export default {
     InstructTxt,
   },
   props: ["emls", "UI"],
-  mixins: [db, tracking],
+  mixins: [db],
   data: () => ({
     emlViewSrc: "",
     emlViewIndex: null,

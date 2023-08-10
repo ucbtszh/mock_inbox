@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Inbox :emls="emails" :UI="'inbox_iv2'" />
+    <Inbox :emls="emails" :UI="'inbox_jpmc'" />
   </div>
 </template>
 
@@ -22,6 +22,7 @@ export default {
   mounted() {
     let metaInfo = {
       starttime: Date.now(),
+      condition: this.$cond,
       browser_width: window.innerWidth,
       browser_height: window.innerHeight,
       screen_width: window.screen.width,
