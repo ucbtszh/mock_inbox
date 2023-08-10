@@ -23,7 +23,7 @@
         </v-slider>
       </v-card-text>
 
-      <div v-show="$cond == 't'">
+      <div v-if="$cond == 't'">
         How easy/difficult was it to understand the warnings? <br />
         <v-card-text>
           <v-slider
