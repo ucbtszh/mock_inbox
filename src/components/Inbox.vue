@@ -53,7 +53,7 @@
           snackbar = true;
         "
         ><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
-      >
+      > -->
       <v-btn
         depressed
         :disabled="!emlViewSrc"
@@ -291,8 +291,21 @@
                       <div v-if="index == emlViewIndex">
               <div v-if="showReply" :id="'reply_' + index">
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
-                  To: {{ eml.fromEml }}
+                  To: <input
+                          type="email"
+                          id="recipientEmails"
+                          v-model="recipientEmails"
+                          placeholder="Enter recipient's email"
+                        />
+                        <button
+                          class="tooltip-button"
+                          @mouseenter="showTooltip = true"
+                          @mouseleave="showTooltip = false"
+                        >?</button>
                 </p>
+                <div class="tooltip" :class="{ active: showTooltip }">
+                  Enter recipient's email. If more than one recipient, please separate the emails with a comma.
+                </div>
                 <vue-editor
                   v-model="replyTxt"
                   :editor-toolbar="customToolbar"
@@ -504,10 +517,11 @@ export default {
     },
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
-      this.replies[src] = this.replyTxt;
+      this.replies[src] = "RECIPIENT(S): " + this.recipientEmails + "  \n\n\n EMAIL:" + this.replyTxt;
       this.writeResponseData(this.$user, "replies" + this.UI, this.replies);
       this.showReply = false;
       this.replyTxt = null;
+      this.recipientEmails = ""
     },
     sendCreate(){
       this.created[this.createTo] = [this.createCc, this.createBcc, this.createSubject, this.createTxt]
@@ -599,4 +613,33 @@ iframe {
   margin-left: 58px;
   padding: 0;
 }
+
+.tooltip-button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 16px;
+  color: #007bff;
+  margin-left: 5px;
+}
+
+.tooltip-button:hover {
+  text-decoration: underline;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.tooltip.active {
+  opacity: 1;
+}
+
 </style>
