@@ -178,17 +178,6 @@
         <v-col cols="4" style="min-width: 525px">
           <v-card style="height: 100vh; overflow: auto">
             <v-card-title>Inbox</v-card-title>
-
-            <div v-if="condition == 'ivNudge'">
-              <img
-                v-if="loadNudge"
-                src="../assets/ss_nudge_list.png"
-                @click="nudge = true"
-                style="cursor: pointer; width: 490px"
-                id="nudgeEml"
-              />
-            </div>
-
             <v-list>
               <v-list-item-group
                 active-class="blue lighten-5"
@@ -347,24 +336,6 @@
                   {{ eml.subject }}
                 </div></v-card-title
               >
-              <v-alert
-                outlined
-                type="warning"
-                dense
-                border="left"
-                v-if="(condition == 'ivScore') & (eml.junkScore > 0.5)"
-                class="iv"
-                :id="'iv_score_' + index"
-              >
-                <b>Are you sure you can trust this e-mail?</b><br />
-                Junk filters rate this e-mail as <b>{{ eml.junkScore }}</b> on a
-                scale of 0 (trustworthy) to 1 (highly suspicious).<br /><br />
-                <b
-                  >Double check the sender's e-mail address and any URLs in the
-                  e-mail before communicating further with them.</b
-                >
-              </v-alert>
-
               <div>
                 <v-row>
                   <v-col cols="11">
@@ -386,18 +357,6 @@
                         <p v-if="eml.CCeml.length > 0">CC: {{ eml.CCeml }}</p>
                       </div>
                     </div>
-                  </v-col>
-                  <v-col cols="1">
-                    <v-btn
-                      v-if="condition == 'ivBtn'"
-                      fab
-                      x-small
-                      color="orange"
-                      @click="sendScanMsg()"
-                    >
-                      <v-icon>mdi-format-list-bulleted-square</v-icon>
-                      <!-- &nbsp; See past correspondence -->
-                    </v-btn>
                   </v-col>
                 </v-row>
 
@@ -457,7 +416,7 @@ export default {
     VueEditor,
     InstructTxt,
   },
-  props: ["condition", "emls", "UI"],
+  props: ["emls", "UI"],
   mixins: [db, tracking],
   data: () => ({
     emlViewSrc: "",

@@ -37,10 +37,5 @@ export default {
       valid: false,
     };
   },
-  computed: {
-    ivScreenshotImg: function () {
-      return this.$cond === "ivBtn" ? "../.png" : "../.png";
-    },
-  },
 };
 </script>

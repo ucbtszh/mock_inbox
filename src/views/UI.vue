@@ -1,10 +1,9 @@
 <template>
   <div>
     <Inbox
-      :condition="$order[0]"
       :emls="emails"
-      :UI="'UI1'"
-      @next="$router.push('UI2')"
+      :UI="'ETRAY'"
+      @next="$router.push('surveys')"
     />
   </div>
 </template>
@@ -25,11 +24,9 @@ export default {
     };
   },
   mounted() {
-    // TODO: manual continue to next view with certain keyboard combination?
-
     let metaInfo = {
       starttime: Date.now(),
-      condition: this.$order,
+      condition: 'ETRAY_STUDY',
       // prolific_user: this.$isProlificUser,
       browser_width: window.innerWidth,
       browser_height: window.innerHeight,

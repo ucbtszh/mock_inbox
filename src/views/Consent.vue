@@ -57,10 +57,8 @@
 
       <!-- <p v-show="!$isProlificUser">
       Your unique ID is: <b>{{ this.$user }}</b>
-    </p>
-    <br /> -->
-
-      <!-- <VueRecaptcha
+    </p> -->
+    <!-- <VueRecaptcha
       ref="recaptcha"
       sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
       :loadRecaptchaScript="true"
@@ -102,7 +100,6 @@ export default {
       setID: null,
       showButton: false,
       uuid: null,
-      cond: null,
     };
   },
   methods: {
@@ -120,48 +117,25 @@ export default {
         ev.pointerType === "mouse" ? true : false
       );
     },
-    setCondOrder(value) {
-      value === "1"
-        ? (Vue.prototype.$order = ["control", "ivBtn", "ivNudge", "ivScore"])
-        : (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"]);
-      // ? (Vue.prototype.$order = ["control", "ivNudge", "ivScore", "ivBtn"])
-      // : value === 3
-      // ? (Vue.prototype.$order = ["control", "ivNudge", "ivBtn", "ivScore"])
-      // : value === 4
-      // ? (Vue.prototype.$order = ["control", "ivBtn", "ivScore", "ivNudge"])
-      // : value === 5
-      // ? (Vue.prototype.$order = ["control", "ivScore", "ivNudge", "ivBtn"])
-      // : (Vue.prototype.$order = ["control", "ivScore", "ivBtn", "ivNudge"]);
-
-      // console.log("ORDER", this.$order);
-    },
   },
-  // beforeCreate() {
-  //   let queryString = window.location.search;
-  //   let urlParams = new URLSearchParams(queryString);
+  beforeCreate() {
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
 
-  //   if (urlParams.has("PROLIFIC_PID")) {
-  //     let uuid = urlParams.get("PROLIFIC_PID");
-  //     Vue.prototype.$user = uuid;
-  //     Vue.prototype.$isProlificUser = true;
-  //   } else {
-  //     let uuid = [...Array(32)]
-  //       .map(() => Math.random().toString(36)[2])
-  //       .join("");
-  //     this.setID = uuid;
-  //     Vue.prototype.$user = uuid;
-  //     Vue.prototype.$isProlificUser = false;
-  //   }
-
-  //   if (urlParams.has("cond")) {
-  //     let cond = urlParams.get("cond");
-  //     Vue.prototype.$condition = cond;
-  //   } else {
-  //     var conditions = ["ivBtn", "ivNudge", "ivScore", "control"];
-  //     var random = Math.floor(Math.random() * conditions.length);
-  //     Vue.prototype.$condition = conditions[random];
-  //   }
-  // },
+    if (urlParams.has("PROLIFIC_PID")) {
+      let uuid = urlParams.get("PROLIFIC_PID");
+      Vue.prototype.$user = uuid;
+      Vue.prototype.$isProlificUser = true;
+    } else {
+      // let uuid = [...Array(32)]
+      //   .map(() => Math.random().toString(36)[2])
+      //   .join("");
+      let uuid = "TEST_LOCAL";
+      this.setID = uuid;
+      Vue.prototype.$user = uuid;
+      Vue.prototype.$isProlificUser = false;
+    }
+  },
 };
 </script>
 

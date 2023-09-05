@@ -33,9 +33,8 @@ export default {
   data() {
     return {
       completionCode:
-        "EFS" +
-        this.$user.substr(0, 3) +
-        this.$condition.charAt(0),
+        "ETRAY" +
+        this.$user.substr(0, 3),
       copyText: "Copy",
       ccURL: "https://prolific.co"
     };
