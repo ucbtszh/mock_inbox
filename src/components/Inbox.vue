@@ -311,19 +311,36 @@
                   v-model="replyTxt"
                   :editor-toolbar="customToolbar"
                 ></vue-editor>
-                <v-btn
-                  :disabled="replyTxt == null"
-                  type="submit"
-                  color="primary"
-                  @click="
-                    labelEml('re');
-                    sendReply(eml.bodyURL);
-                    snackbarTxt = 'Reply sent';
-                    snackbar = true;
-                  "
-                  >Send</v-btn
-                >
+                <p style="display: flex;">
+                  <v-btn
+                    :disabled="replyTxt == null"
+                    type="submit"
+                    color="primary"
+                    style="margin-right: 2%;"
+                    @click="
+                      labelEml('re');
+                      sendReply(eml.bodyURL);
+                      snackbarTxt = 'Reply sent';
+                      snackbar = true;
+                    "
+                    >Send</v-btn
+                  >
+
+                    <input
+                      type="file"
+                      ref="fileInput"
+                      style="display: none;"
+                      @change="handleFileUpload"
+                    />
+                    <v-btn @click="openFileInput">Add Attachment</v-btn>
+                    <ul>
+                      <li v-for="(attachment, index) in uploadedAttachments" :key="index">
+                        {{ attachment.name }}
+                      </li>
+                    </ul>
+                </p>
               </div>
+
 
               <v-card-title :id="'eml_head_subj_' + index"
                 ><div class="subject">
@@ -485,6 +502,18 @@ export default {
     ],
   }),
   methods: {
+    openFileInput() {
+      // Trigger the file input field when the button is clicked
+      this.$refs.fileInput[0].click();
+    },
+    handleFileUpload(event) {
+      // Handle the selected file(s) here
+      const files = event.target.files;
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedAttachments.push(files[i]);
+      }
+      // You can now process the attachments as needed (e.g., send to a server)
+    },
     displayEml(src) {
       this.showCreated = false;
       this.emlViewSrc = src;
