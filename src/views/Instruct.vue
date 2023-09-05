@@ -7,7 +7,7 @@
 
     Click "START" below to go to the inbox.
     <br /><br /><br />
-    <v-btn elevation="3" @click="$router.push('UI1')" color="success"
+    <v-btn elevation="3" @click="$router.push('UI')" color="success"
       >Start</v-btn
     >
   </div>
