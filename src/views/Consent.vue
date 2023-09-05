@@ -57,7 +57,8 @@
 
       <!-- <p v-show="!$isProlificUser">
       Your unique ID is: <b>{{ this.$user }}</b>
-    </p> -->
+    </p>
+
     <!-- <VueRecaptcha
       ref="recaptcha"
       sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
@@ -106,7 +107,6 @@ export default {
     login() {
       try {
         signInAnonymously(auth);
-        Vue.prototype.$user = this.uuid;
         // console.log("signed in anonymously")
       } catch {
         // console.log("error signing in anonymously");
