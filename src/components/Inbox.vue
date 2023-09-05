@@ -37,11 +37,9 @@
       <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
-     
-       <v-btn
-        depressed
-        :disabled="!emlViewSrc"
-        @click="showReply = true"><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
+
+      <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
+        ><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
       >
 
       <!-- uncomment below if u wanna just forward to secretary upon clicking forward-->
@@ -55,6 +53,7 @@
         "
         ><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
       > -->
+
       <v-btn
         depressed
         :disabled="!emlViewSrc"
@@ -87,55 +86,6 @@
       >
       <v-spacer></v-spacer>
     </v-toolbar>
-
-    <div v-for="(eml, index) in emls" :key="index">
-      <v-dialog
-        persistent
-        v-model="showScanResult"
-        hide-overlay
-        width="600"
-        v-if="index == emlViewIndex"
-      >
-        <v-card>
-          <v-container>
-            <v-row>
-              <v-col>
-                <h3>Past correspondence</h3>
-                <div v-if="eml.pastEmls.length == 0">
-                  You have <b>not</b> received any e-mails from
-                  {{ eml.fromEml }}
-                  before. <br /><br />
-                  <b>Did you expect anything from this sender?</b><br />
-                  If not, do you recognise the sender's e-mail domain?<br /><br />
-                  <a
-                    :href="'https://www.google.com/search?q=' + eml.fromEml"
-                    target="_blank"
-                    >Search for {{ eml.fromEml }} on Google (click).</a
-                  >
-                </div>
-                <div v-if="eml.pastEmls.length > 0">
-                  You have received {{ eml.pastEmls.length }} e-mails before
-                  from {{ eml.fromEml }}:<br />
-                  <v-data-table
-                    hide-default-footer
-                    :headers="pastEmlHeaders"
-                    :items="eml.pastEmls"
-                  >
-                  </v-data-table>
-                </div>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-card-actions>
-                <v-btn text @click="showScanResult = false" color="primary">
-                  <b>Close</b>
-                </v-btn>
-              </v-card-actions>
-            </v-row>
-          </v-container>
-        </v-card>
-      </v-dialog>
-    </div>
 
     <v-main>
       <v-row>
@@ -226,33 +176,26 @@
         </v-col>
 
         <v-col style="height: 100vh; overflow: auto">
-          <img src="../assets/ss_nudge_ex.png" v-if="nudge" /><br />
-          <v-btn
-            v-if="nudge"
-            @click="
-              nudge = false;
-              loadNudge = false;
-            "
-            >Close</v-btn
-          >
-
           <v-card
             v-for="(eml, index) in emls"
             :key="index"
             :id="'eml_' + index"
           >
-          <div v-if="showReply" :id="'reply_' + index">
             <div v-if="index == emlViewIndex">
-              
+              <div v-if="showReply" :id="'reply_' + index">
+                <!-- TODO? ADD VALIDATION LOGIC TO ONLY ALLOW SUBMITTING THE MESSAGE IF THE 'TO' FIELD CONTAINS AT LEAST ONE E-MAIL ADDRESS -->
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
-                  To: <input
-                          type="email"
-                          id="recipientEmails"
-                          v-model="recipientEmails"
-                          placeholder="Enter recipient's email"
-                        />
+                  To:
+                  <input
+                    type="text"
+                    name="CC"
+                    :id="'recipientEmails' + index"
+                    v-model="recipientEmails"
+                    placeholder="Enter recipient's email"
+                  />
                 </p>
-                <p style="height: 30px; padding-top: 10px; padding-left: 15px">
+
+                <!-- <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                 CC: 
                   <input 
                     type="email"
@@ -260,17 +203,19 @@
                     v-model="ccEmails"
                     placeholder="CC"
                   />
-                </p>
+                </p> -->
+
                 <vue-editor
                   v-model="replyTxt"
                   :editor-toolbar="customToolbar"
                 ></vue-editor>
-                <p style="display: flex;">
+
+                <p style="display: flex">
                   <v-btn
                     :disabled="replyTxt == null"
                     type="submit"
                     color="primary"
-                    style="margin-right: 2%;"
+                    style="margin-right: 2%"
                     @click="
                       labelEml('re');
                       sendReply(eml.bodyURL);
@@ -279,8 +224,8 @@
                     "
                     >Send</v-btn
                   >
-
-                    <input
+                  
+                  <input
                       type="file"
                       ref="fileInput"
                       style="display: none;"
@@ -288,13 +233,14 @@
                     />
                     <v-btn @click="openFileInput">Add Attachment</v-btn>
                     <ul>
+                      <!-- TODO? REFACTOR UploadAttachments TO ONLY DISPLAY CURRENTLY UPLOADED FILE, NOT PAST FILES; 
+                        suggest to do so by adding key-value pair of {'attachment': [list of file names]} to this.replies @click Add Attachment -->
                       <li v-for="(attachment, index) in uploadedAttachments" :key="index">
                         {{ attachment.name }}
                       </li>
                     </ul>
                 </p>
               </div>
-
 
               <v-card-title :id="'eml_head_subj_' + index"
                 ><div class="subject">
@@ -365,7 +311,6 @@ export default {
     replyTxt: null,
     uploadedAttachments: [],
     replies: {},
-    nudge: false,
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
@@ -374,19 +319,6 @@ export default {
     timeout: 2000,
     snackbar: false,
     snackbarTxt: "E-mail",
-    closeOnContentClick: true,
-    loadNudge: true,
-    showScanResult: false,
-    scanResult: { URLscan: 0, nameScan: 0 },
-    headers: [
-      { text: "Link text", value: "urlDisplayTxt" },
-      { text: "Actual URL", value: "urlRaw" },
-      { text: "Actual URL domain", value: "urlDomain" },
-    ],
-    pastEmlHeaders: [
-      { text: "Date:", value: "date" },
-      { text: "Subject:", value: "subject" },
-    ],
   }),
   methods: {
     openFileInput() {
@@ -405,6 +337,7 @@ export default {
       this.emlViewSrc = src;
       try {
         document.getElementById("eml_body_" + this.emlViewIndex).src = src;
+        this.showReply = false;
       } catch (TypeError) {
         // console.log("iframe is null");
       }
@@ -418,6 +351,7 @@ export default {
       this.emlViewSrc = null;
       this.emlViewIndex = null;
       this.showReply = false;
+      this.uploadedAttachments
       // console.log(this.labels);
     },
     sendLabels() {
@@ -433,13 +367,18 @@ export default {
     },
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
-      this.replies[src] = "RECIPIENT(S): " + this.recipientEmails + "  \n\n\n $$$CC'ed:" + this.ccEmails + "  \n\n\n $$$EMAIL:" + this.replyTxt;
-      this.writeResponseData(this.$user, "replies" + this.UI, this.replies);
+      this.replies[src] =
+        "RECIPIENT(S): " +
+        this.recipientEmails +
+        "  \n\n\n $$$CCed:" +
+        this.ccEmails +
+        "  \n\n\n $$$EMAIL:" +
+        this.replyTxt;
+      this.writeResponseData(this.$user, "replies", this.replies);
       this.showReply = false;
       this.replyTxt = null;
       this.recipientEmails = "";
       this.ccEmails = "";
-
     },
     sendScanMsg() {
       document
@@ -538,10 +477,8 @@ iframe {
   padding: 0;
 }
 
-
 #tooltip {
   position: absolute;
   right: 1px;
 }
-
 </style>
