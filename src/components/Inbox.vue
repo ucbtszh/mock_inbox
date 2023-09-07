@@ -30,7 +30,11 @@
       </v-dialog>
       &nbsp;&nbsp;
 
-      <v-icon dark>mdi-account</v-icon>
+      <v-card>
+        <v-card-actions>
+          <v-btn class="primary" @click="handleFinish">Finish</v-btn>
+        </v-card-actions>
+      </v-card>
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
@@ -281,7 +285,7 @@
                   />
                 </p>
 
-                <!-- <p style="height: 30px; padding-top: 10px; padding-left: 15px">
+                <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                 CC: 
                   <input 
                     type="email"
@@ -289,7 +293,7 @@
                     v-model="ccEmails"
                     placeholder="CC"
                   />
-                </p> -->
+                </p>
 
                 <vue-editor
                   v-model="replyTxt"
@@ -479,6 +483,15 @@ export default {
       this.uploadedAttachments
       // console.log(this.labels);
     },
+    handleFinish() {
+      if (Object.values(this.labels).length < this.emls.length) {
+        alert(
+          "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
+        );
+      } else {
+        this.sendLabels();
+      }
+    },
     sendLabels() {
       // SEND EML LABELS TO DB
       if (this.labels.length < this.emls.length) {
@@ -504,6 +517,7 @@ export default {
       this.replyTxt = null;
       this.recipientEmails = "";
       this.ccEmails = "";
+      this.uploadedAttachments = [];
     },
     sendCreate(){
       this.created[this.createTo] = [this.createCc, this.createBcc, this.createSubject, this.createTxt]
