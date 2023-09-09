@@ -6,6 +6,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 import "./assets/base.css";
 
 // Firebase configuration
@@ -24,12 +25,13 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth();
 const dbfs = getFirestore(firebaseApp)
 const rtdb = getDatabase(firebaseApp);
+const storage = getStorage(firebaseApp);
 
 // non-modular part for Firestore
 // firebase.initializeApp(firebaseConfig);
 // const db = firebase.firestore();
 
-export { auth, dbfs, rtdb };
+export { auth, dbfs, rtdb, storage };
 
 Vue.config.productionTip = false;
 

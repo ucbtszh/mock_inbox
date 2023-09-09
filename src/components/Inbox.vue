@@ -326,7 +326,8 @@
                       <!-- TODO? REFACTOR UploadAttachments TO ONLY DISPLAY CURRENTLY UPLOADED FILE, NOT PAST FILES; 
                         suggest to do so by adding key-value pair of {'attachment': [list of file names]} to this.replies @click Add Attachment -->
                       <li v-for="(attachment, index) in uploadedAttachments" :key="index">
-                        {{ attachment.name }}
+                        <!-- <a href={{attachment}}>{{ x }}</a> -->
+                        <a :href="attachment.url" target="_blank">{{ attachment.name }}</a>
                       </li>
                     </ul>
                 </p>
@@ -411,6 +412,12 @@ import { VueEditor } from "vue2-editor";
 import db from "../utils/firestore";
 import tracking from "../utils/track_ui";
 import InstructTxt from "./InstructTxt.vue";
+// import firebase from "firebase/app";
+// import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Import the Firebase Storage functions
+import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL } from "firebase/storage";
+import { storage } from "../main";
+
 
 export default {
   components: {
@@ -453,13 +460,28 @@ export default {
       // Trigger the file input field when the button is clicked
       this.$refs.fileInput[0].click();
     },
-    handleFileUpload(event) {
-      // Handle the selected file(s) here
+    async handleFileUpload(event) {
       const files = event.target.files;
+
       for (let i = 0; i < files.length; i++) {
-        this.uploadedAttachments.push(files[i]);
+        const file = files[i];
+        const fileName = Date.now() + '_' + file.name;
+        
+        try {
+          // upload the file to Firebase Cloud Storage
+          const storageRef = ref(storage, fileName);
+
+          const snapshot = await uploadBytes(storageRef, file);
+
+          const downloadURL = await getDownloadURL(storageRef);
+          console.log('downloadurl:', downloadURL);
+          this.uploadedAttachments.push({'url': downloadURL, 'name': file.name});
+          console.log(snapshot)
+          
+        } catch (error) {
+          console.error('Error uploading file:', error);
+        }
       }
-      // You can now process the attachments as needed (e.g., send to a server)
     },
     displayEml(src) {
       this.showCreated = false;
@@ -480,7 +502,7 @@ export default {
       this.emlViewSrc = null;
       this.emlViewIndex = null;
       this.showReply = false;
-      this.uploadedAttachments
+      // this.uploadedAttachments = [];
       // console.log(this.labels);
     },
     handleFinish() {
@@ -508,10 +530,17 @@ export default {
       this.replies[src] =
         "RECIPIENT(S): " +
         this.recipientEmails +
-        "  \n\n\n $$$CCed:" +
+        "  \n\n\n $$$CCed: " +
         this.ccEmails +
-        "  \n\n\n $$$EMAIL:" +
+        "  \n\n\n $$$EMAIL: " +
         this.replyTxt;
+
+      // add attachments
+      if (this.uploadedAttachments.length > 0) {
+        const attachmentText = this.uploadedAttachments.map(attachment => `Attachment URL: ${attachment.url}`).join('\n');
+        this.replies[src] += `    \n\n\n $$$ATTACHMENTS: ${attachmentText}`;
+      }
+
       this.writeResponseData(this.$user, "replies", this.replies);
       this.showReply = false;
       this.replyTxt = null;
