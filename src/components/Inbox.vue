@@ -450,6 +450,7 @@ export default {
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
       [{ align: "" }, { align: "center" }, { align: "right" }],
+      [{ 'link': 'link' }] 
     ],
     timeout: 2000,
     snackbar: false,
