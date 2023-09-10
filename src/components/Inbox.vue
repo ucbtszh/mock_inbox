@@ -364,7 +364,7 @@
 
                 <iframe
                   :src="eml.bodyURL"
-                  :height="eml.height + 26"
+                  :height="eml.height + 50"
                   :id="'eml_body_' + index"
                   ref="iframe"
                 />
@@ -495,6 +495,7 @@ export default {
       }
     },
     labelEml(label) {
+      // console.log(this.)
       this.labels[this.emlViewSrc] = label;
       document.getElementById("eml_" + this.emlViewIndex).style.display =
         "none";
