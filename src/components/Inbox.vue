@@ -1,8 +1,11 @@
 <template>
   <div id="inbox">
-    <v-toolbar height="50" color="rgb(0,120,212)">
+    <v-toolbar height="50" color="rgb(0,120,212)" >
       <p id="outlook-sign">Outlook</p>
       <v-spacer></v-spacer>
+
+      <v-card>Time Remaining: {{ remainingTimeDisplay }}</v-card>
+
 
       <v-dialog v-model="showHelp" persistent max-width="860px">
         <template v-slot:activator="{ on, attrs }">
@@ -29,6 +32,7 @@
         </v-card>
       </v-dialog>
       &nbsp;&nbsp;
+
 
       <v-card>
         <v-card-actions>
@@ -319,6 +323,7 @@ export default {
     showReply: false,
     recipientEmails: "",
     ccEmails: "",
+    remainingTime: 2400,
     replyTxt: null,
     uploadedAttachments: [],
     replies: {},
@@ -332,7 +337,25 @@ export default {
     snackbar: false,
     snackbarTxt: "E-mail",
   }),
+  computed: {
+    remainingTimeDisplay() {
+      const minutes = Math.floor(this.remainingTime / 60);
+      const seconds = this.remainingTime % 60;
+      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    },
+  },
   methods: {
+    startTimer() {
+      // this function is called every second. and since remainingtime is 2400, it is called for 2400seconds
+      const timerInterval = setInterval(() => {
+        if (this.remainingTime <= 0) {
+          clearInterval(timerInterval); 
+          this.handleAutomaticFinish(); 
+        } else {
+          this.remainingTime -= 1; 
+        }
+      }, 1000); 
+    },
     openFileInput() {
       // Trigger the file input field when the button is clicked
       this.$refs.fileInput[0].click();
@@ -382,6 +405,15 @@ export default {
       // this.uploadedAttachments = [];
       // console.log(this.labels);
     },
+    handleAutomaticFinish() {
+      if (Object.values(this.labels).length < this.emls.length) {
+        alert(
+          "Time's up."
+        );
+      } else {
+        this.sendLabels();
+      }
+    },
     handleFinish() {
       if (Object.values(this.labels).length < this.emls.length) {
         alert(
@@ -393,14 +425,14 @@ export default {
     },
     sendLabels() {
       // SEND EML LABELS TO DB
-      if (this.labels.length < this.emls.length) {
-        alert(
-          "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
-        );
-      } else {
+      // if (this.labels.length < this.emls.length) {
+      //   alert(
+      //     "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
+      //   );
+      // } else {
         this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
         this.$emit("next");
-      }
+      // }
     },
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
@@ -441,6 +473,8 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0);
+    this.startTimer();
+
 
     // prevent participants from navigating back to the instructions page
     history.pushState(null, null, location.href);
@@ -448,9 +482,10 @@ export default {
       history.go(1);
     };
 
-    setTimeout(() => {
-      this.sendLabels();
-    }, 420000); // automatically go to the next UI after 7 min = 420000ms
+    // uncomment this if u wanna automatically submit after 7min
+    // setTimeout(() => {
+    //   this.sendLabels();
+    // }, 420000); // automatically go to the next UI after 7 min = 420000ms
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);
@@ -526,4 +561,5 @@ iframe {
   position: absolute;
   right: 1px;
 }
+
 </style>
