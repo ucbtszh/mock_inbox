@@ -519,10 +519,15 @@ export default {
     labelEml(label) {
       // console.log(this.)
       this.labels[this.emlViewSrc] = label;
-      document.getElementById("eml_" + this.emlViewIndex).style.display =
-        "none";
-      document.getElementById("eml_tn_" + this.emlViewIndex).style.display =
-        "none";
+      if (label !== "re") {
+        document.getElementById("eml_" + this.emlViewIndex).style.display =
+          "none";
+        document.getElementById("eml_tn_" + this.emlViewIndex).style.display =
+          "none";
+      }
+      else {
+      // do something here to show the email reply 
+      }
       this.emlViewSrc = null;
       this.emlViewIndex = null;
       this.showReply = false;
