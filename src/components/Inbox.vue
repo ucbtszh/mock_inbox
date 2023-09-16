@@ -3,9 +3,11 @@
     <v-toolbar height="50" color="rgb(0,120,212)" >
       <p id="outlook-sign">Outlook</p>
       <v-spacer></v-spacer>
-
-      <v-card>Time Remaining: {{ remainingTimeDisplay }}</v-card>
-
+      
+      <p id="time-remaining">Time Remaining: {{ remainingTimeDisplay }}</p>
+      <v-spacer></v-spacer>
+      
+      <!---->
 
       <v-dialog v-model="showHelp" persistent max-width="860px">
         <template v-slot:activator="{ on, attrs }">
@@ -414,7 +416,7 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import db from "../utils/firestore";
-import tracking from "../utils/track_ui";
+// import tracking from "../utils/track_ui";
 import InstructTxt from "./InstructTxt.vue";
 // import firebase from "firebase/app";
 // import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Import the Firebase Storage functions
@@ -422,6 +424,10 @@ import { ref, uploadBytes } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { storage } from "../main";
 
+// use query selector all method and search for all the link attributes and then attach an 
+// event listener to those elements and close the event listener when youre done with the exercise/email
+
+// links are within email body, have to import script in the eml files.
 
 export default {
   components: {
@@ -429,7 +435,7 @@ export default {
     InstructTxt,
   },
   props: ["emls", "UI"],
-  mixins: [db, tracking],
+  mixins: [db], //, tracking],
   data: () => ({
     emlViewSrc: "",
     emlViewIndex: null,
@@ -468,6 +474,21 @@ export default {
     },
   },
   methods: {
+    // handleIframeMssg(event) {
+    //   // Check if the event comes from a trusted source (you can add more security checks if needed)
+    //   console.log("d", event.data);
+
+    //   // problem is this d is printed as soon as i click the email. and that the mssg doesnt contain the clickedUrl
+    //   const data = event.data;
+
+    //   // Check if the message contains clicked URL information
+    //   if (data && data.clickedUrl) {
+    //     // Do something with the clicked URL information
+    //     console.log('Clicked URL:', data.clickedUrl);
+        
+    //     // You can perform further actions here, such as opening the URL or displaying a message.
+    //   }
+    // },
     startTimer() {
       // this function is called every second. and since remainingtime is 2400, it is called for 2400seconds
       const timerInterval = setInterval(() => {
@@ -515,6 +536,15 @@ export default {
       } catch (TypeError) {
         // console.log("iframe is null");
       }
+      this.addUrlListeners();
+      // this.sendScanMsg();
+    },
+    addUrlListeners() {
+      console.log("hey i am here");
+      document.getElementById("eml_body_" + this.emlViewIndex).contentWindow.postMessage("message", this.handleUrlClick);
+    },
+    handleUrlClick() {
+      console.log('bruh');
     },
     labelEml(label) {
       // console.log(this.)
@@ -535,13 +565,10 @@ export default {
       // console.log(this.labels);
     },
     handleAutomaticFinish() {
-      if (Object.values(this.labels).length < this.emls.length) {
-        alert(
-          "Time's up."
-        );
-      } else {
-        this.sendLabels();
-      }
+      alert(
+        "Time's up. Your responses are being stored and you will now be forwarded to a feedback form!"
+      );
+      this.sendLabels();
     },
     handleFinish() {
       if (Object.values(this.labels).length < this.emls.length) {
@@ -610,6 +637,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener("message", this.setScanRes);
+    // window.removeEventListener("click", this.handleIframeMssg);
   },
 };
 </script>
@@ -619,7 +647,7 @@ export default {
   background-color: rgb(248, 248, 248);
 }
 
-#outlook-sign {
+#outlook-sign, #time-remaining {
   font-size: 18px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: white;
