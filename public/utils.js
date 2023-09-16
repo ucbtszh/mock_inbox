@@ -1,8 +1,10 @@
-window.addEventListener("message", scanEml, false);
+// listen for the mssg
+window.addEventListener("message", scanEml);
 
+// call this function once you get the mssg
 function scanEml(event) {
+  console.log("hi scanEMl called");
   var origin = event.origin || event.originalEvent.origin; // For Chrome, the origin property is in the event.originalEvent object.
-  //   console.log("origin received in mail", origin)
   if (
     !(
       origin === "https://mock-inbox.web.app" ||
@@ -27,19 +29,31 @@ function scanURLs() {
   let URLs = [...docHTML.getElementsByTagName("a")];
 
   let data = [];
+  console.log('hey scanURLs is called');
 
   URLs.forEach((url) => {
     let link = new URL(url.href);
 
-    data.push({
+    let urlInfo = {
       urlRaw: link.href,
       urlDomain: link.hostname,
       urlDisplayTxt: url.innerText,
-    });
+    };
+
+    // add event listener to each url
+    // in event handler, send mssg back to parent
+    // url.addEventListener('click', () => {
+    //   window.parent.postMessage({ clickedUrl: urlInfo.urlRaw }, '*');
+    // });
+
+    data.push(urlInfo);
+
   });
   // console.log("parsed URL data", data);
   return data;
 }
+
+// whenever clicked, send that click back to parent?
 
 // function scanName() {
 //   let emlBody = document.body.innerText.split(/\n/);
