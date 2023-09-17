@@ -289,6 +289,38 @@
                   ref="iframe"
                 />
               </div>
+
+              <div id="userReply" v-if="labels[emlViewSrc] == 're'">
+                <hr> <hr>
+                <v-row style="margin-top: 2px;">
+                  <v-col cols="11">
+                    <div class="initial" :id="'eml_head_initial_' + index">
+                       A
+                    </div>
+                    <div style="margin-left: 65px">
+                      <div
+                        class="from-name"
+                        :id="'eml_head_from_name_' + index"
+                      >
+                        A. Durrani&nbsp;&lt;a.durrani@ptcl.com&gt;
+                      </div>
+                      <div class="time" :id="'eml_head_time_' + index">
+                       Now
+                      </div>
+                      <div class="to" :id="'eml_head_to_' + index">
+                        To:&nbsp;&nbsp;{{ replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf("RECIPIENT(S):") + 1, replies[emlViewSrc].split(' ').indexOf("")).filter(item => item.trim() !== '').join(', ') }}<br />
+                        <p v-if="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$EMAIL:') + 1) !== ''">CC: {{ replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf("$$$CCed:") + 1, replies[emlViewSrc].split(' ').indexOf("$$$EMAIL:") - 1).filter(item => item.trim() !== '').join(', ') }}</p>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+
+                <div v-html="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$EMAIL:') + 1, replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') - 1).filter(item => item.trim() !== '').join(' ')">
+                </div>
+
+                <!-- TODO: add attachments if any  + fix style of reply's body-->
+                
+              </div>
             </div>
           </v-card>
         </v-col>
@@ -474,12 +506,13 @@ export default {
         "  \n\n\n $$$CCed: " +
         this.ccEmails +
         "  \n\n\n $$$EMAIL: " +
-        this.replyTxt;
+        this.replyTxt +
+        "  \n\n\n $$$ATTACHMENTS: ";
 
       // add attachments
       if (this.uploadedAttachments.length > 0) {
         const attachmentText = this.uploadedAttachments.map(attachment => `Attachment URL: ${attachment.url}`).join('\n');
-        this.replies[src] += `    \n\n\n $$$ATTACHMENTS: ${attachmentText}`;
+        this.replies[src] += `${attachmentText}`;
       }
 
       this.writeResponseData(this.$user, "replies", this.replies);
