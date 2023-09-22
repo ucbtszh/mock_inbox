@@ -288,6 +288,7 @@
                   :id="'eml_body_' + index"
                   ref="iframe"
                 />
+                <!-- make new component and pass body to it -->
               </div>
 
               <div id="userReply" v-if="labels[emlViewSrc] == 're'">
@@ -319,14 +320,16 @@
                 </div>
 
                 <!-- TODO: add attachments if any-->
-                <div v-for="(item, inx) in replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') + 1)" :key="inx">
-                  <div class="email-attachment">
-                      <div class="attachment-icon"></div>
-                      <div class="attachment-details">
-                          <p class="attachment-filename">{{ item.match(/\/o\/([^?]+)/)[1] }}</p>
-                      </div>
-                      <a class="download-link" :href="item">Download</a>
-                  </div>
+                <div v-if="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') + 1).filter(element => element !== '').length > 0">
+                  <div v-for="(item, inx) in replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') + 1)" :key="inx">
+                    <div class="email-attachment">
+                        <div class="attachment-icon"></div>
+                        <div class="attachment-details">
+                            <p class="attachment-filename">{{ item.match(/\/o\/([^?]+)/)[1] }}</p>
+                        </div>
+                        <a class="download-link" :href="item">Download</a>
+                    </div>
+                  </div>  
                 </div>  
 
                 
@@ -519,9 +522,10 @@ export default {
         this.replyTxt +
         "  \n\n\n $$$ATTACHMENTS: ";
 
+
       // add attachments
       if (this.uploadedAttachments.length > 0) {
-        console.log('i am here\n');
+        // console.log('i am here\n');
         const attachmentText = this.uploadedAttachments.map(attachment => `${attachment.url}`).join('\n');
         this.replies[src] += `${attachmentText}`;
       }
