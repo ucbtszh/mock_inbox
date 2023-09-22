@@ -288,6 +288,7 @@
                   :id="'eml_body_' + index"
                   ref="iframe"
                 />
+                <!-- make new component and pass body to it -->
               </div>
 
               <div id="userReply" v-if="labels[emlViewSrc] == 're'">
@@ -315,10 +316,22 @@
                   </v-col>
                 </v-row>
 
-                <div v-html="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$EMAIL:') + 1, replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') - 1).filter(item => item.trim() !== '').join(' ')">
+                <div id="email-reply" v-html="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$EMAIL:') + 1, replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') - 1).filter(item => item.trim() !== '').join(' ')">
                 </div>
 
-                <!-- TODO: add attachments if any  + fix style of reply's body-->
+                <!-- TODO: add attachments if any-->
+                <div v-if="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') + 1).filter(element => element !== '').length > 0">
+                  <div v-for="(item, inx) in replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') + 1)" :key="inx">
+                    <div class="email-attachment">
+                        <div class="attachment-icon"></div>
+                        <div class="attachment-details">
+                            <p class="attachment-filename">{{ item.match(/\/o\/([^?]+)/)[1] }}</p>
+                        </div>
+                        <a class="download-link" :href="item">Download</a>
+                    </div>
+                  </div>  
+                </div>  
+
                 
               </div>
             </div>
@@ -484,9 +497,11 @@ export default {
         this.replyTxt +
         "  \n\n\n $$$ATTACHMENTS: ";
 
+
       // add attachments
       if (this.uploadedAttachments.length > 0) {
-        const attachmentText = this.uploadedAttachments.map(attachment => `Attachment URL: ${attachment.url}`).join('\n');
+        // console.log('i am here\n');
+        const attachmentText = this.uploadedAttachments.map(attachment => `${attachment.url}`).join('\n');
         this.replies[src] += `${attachmentText}`;
       }
 
@@ -570,7 +585,7 @@ export default {
   font-size: 11pt;
 }
 
-iframe {
+iframe, #email-reply {
   width: 95%;
   border: 0;
   display: block;
@@ -582,5 +597,58 @@ iframe {
   position: absolute;
   right: 1px;
 }
+
+
+/* Styles for the attachment filename */
+.attachment-filename {
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+/* Styles for the attachment size */
+.attachment-size {
+    font-size: 12px;
+    margin: 0;
+    color: #666;
+}
+
+/* Styles for the download link */
+.download-link {
+    background-color: #0072C6;
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.download-link:hover {
+    background-color: #005ea6;
+}
+
+email-attachment-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 100% viewport height */
+    overflow: hidden;
+    background-color: #f0f0f0; /* Background color for the entire viewport */
+}
+
+/* Styles for the email attachment */
+.email-attachment {
+    background-color: #f9f9f9;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+}
+
 
 </style>
