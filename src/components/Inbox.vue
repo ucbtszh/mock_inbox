@@ -335,15 +335,8 @@ import db from "../utils/firestore";
 // import tracking from "../utils/track_ui";
 import InstructTxt from "./InstructTxt.vue";
 // import firebase from "firebase/app";
-// import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Import the Firebase Storage functions
-import { ref, uploadBytes } from "firebase/storage";
-import { getDownloadURL } from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage"; // uploadBytes
 import { storage } from "../main";
-
-// use query selector all method and search for all the link attributes and then attach an 
-// event listener to those elements and close the event listener when youre done with the exercise/email
-
-// links are within email body, have to import script in the eml files.
 
 export default {
   components: {
@@ -358,6 +351,7 @@ export default {
     emlHoverIndex: null,
     showHelp: false,
     labels: {},
+    urlClicks: [],
     showReply: false,
     recipientEmails: "",
     ccEmails: "",
@@ -375,7 +369,7 @@ export default {
     snackbar: false,
     snackbarTxt: "E-mail",
   }),
-  computed: {
+  computed: { 
     remainingTimeDisplay() {
       const minutes = Math.floor(this.remainingTime / 60);
       const seconds = this.remainingTime % 60;
@@ -383,22 +377,7 @@ export default {
     },
   },
   methods: {
-    // handleIframeMssg(event) {
-    //   // Check if the event comes from a trusted source (you can add more security checks if needed)
-    //   console.log("d", event.data);
-
-    //   // problem is this d is printed as soon as i click the email. and that the mssg doesnt contain the clickedUrl
-    //   const data = event.data;
-
-    //   // Check if the message contains clicked URL information
-    //   if (data && data.clickedUrl) {
-    //     // Do something with the clicked URL information
-    //     console.log('Clicked URL:', data.clickedUrl);
-        
-    //     // You can perform further actions here, such as opening the URL or displaying a message.
-    //   }
-    // },
-    startTimer() {
+    startTimer() {      
       // this function is called every second. and since remainingtime is 2400, it is called for 2400seconds
       const timerInterval = setInterval(() => {
         if (this.remainingTime <= 0) {
@@ -424,12 +403,12 @@ export default {
           // upload the file to Firebase Cloud Storage
           const storageRef = ref(storage, fileName);
 
-          const snapshot = await uploadBytes(storageRef, file);
-
           const downloadURL = await getDownloadURL(storageRef);
-          console.log('downloadurl:', downloadURL);
+          // console.log('downloadurl:', downloadURL);
           this.uploadedAttachments.push({'url': downloadURL, 'name': file.name});
-          console.log(snapshot)
+          
+          // const snapshot = await uploadBytes(storageRef, file);
+          // console.log(snapshot)
           
         } catch (error) {
           console.error('Error uploading file:', error);
@@ -444,18 +423,20 @@ export default {
       } catch (TypeError) {
         // console.log("iframe is null");
       }
-      this.addUrlListeners();
-      // this.sendScanMsg();
+      this.urlClickListener();
     },
-    addUrlListeners() {
-      console.log("hey i am here");
-      document.getElementById("eml_body_" + this.emlViewIndex).contentWindow.postMessage("message", this.handleUrlClick);
-    },
-    handleUrlClick() {
-      console.log('bruh');
+    urlClickListener() {
+      setTimeout(() => {
+        document.getElementById("eml_body_" + this.emlViewIndex).contentWindow.postMessage("track URL clicks", "/")  
+      }, 750); // TODO: this is not an ideal solution; better would be to find a way to check if the iframe content is loaded, then execute the postmessage func
+
+      this.handleUrlClick = (obj) => { // helper func to get details on clicked URL
+        this.urlClicks.push(obj.data);
+        console.log(this.urlClicks)
+      };
+      window.addEventListener("message", this.handleUrlClick); // when receiving message back from child (e-mail html file), call helper func to set urlClicks data
     },
     labelEml(label) {
-      // console.log(this.)
       this.labels[this.emlViewSrc] = label;
       if (label !== "re") {
         document.getElementById("eml_" + this.emlViewIndex).style.display =
@@ -464,17 +445,16 @@ export default {
           "none";
       }
       else {
-      // do something here to show the email reply 
+      // TODO? do something here to show the email reply 
       }
       this.emlViewSrc = null;
       this.emlViewIndex = null;
       this.showReply = false;
-      // this.uploadedAttachments = [];
       // console.log(this.labels);
     },
     handleAutomaticFinish() {
       alert(
-        "Time's up. Your responses are being stored and you will now be forwarded to a feedback form!"
+        "Time's up. Your responses are being stored and you will now be forwarded to a feedback form."
       );
       this.sendLabels();
     },
@@ -489,11 +469,6 @@ export default {
     },
     sendLabels() {
       // SEND EML LABELS TO DB
-      // if (this.labels.length < this.emls.length) {
-      //   alert(
-      //     "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
-      //   );
-      // } else {
         this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
         this.$emit("next");
       // }
@@ -522,54 +497,19 @@ export default {
       this.ccEmails = "";
       this.uploadedAttachments = [];
     },
-    sendScanMsg() {
-      console.log('hi im in send scan mssg?');
-      // this function sends a mssg to the child html file, check that file to see whatsup
-      // but where do i call this function?
-      document
-        .getElementById("eml_body_" + this.emlViewIndex)
-        .contentWindow.postMessage("scan e-mail", "/");
-      
-      this.setScanRes = (obj) => {
-        this.scanResult = obj.data;
-      };
-      window.addEventListener("message", this.setScanRes);
-      this.showScanResult = true;
-    },
-    showSenderPrevEmls() {
-      return null;
-    },
   },
   mounted() {
     window.scrollTo(0, 0);
     this.startTimer();
-    // window.addEventListener("click", this.handleIframeMssg);
-
-    
-    // listen to event from html file
-    // document
-    //     .getElementById("eml_body_" + this.emlViewIndex)
-    //     .contentWindow.postMessage("scan e-mail", "/");
-    //   this.setScanRes = (obj) => {
-    //     this.scanResult = obj.data;
-    //   };
-    //   window.addEventListener("message", this.setScanRes);
-    //   this.showScanResult = true;
 
     // prevent participants from navigating back to the instructions page
     history.pushState(null, null, location.href);
     window.onpopstate = function () {
       history.go(1);
     };
-
-    // uncomment this if u wanna automatically submit after 7min
-    // setTimeout(() => {
-    //   this.sendLabels();
-    // }, 420000); // automatically go to the next UI after 7 min = 420000ms
   },
   beforeDestroy() {
-    window.removeEventListener("message", this.setScanRes);
-    // window.removeEventListener("click", this.handleIframeMssg);
+    window.removeEventListener("message", this.handleUrlClick);
   },
 };
 </script>
