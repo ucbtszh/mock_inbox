@@ -282,13 +282,16 @@
                   </v-col>
                 </v-row>
 
-                <iframe
+                <!-- <iframe
                   :src="eml.bodyURL"
                   :height="eml.height + 50"
                   :id="'eml_body_' + index"
                   ref="iframe"
-                />
+                /> -->
                 <!-- make new component and pass body to it -->
+                <div id="email-reply">
+                  <l19 v-if="eml.bodyURL === '/l19.html'" :parentFunction="bruh" :height="eml.height + 150" :id="'eml_body_' + index"/>
+                </div>
               </div>
 
               <div id="userReply" v-if="labels[emlViewSrc] == 're'">
@@ -350,11 +353,13 @@ import InstructTxt from "./InstructTxt.vue";
 // import firebase from "firebase/app";
 import { getDownloadURL, ref } from "firebase/storage"; // uploadBytes
 import { storage } from "../main";
+import l19 from '../emls/l19.vue';
 
 export default {
   components: {
     VueEditor,
     InstructTxt,
+    l19
   },
   props: ["emls", "UI"],
   mixins: [db], //, tracking],
@@ -390,6 +395,9 @@ export default {
     },
   },
   methods: {
+    bruh() {
+      console.log('hey')
+    },
     startTimer() {      
       // this function is called every second. and since remainingtime is 2400, it is called for 2400seconds
       const timerInterval = setInterval(() => {
@@ -436,7 +444,7 @@ export default {
       } catch (TypeError) {
         // console.log("iframe is null");
       }
-      this.urlClickListener();
+      // this.urlClickListener();
     },
     urlClickListener() {
       setTimeout(() => {
