@@ -1,0 +1,61 @@
+.email-attachment {
+    background-color: #f9f9f9;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    margin: 20px;
+}
+
+/* Styles for the attachment icon */
+.attachment-icon {
+    background-image: url('attachment-icon.png'); /* Replace with your icon URL */
+    background-size: 32px 32px;
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+/* Styles for the attachment details */
+.attachment-details {
+    flex-grow: 1;
+}
+
+/* Styles for the attachment filename */
+.attachment-filename {
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+    /* padding: 8px 16px; */
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Styles for the attachment size */
+.attachment-size {
+    font-size: 12px;
+    margin: 0;
+    color: #666;
+}
+
+/* Styles for the download link */
+.download-link {
+    /* background-color: #0072C6; */
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    color: white;
+    z-index: 100;
+}
+
+.download-link:hover {
+    font-size: 17px;
+    transition: font-size 0.3s;
+}
