@@ -290,7 +290,9 @@
                 /> -->
                 <!-- make new component and pass body to it -->
                 <div id="email-reply">
-                  <l19 v-if="eml.bodyURL === '/l19.html'" :parentFunction="bruh" :height="eml.height + 150" :id="'eml_body_' + index"/>
+                  <l19 v-if="eml.bodyURL === '/l19.html'" :parentFunction="bruh" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l26 v-if="eml.bodyURL === '/l26.html'" :parentFunction="bruh" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                
                 </div>
               </div>
 
@@ -354,12 +356,13 @@ import InstructTxt from "./InstructTxt.vue";
 import { getDownloadURL, ref } from "firebase/storage"; // uploadBytes
 import { storage } from "../main";
 import l19 from '../emls/l19.vue';
+import l26 from '../emls/l26.vue'
 
 export default {
   components: {
     VueEditor,
     InstructTxt,
-    l19
+    l19, l26
   },
   props: ["emls", "UI"],
   mixins: [db], //, tracking],
@@ -396,7 +399,7 @@ export default {
   },
   methods: {
     bruh() {
-      console.log('hey')
+      console.log('hey i got clicked haha')
     },
     startTimer() {      
       // this function is called every second. and since remainingtime is 2400, it is called for 2400seconds
@@ -496,6 +499,7 @@ export default {
     },
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
+      console.log('sending?')
       this.replies[src] =
         "RECIPIENT(S): " +
         this.recipientEmails +
@@ -512,6 +516,7 @@ export default {
         const attachmentText = this.uploadedAttachments.map(attachment => `${attachment.url}`).join('\n');
         this.replies[src] += `${attachmentText}`;
       }
+      console.log(this.replies[src]);
 
       this.writeResponseData(this.$user, "replies", this.replies);
       this.showReply = false;
@@ -597,7 +602,7 @@ iframe, #email-reply {
   width: 95%;
   border: 0;
   display: block;
-  margin-left: 58px;
+  margin-left: 65px;
   padding: 0;
 }
 
