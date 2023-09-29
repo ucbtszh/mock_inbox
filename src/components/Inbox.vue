@@ -376,8 +376,8 @@
                 /> -->
                 <!-- make new component and pass body to it -->
                 <div id="email-reply">
-                  <l19 v-if="eml.bodyURL === '/l19.html'" :parentFunction="bruh" :height="eml.height + 250" :id="'eml_body_' + index"/>
-                  <l26 v-if="eml.bodyURL === '/l26.html'" :parentFunction="bruh" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l19 v-if="eml.bodyURL === '/l19.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l26 v-if="eml.bodyURL === '/l26.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                 
                 </div>
               </div>
@@ -488,7 +488,7 @@ export default {
     emlHoverIndex: null,
     showHelp: false,
     labels: {},
-    urlClicks: [],
+    urlClicks: {},
     showReply: false,
     showCreated: false,
     replyTxt: null,
@@ -521,8 +521,13 @@ export default {
     },
   },
   methods: {
-    bruh() {
-      console.log('hey i got clicked haha')
+    storeUrlClick(url) {
+      if (this.urlClicks[this.emlViewSrc]) {
+        this.urlClicks[this.emlViewSrc].push(url);
+      }
+      else {
+        this.urlClicks[this.emlViewSrc] = [url];  
+      }
     },
     startTimer() {      
       // this function is called every second. and since remainingtime is 2400, it is called for 2400seconds
@@ -586,6 +591,7 @@ export default {
     },
     labelEml(label) {
       this.labels[this.emlViewSrc] = label;
+      console.log(this.urlClicks);
       if (label !== "re") {
         document.getElementById("eml_" + this.emlViewIndex).style.display =
           "none";
@@ -613,13 +619,14 @@ export default {
         );
       } else {
         this.sendLabels();
+        // console.log('hey');
       }
     },
     sendLabels() {
       // SEND EML LABELS TO DB
-        this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
-        this.$emit("next");
-      // }
+      this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
+      this.writeResponseData(this.$user, "urlClicks", this.urlClicks);
+      this.$emit("next");
     },
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
@@ -640,7 +647,7 @@ export default {
         const attachmentText = this.uploadedAttachments.map(attachment => `${attachment.url}`).join('\n');
         this.replies[src] += `${attachmentText}`;
       }
-      console.log(this.replies[src]);
+      // console.log(this.replies[src]);
 
       this.writeResponseData(this.$user, "replies", this.replies);
       this.showReply = false;
