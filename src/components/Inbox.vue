@@ -378,6 +378,8 @@
                 <div id="email-reply">
                   <l19 v-if="eml.bodyURL === '/l19.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                   <l26 v-if="eml.bodyURL === '/l26.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l3 v-if="eml.bodyURL === '/l3.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l30 v-if="eml.bodyURL === '/l30.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                 
                 </div>
               </div>
@@ -472,13 +474,15 @@ import InstructTxt from "./InstructTxt.vue";
 import { getDownloadURL, ref } from "firebase/storage"; // uploadBytes
 import { storage } from "../main";
 import l19 from '../emls/l19.vue';
-import l26 from '../emls/l26.vue'
+import l26 from '../emls/l26.vue';
+import l3 from '../emls/l3.vue';
+import l30 from '../emls/l30.vue';
 
 export default {
   components: {
     VueEditor,
     InstructTxt,
-    l19, l26
+    l19, l26, l3, l30
   },
   props: ["emls", "UI"],
   mixins: [db], //, tracking],
@@ -554,7 +558,6 @@ export default {
         try {
           // upload the file to Firebase Cloud Storage
           const storageRef = ref(storage, fileName);
-
           const downloadURL = await getDownloadURL(storageRef);
           // console.log('downloadurl:', downloadURL);
           this.uploadedAttachments.push({'url': downloadURL, 'name': file.name});
