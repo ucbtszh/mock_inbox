@@ -355,7 +355,7 @@ import db from "../utils/firestore";
 // import tracking from "../utils/track_ui";
 import InstructTxt from "./InstructTxt.vue";
 // import firebase from "firebase/app";
-import { getDownloadURL, ref } from "firebase/storage"; // uploadBytes
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"; // uploadBytes
 import { storage } from "../main";
 import l19 from '../emls/l19.vue';
 import l26 from '../emls/l26.vue';
@@ -430,17 +430,24 @@ export default {
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const fileName = Date.now() + '_' + file.name;
-        
+        const fileName = this.emlViewSrc.slice(1, this.emlViewSrc.indexOf('.')) + '_' + file.name;
+        console.log(fileName);
         try {
           // upload the file to Firebase Cloud Storage
           const storageRef = ref(storage, fileName);
-          const downloadURL = await getDownloadURL(storageRef);
-          // console.log('downloadurl:', downloadURL);
-          this.uploadedAttachments.push({'url': downloadURL, 'name': file.name});
+          const uploadTask = await uploadBytes(storageRef, file);
+          const downloadURL = await getDownloadURL(uploadTask.ref);
           
-          // const snapshot = await uploadBytes(storageRef, file);
-          // console.log(snapshot)
+              // Upload completed successfully
+              // const downloadURL = await getDownloadURL(storageRef);
+          this.uploadedAttachments.push({ 'url': downloadURL, 'name': file.name });
+            // }
+          // );
+          // console.log('downloadurl:', downloadURL);
+          // this.uploadedAttachments.push({'url': downloadURL, 'name': file.name});
+          
+          // // const snapshot = await uploadBytes(storageRef, file);
+          // // console.log(snapshot)
           
         } catch (error) {
           console.error('Error uploading file:', error);
