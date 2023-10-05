@@ -193,15 +193,16 @@
           >
             <div v-if="index == emlViewIndex">
               <div v-if="showReply" :id="'reply_' + index">
-                <!-- TODO? ADD VALIDATION LOGIC TO ONLY ALLOW SUBMITTING THE MESSAGE IF THE 'TO' FIELD CONTAINS AT LEAST ONE E-MAIL ADDRESS -->
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                   To:
                   <input
-                    type="text"
+                    type="email"
                     name="CC"
                     :id="'recipientEmails' + index"
                     v-model="recipientEmails"
-                    placeholder="Enter recipient's email"
+                    placeholder="To"
+                    @input="validateToEmail"
+                    required
                   />
                 </p>
 
@@ -222,7 +223,7 @@
 
                 <p style="display: flex">
                   <v-btn
-                    :disabled="replyTxt == null"
+                    :disabled="replyTxt == null || !validToEmail"
                     type="submit"
                     color="primary"
                     style="margin-right: 2%"
@@ -378,8 +379,9 @@ export default {
     labels: {},
     urlClicks: {},
     showReply: false,
-    recipientEmails: "",
+    recipientEmails: null,
     ccEmails: "",
+    validToEmail: false,
     remainingTime: 2400,
     replyTxt: null,
     uploadedAttachments: [],
@@ -410,6 +412,13 @@ export default {
         this.urlClicks[this.emlViewSrc] = [url];  
       }
     },
+    validateToEmail() {
+      // Regular expression for email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      // Check if the entered email is valid
+      this.validToEmail = emailRegex.test(this.recipientEmails);
+    },
     startTimer() {      
       // this function is called every second. and since remainingtime is 2400, it is called for 2400seconds
       const timerInterval = setInterval(() => {
@@ -437,17 +446,7 @@ export default {
           const storageRef = ref(storage, fileName);
           const uploadTask = await uploadBytes(storageRef, file);
           const downloadURL = await getDownloadURL(uploadTask.ref);
-          
-              // Upload completed successfully
-              // const downloadURL = await getDownloadURL(storageRef);
           this.uploadedAttachments.push({ 'url': downloadURL, 'name': file.name });
-            // }
-          // );
-          // console.log('downloadurl:', downloadURL);
-          // this.uploadedAttachments.push({'url': downloadURL, 'name': file.name});
-          
-          // // const snapshot = await uploadBytes(storageRef, file);
-          // // console.log(snapshot)
           
         } catch (error) {
           console.error('Error uploading file:', error);
@@ -538,7 +537,7 @@ export default {
       this.writeResponseData(this.$user, "replies", this.replies);
       this.showReply = false;
       this.replyTxt = null;
-      this.recipientEmails = "";
+      this.recipientEmails = null;
       this.ccEmails = "";
       this.uploadedAttachments = [];
     },
