@@ -300,7 +300,9 @@
                     id="ccEmails" 
                     v-model="ccEmails"
                     placeholder="CC"
-                  />
+                    @input="validateCCEmail"
+                    @change="turnvalidatefalse"
+                  /> 
                 </p>
 
                 <vue-editor
@@ -310,7 +312,7 @@
 
                 <p style="display: flex">
                   <v-btn
-                    :disabled="replyTxt == null || !validToEmail"
+                    :disabled="replyTxt == null || !validToEmail || (!validCCEmail && this.ccEmails.length > 0)"
                     type="submit"
                     color="primary"
                     style="margin-right: 2%"
@@ -527,6 +529,9 @@ export default {
     },
   },
   methods: {
+    turnvalidatefalse() {
+      this.validCCEmail = false;
+    },
     storeUrlClick(url) {
       if (this.urlClicks[this.emlViewSrc]) {
         this.urlClicks[this.emlViewSrc].push(url);
@@ -540,7 +545,16 @@ export default {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       // Check if the entered email is valid
-      this.validToEmail = emailRegex.test(this.recipientEmails);
+      // this.validToEmail = emailRegex.test(this.recipientEmails);
+      const emailAddresses = this.recipientEmails.split(',');
+      this.validToEmail = emailAddresses.every(email => emailRegex.test(email.trim()));
+    },
+    validateCCEmail() {
+      // Regular expression for email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      // Check if the entered email is valid
+      this.validCCEmail = emailRegex.test(this.ccEmails);
     },
     startTimer() {      
       // this function is called every second. and since remainingtime is 2400, it is called for 2400seconds
@@ -662,7 +676,7 @@ export default {
       this.showReply = false;
       this.replyTxt = null;
       this.recipientEmails = null;
-      this.ccEmails = "";
+      this.ccEmails = ""
       this.uploadedAttachments = [];
     },
     sendCreate(){
