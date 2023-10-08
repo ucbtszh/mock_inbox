@@ -225,7 +225,7 @@
 
                 <p style="display: flex">
                   <v-btn
-                    :disabled="replyTxt == null || !validToEmail || (!validCCEmail && this.ccEmails.length > 0)"
+                    :disabled="replyTxt == null || !validToEmail"
                     type="submit"
                     color="primary"
                     style="margin-right: 2%"
