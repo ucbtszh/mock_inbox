@@ -576,8 +576,23 @@ export default {
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
+        
+        const allowedExtensions = ['.pdf', '.docx', '.jpg', '.jpeg', '.png', '.gif'];
+        const maxFileSize = 100 * 1024 * 1024; // 100 MB in bytes
+
+        const fileExtension = file.name.toLowerCase().substr(file.name.lastIndexOf('.'));
+        if (!allowedExtensions.includes(fileExtension)) {
+          alert('Invalid file type. Please upload a .pdf, .docx, or image file.');
+          continue; // Skip this file
+        }
+
+        if (file.size > maxFileSize) {
+          alert('File size exceeds the maximum allowed (100 MB).');
+          continue; // Skip this file
+        }
+
         const fileName = this.emlViewSrc.slice(1, this.emlViewSrc.indexOf('.')) + '_' + file.name;
-        console.log(fileName);
+        
         try {
           // upload the file to Firebase Cloud Storage
           const storageRef = ref(storage, fileName);
