@@ -8,19 +8,20 @@
       please return to Prolific. If you can, please use your mouse to continue.
     </v-alert>
 
-    <b>Welcome!</b><br /><br />
+    <h1 style="text-align:center">Welcome!</h1><br /><br />
     <p>
-      Thank you for your interest in this research.<br />
+      Thank you for your interest in this research.
       We are testing new designs for the Outlook e-mail client. You will be
-      asked to process e-mails in a simulated Outlook inbox. <br />
+      asked to process e-mails in a simulated Outlook inbox. 
       This study is being undertaken by researchers from University College
-      London (UCL).<br />
+      London (UCL).
       Before proceeding, please carefully read the following.<br /><br />
     </p>
     <b
       >By signing this consent form and clicking “Continue” below, I understand
-      that:</b
-    ><br />
+      that:
+    </b><br />
+    <br>
     <ul>
       <li>
         I declare that I will complete the tasks seriously and as accurate as I
@@ -73,10 +74,13 @@
       sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
       :loadRecaptchaScript="true"
       @verify="showButton = true"
+      style="margin: auto; width:50%"
+
     /><br />
 
+    <!-- captcha disabled for testing -->
     <v-btn
-      :disabled="!showButton"
+      :disabled="showButton"
       elevation="3"
       color="success"
       @click="
@@ -156,8 +160,9 @@ export default {
 #welcome {
   margin-top: 5%;
   width: 960px;
-  text-align: center;
+  text-align: left;
   margin-left: auto;
   margin-right: auto;
 }
+
 </style>
