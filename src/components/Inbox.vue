@@ -100,7 +100,7 @@
     <v-main>
       <v-row>
         <v-col cols="4" style="min-width: 525px">
-          <v-card style="height: 100vh; overflow: auto">
+          <v-card style="height: 100vh; overflow: auto;">
             <v-card-title>Inbox</v-card-title>
             <v-list>
               <v-list-item-group
@@ -190,7 +190,9 @@
             v-for="(eml, index) in emls"
             :key="index"
             :id="'eml_' + index"
+            
           >
+          <!-- /* style="margin-right: 50px;" */ -->
             <div v-if="index == emlViewIndex">
               <div v-if="showReply" :id="'reply_' + index">
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
@@ -209,6 +211,7 @@
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                 CC: 
                   <input 
+                  title="do i work TODO: add , specification"
                     type="email"
                     id="ccEmails" 
                     v-model="ccEmails"
@@ -299,54 +302,60 @@
                   <l30 v-if="eml.bodyURL === '/l30.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                 
                 </div>
+
               </div>
 
-              <div id="userReply" v-if="labels[emlViewSrc] == 're'">
-                <hr> <hr>
-                <v-row style="margin-top: 2px;">
-                  <v-col cols="11">
-                    <div class="initial" :id="'eml_head_initial_' + index">
-                       A
-                    </div>
-                    <div style="margin-left: 65px">
-                      <div
-                        class="from-name"
-                        :id="'eml_head_from_name_' + index"
-                      >
-                        A. Durrani&nbsp;&lt;a.durrani@ptcl.com&gt;
-                      </div>
-                      <div class="time" :id="'eml_head_time_' + index">
-                       Now
-                      </div>
-                      <div class="to" :id="'eml_head_to_' + index">
-                        To:&nbsp;&nbsp;{{ replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf("RECIPIENT(S):") + 1, replies[emlViewSrc].split(' ').indexOf("")).filter(item => item.trim() !== '').join(', ') }}<br />
-                        <p v-if="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$EMAIL:') + 1) !== ''">CC: {{ replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf("$$$CCed:") + 1, replies[emlViewSrc].split(' ').indexOf("$$$EMAIL:") - 1).filter(item => item.trim() !== '').join(', ') }}</p>
-                      </div>
-                    </div>
-                  </v-col>
-                </v-row>
+              <!-- maybe convert into component and load component for each reply and use props to pass in the email -->
+              <div  v-if="labels[emlViewSrc] == 're'">
+                    <div :key="idx" id="userReply" v-for="(reply, idx) in replies[emlViewSrc]">
+                      <hr> <hr>
+                      <v-row style="margin-top: 2px;">
+                        <v-col cols="11">
+                          <div class="initial" :id="'eml_head_initial_' + index">
+                            A
+                          </div>
+                          <div style="margin-left: 65px">
+                            <div
+                              class="from-name"
+                              :id="'eml_head_from_name_' + index"
+                            >
+                              A. Durrani&nbsp;&lt;a.durrani@ptcl.com&gt;
+                            </div>
+                            <div class="time" :id="'eml_head_time_' + index">
+                            Now
+                            </div>
+                            <div class="to" :id="'eml_head_to_' + index">
+                              To:&nbsp;&nbsp;{{ reply.split(' ').slice(reply.split(' ').indexOf("RECIPIENT(S):") + 1, reply.split(' ').indexOf("")).filter(item => item.trim() !== '').join(', ') }}<br />
+                              <p v-if="reply.split(' ').slice(reply.split(' ').indexOf('$$$EMAIL:') + 1) !== ''">CC: {{ reply.split(' ').slice(reply.split(' ').indexOf("$$$CCed:") + 1, reply.split(' ').indexOf("$$$EMAIL:") - 1).filter(item => item.trim() !== '').join(', ') }}</p>
+                            </div>
+                          </div>
+                        </v-col>
+                      </v-row>
 
-                <div id="email-reply" v-html="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$EMAIL:') + 1, replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') - 1).filter(item => item.trim() !== '').join(' ')">
-                </div>
+                      <div id="email-reply" v-html="reply.split(' ').slice(reply.split(' ').indexOf('$$$EMAIL:') + 1, reply.split(' ').indexOf('$$$ATTACHMENTS:') - 1).filter(item => item.trim() !== '').join(' ')">
+                      </div>
 
-                <!-- TODO: add attachments if any-->
-                <div v-if="replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') + 1).filter(element => element !== '').length > 0">
-                  <div v-for="(item, inx) in replies[emlViewSrc].split(' ').slice(replies[emlViewSrc].split(' ').indexOf('$$$ATTACHMENTS:') + 1)" :key="inx">
-                    <div class="email-attachment">
-                        <div class="attachment-icon"></div>
-                        <div class="attachment-details">
-                            <p class="attachment-filename">{{ item.match(/\/o\/([^?]+)/)[1] }}</p>
-                        </div>
-                        <a class="download-link" :href="item">Download</a>
+                      <!-- TODO: add attachments if any-->
+                      <div v-if="reply.split(' ').slice(reply.split(' ').indexOf('$$$ATTACHMENTS:') + 1).filter(element => element !== '').length > 0">
+                        <div v-for="(item, inx) in reply.split(' ').slice(reply.split(' ').indexOf('$$$ATTACHMENTS:') + 1)" :key="inx">
+                          <div class="email-attachment">
+                              <div class="attachment-icon"></div>
+                              <div class="attachment-details">
+                                  <p class="attachment-filename">{{ item.match(/\/o\/([^?]+)/)[1] }}</p>
+                              </div>
+                              <a class="download-link" :href="item">Download</a>
+                          </div>
+                        </div>  
+                      </div>  
+
+                      
                     </div>
-                  </div>  
-                </div>  
+            </div>
 
-                
-              </div>
             </div>
           </v-card>
         </v-col>
+        <!-- <v-spacer></v-spacer> -->
       </v-row>
     </v-main>
   </div>
@@ -546,7 +555,7 @@ export default {
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
       console.log('sending?')
-      this.replies[src] =
+      let reply =
         "RECIPIENT(S): " +
         this.recipientEmails +
         "  \n\n\n $$$CCed: " +
@@ -554,20 +563,27 @@ export default {
         "  \n\n\n $$$EMAIL: " +
         this.replyTxt +
         "  \n\n\n $$$ATTACHMENTS: ";
-
-
+        
+        
       // add attachments
       if (this.uploadedAttachments.length > 0) {
         // console.log('i am here\n');
         const attachmentText = this.uploadedAttachments.map(attachment => `${attachment.url}`).join('\n');
-        this.replies[src] += `${attachmentText}`;
+        reply += `${attachmentText}`;
       }
-      // console.log(this.replies[src]);
+
+      if (!this.replies[src]) {
+        this.replies[src] = [];
+      }
+
+      // Push the reply to the array
+      this.replies[src].push(reply);
 
       this.writeResponseData(this.$user, "replies", this.replies);
       this.showReply = false;
       this.replyTxt = null;
       this.recipientEmails = null;
+      this.validToEmail = false;
       this.ccEmails = ""
       this.uploadedAttachments = [];
     },
