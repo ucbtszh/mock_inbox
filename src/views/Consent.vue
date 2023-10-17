@@ -22,46 +22,25 @@
       that:
     </b><br />
     <br>
-    <ul>
-      <li>
-        I declare that I will complete the tasks seriously and as accurate as I
-        can to be compensated fairly for my efforts;
-      </li>
-      <li>
+        I declare that I will complete the tasks seriously and as accurate 
         My participation in this study is completely voluntary and I can leave
         at any time without giving a reason by closing the web browser. If I do
-        this, any data I provided will be deleted;
-      </li>
-      <li>
-        Financial compensation for my participation in this study will only
-        happen upon full completion of the provided task;
-      </li>
-      <li>
+        this, any data I provided will be deleted. 
         My participation in this study contributes to scientific development and
-        is in no way benefiting commercial purposes;
-      </li>
-      <li>
+        is in no way benefiting commercial purposes. 
         If I enable tracking through Google Analytics, my responses may be
-        analysed using information from third party cookies;
-      </li>
-      <li>All my responses will be processed anonymously;</li>
-      <li>
+        analysed using information from third party cookies. 
+        All my responses will be processed anonymously. 
         The anonymous responses may be shared with other researchers and appear
-        in academic publications;
-      </li>
-      <li>
+        in academic publications. 
         This research project has been approved by the designated ethics officer
-        at UCL;
-      </li>
-      <li>
-        I may contact UCL with any additional questions or complaints through
-        <a href="mailto:ucbtszh@ucl.ac.uk">ucbtszh@ucl.ac.uk</a>. If I feel my
-        complaint has not been handled satisfactorily, I can contact the UCL
+        at UdS.<br>
+        I may contact Saarland University with any additional questions or complaints through
+        <a href="research@mx.uni-saarland.de">research@mx.uni-saarland.de</a>. If I feel my
+        complaint has not been handled satisfactorily, I can contact the Saarland University
         Research Ethics Committee at
-        <a href="mailto:scs.ethics@ucl.ac.uk">scs.ethics@ucl.ac.uk</a>;
-      </li>
-      <li>This study is expected to take no longer than 30 minutes.</li>
-    </ul>
+        <a href="ckoenig@mx.uni-saarland.de">ckoenig@mx.uni-saarland.de</a>;
+      This study is expected to take no longer than 40 minutes.
     <br />
 
     <p v-show="!$isProlificUser">
