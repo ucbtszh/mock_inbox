@@ -59,7 +59,7 @@
       Your unique ID is: <b>{{ this.$user }}</b>
     </p>
 
-    <!-- <VueRecaptcha
+    <VueRecaptcha
       ref="recaptcha"
       sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
       :loadRecaptchaScript="true"
@@ -126,6 +126,8 @@ export default {
       let uuid = urlParams.get("PROLIFIC_PID");
       Vue.prototype.$user = uuid;
       Vue.prototype.$isProlificUser = true;
+
+      // maybe we can use cookies? store session id from prolific as well
     } else {
       // let uuid = [...Array(32)]
       //   .map(() => Math.random().toString(36)[2])
