@@ -59,7 +59,7 @@
 
     <!-- captcha disabled for testing -->
     <v-btn
-      :disabled="showButton"
+      :disabled="!showButton"
       elevation="3"
       color="success"
       @click="
