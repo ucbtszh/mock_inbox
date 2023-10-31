@@ -36,7 +36,8 @@
     <v-toolbar dense color="rgb(240,240,240)" flat>
       <v-btn
           @click="
-                  showCreated = !showCreated
+                  showCreated = !showCreated;
+                  emlViewIndex = null;
           ">Create</v-btn>
 
       <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
@@ -303,7 +304,7 @@
               />
             </div>
           </v-card>
-          <div v-if="showCreated && emlViewIndex == void(0)" >
+          <div v-if="showCreated && emlViewIndex == null" >
             <div style="display: flex; align-items: center;">
               <label for="to" style="font-weight: bold; margin-right: 12px; margin-bottom: 4px">To:</label>
               <input type="text" id="to" v-model="createTo" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">

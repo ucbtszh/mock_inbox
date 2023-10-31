@@ -11,8 +11,8 @@
     <h1 style="text-align:center">Welcome!</h1><br /><br />
     <p>
       Thank you for your interest in this research.
-      We are testing new designs for the Outlook e-mail client. You will be
-      asked to process e-mails in a simulated Outlook inbox. 
+      We are testing new designs for the Outlook email client. You will be
+      asked to process emails in a simulated Outlook inbox. 
       This study is being undertaken by researchers from University College
       London (UCL).
       Before proceeding, please carefully read the following.<br /><br />
@@ -81,7 +81,7 @@ import { signInAnonymously } from "firebase/auth";
 export default {
   name: "consent",
   metaInfo: {
-    title: "Consent form | Online e-mail filter study",
+    title: "Consent form | Online email filter study",
     titleTemplate: null,
   },
   components: { VueRecaptcha },
