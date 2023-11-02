@@ -34,16 +34,9 @@
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
-      <v-btn
-          @click="
-                  showCreated = !showCreated;
-                  emlViewIndex = null;
-          ">Create</v-btn>
-
       <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
-      
       <v-btn
         depressed
         :disabled="!emlViewSrc"
@@ -127,7 +120,7 @@
             <li>
               The link displayed in the e-mail is not the same as the actual
               destination when you hover over the link.
-            e/li>
+            </li>
             <li>The actual link is from a suspicious domain, 'ngrok.io'.</li>
           </ul>
           <br />
@@ -237,7 +230,7 @@
             :key="index"
             :id="'eml_' + index"
           >
-                      <div v-if="index == emlViewIndex">
+            <div v-if="index == emlViewIndex">
               <div v-if="showReply" :id="'reply_' + index">
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                   To: {{ eml.fromEml }}
@@ -304,36 +297,6 @@
               />
             </div>
           </v-card>
-          <div v-if="showCreated" >
-            <div style="display: flex; align-items: center;">
-              <label for="to" style="font-weight: bold; margin-right: 12px; margin-bottom: 4px">To:</label>
-              <input type="text" id="to" v-model="createTo" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
-            </div>
-            <div style="display: flex; align-items: center;">
-              <label for="cc" style="margin-right: 12px; margin-bottom: 4px">Cc:</label>
-              <input type="text" id="cc" v-model="createCc" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
-            </div>
-            <div style="display: flex; align-items: center;">
-              <label for="bcc" style="margin-right: 12px; margin-bottom: 4px">Bcc:</label>
-              <input type="text" id="bcc" v-model="createBcc" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
-            </div>
-             <div style="display: flex; align-items: center; margin-top:20px">
-              <label for="subject" style="font-weight: bold; margin-right: 12px; margin-bottom: 4px">Subject:</label>
-              <input type="text" id="subject" v-model="createSubject" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
-            </div>
-            <vue-editor v-model="createTxt">
-              </vue-editor>
-             <v-btn
-              type="submit" 
-               color="primary"
-               @click="
-                  sendCreate();
-                  snackbarTxt = 'Email sent';
-                  snackbar = true;
-                       "
-               style="margin-top:1%"
-                >Send</v-btn>
-         </div>
         </v-col>
       </v-row>
     </v-main>
@@ -361,16 +324,8 @@ export default {
     showHelp: false,
     labels: {},
     showReply: false,
-    showCreated: false,
     replyTxt: null,
-    createTxt: null,
-    createTo: null,
-    createCc: null,
-    createBcc: null,
-    createSubject: null,
-    createShowed: false,
     replies: {},
-    created: {},
     nudge: false,
     nudgeTxt:
       "This e-mail was reported as suspicious today by one of our colleagues (click to show):",
@@ -385,7 +340,6 @@ export default {
   }),
   methods: {
     displayEml(src) {
-      this.showCreated = false;
       this.emlViewSrc = src;
       try {
         document.getElementById("eml_body_" + this.emlViewIndex).src = src;
@@ -422,14 +376,6 @@ export default {
       this.writeResponseData(this.$user, "replyMsg", this.replies);
       this.showReply = false;
       this.replyTxt = null;
-    },
-    sendCreate(){
-      this.created[this.createTo] = [this.createCc, this.createBcc, this.createSubject, this.createTxt]
-      // Backend functionality still has to be implemented
-      console.log(this.created);
-      this.showCreated = false;
-      this.createTxt, this.createTo, this.createCc, this.createBcc, this.createSubject = null;
-      this.createShowed = false;
     },
     mounted() {
       window.scrollTo(0, 0);
