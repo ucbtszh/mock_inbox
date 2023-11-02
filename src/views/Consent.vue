@@ -8,59 +8,39 @@
       please return to Prolific. If you can, please use your mouse to continue.
     </v-alert>
 
-    <b>Welcome!</b><br /><br />
+    <h1 style="text-align:center">Welcome!</h1><br /><br />
     <p>
-      Thank you for your interest in this research.<br />
-      We are testing new designs for the Outlook e-mail client. You will be
-      asked to process e-mails in a simulated Outlook inbox. <br />
+      Thank you for your interest in this research.
+      We are testing new designs for the Outlook email client. You will be
+      asked to process emails in a simulated Outlook inbox. 
       This study is being undertaken by researchers from University College
-      London (UCL).<br />
+      London (UCL).
       Before proceeding, please carefully read the following.<br /><br />
     </p>
     <b
       >By signing this consent form and clicking “Continue” below, I understand
-      that:</b
-    ><br />
-    <ul>
-      <li>
-        I declare that I will complete the tasks seriously and as accurate as I
-        can to be compensated fairly for my efforts;
-      </li>
-      <li>
+      that:
+    </b><br />
+    <br>
+        I declare that I will complete the tasks seriously and as accurate 
         My participation in this study is completely voluntary and I can leave
         at any time without giving a reason by closing the web browser. If I do
-        this, any data I provided will be deleted;
-      </li>
-      <li>
-        Financial compensation for my participation in this study will only
-        happen upon full completion of the provided task;
-      </li>
-      <li>
+        this, any data I provided will be deleted. 
         My participation in this study contributes to scientific development and
-        is in no way benefiting commercial purposes;
-      </li>
-      <li>
+        is in no way benefiting commercial purposes. 
         If I enable tracking through Google Analytics, my responses may be
-        analysed using information from third party cookies;
-      </li>
-      <li>All my responses will be processed anonymously;</li>
-      <li>
+        analysed using information from third party cookies. 
+        All my responses will be processed anonymously. 
         The anonymous responses may be shared with other researchers and appear
-        in academic publications;
-      </li>
-      <li>
+        in academic publications. 
         This research project has been approved by the designated ethics officer
-        at UCL;
-      </li>
-      <li>
-        I may contact UCL with any additional questions or complaints through
-        <a href="mailto:ucbtszh@ucl.ac.uk">ucbtszh@ucl.ac.uk</a>. If I feel my
-        complaint has not been handled satisfactorily, I can contact the UCL
+        at UdS.<br>
+        I may contact Saarland University with any additional questions or complaints through
+        <a href="research@mx.uni-saarland.de">research@mx.uni-saarland.de</a>. If I feel my
+        complaint has not been handled satisfactorily, I can contact the Saarland University
         Research Ethics Committee at
-        <a href="mailto:scs.ethics@ucl.ac.uk">scs.ethics@ucl.ac.uk</a>;
-      </li>
-      <li>This study is expected to take no longer than 30 minutes.</li>
-    </ul>
+        <a href="ckoenig@mx.uni-saarland.de">ckoenig@mx.uni-saarland.de</a>;
+      This study is expected to take no longer than 40 minutes.
     <br />
 
     <p v-show="!$isProlificUser">
@@ -73,8 +53,11 @@
       sitekey="6LfEiy0dAAAAAOHnW3FYObBmao1oPBqx9W6kmXGV"
       :loadRecaptchaScript="true"
       @verify="showButton = true"
+      style="margin: auto; width:50%"
+
     /><br />
 
+    <!-- captcha disabled for testing -->
     <v-btn
       :disabled="!showButton"
       elevation="3"
@@ -98,7 +81,7 @@ import { signInAnonymously } from "firebase/auth";
 export default {
   name: "consent",
   metaInfo: {
-    title: "Consent form | Online e-mail filter study",
+    title: "Consent form | Online email filter study",
     titleTemplate: null,
   },
   components: { VueRecaptcha },
@@ -156,8 +139,9 @@ export default {
 #welcome {
   margin-top: 5%;
   width: 960px;
-  text-align: center;
+  text-align: left;
   margin-left: auto;
   margin-right: auto;
 }
+
 </style>
