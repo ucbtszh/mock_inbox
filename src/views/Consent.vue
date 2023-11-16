@@ -145,9 +145,8 @@ export default {
 #welcome {
   margin-top: 5%;
   width: 960px;
-  text-align: left;
+  text-align: center;
   margin-left: auto;
   margin-right: auto;
 }
-
 </style>
