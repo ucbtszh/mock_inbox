@@ -44,6 +44,11 @@
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
+      <v-btn
+          @click="
+                  showCreated = !showCreated;
+                  emlViewIndex = null;
+          ">Create</v-btn>
       <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
@@ -354,6 +359,36 @@
 
             </div>
           </v-card>
+            <div v-if="showCreated" >
+            <div style="display: flex; align-items: center;">
+              <label for="to" style="font-weight: bold; margin-right: 12px; margin-bottom: 4px">To:</label>
+              <input type="text" id="to" v-model="createTo" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
+            </div>
+            <div style="display: flex; align-items: center;">
+              <label for="cc" style="margin-right: 12px; margin-bottom: 4px">Cc:</label>
+              <input type="text" id="cc" v-model="createCc" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
+            </div>
+            <div style="display: flex; align-items: center;">
+              <label for="bcc" style="margin-right: 12px; margin-bottom: 4px">Bcc:</label>
+              <input type="text" id="bcc" v-model="createBcc" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
+            </div>
+             <div style="display: flex; align-items: center; margin-top:20px">
+              <label for="subject" style="font-weight: bold; margin-right: 12px; margin-bottom: 4px">Subject:</label>
+              <input type="text" id="subject" v-model="createSubject" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
+            </div>
+            <vue-editor v-model="createTxt">
+              </vue-editor>
+             <v-btn
+              type="submit" 
+               color="primary"
+               @click="
+                  sendCreate();
+                  snackbarTxt = 'Email sent';
+                  snackbar = true;
+                       "
+               style="margin-top:1%"
+                >Send</v-btn>
+         </div>
         </v-col>
         <!-- <v-spacer></v-spacer> -->
       </v-row>
@@ -390,12 +425,19 @@ export default {
     labels: {},
     urlClicks: {},
     showReply: false,
+    showCreated: false,
     recipientEmails: null,
     ccEmails: "",
     validToEmail: false,
     validCCEmail: true,
     remainingTime: 2400,
     replyTxt: null,
+    createTxt: null,
+    createTo: null,
+    createCc: null,
+    createBcc: null,
+    createSubject: null,
+    createShowed: false,
     uploadedAttachments: [],
     replies: {},
     customToolbar: [
@@ -494,6 +536,7 @@ export default {
     },
     displayEml(src) {
       this.emlViewSrc = src;
+      this.showCreated = false;
       try {
         document.getElementById("eml_body_" + this.emlViewIndex).src = src;
         this.showReply = false;
@@ -586,6 +629,14 @@ export default {
       this.validToEmail = false;
       this.ccEmails = ""
       this.uploadedAttachments = [];
+    },
+     sendCreate(){
+      this.created[this.createTo] = [this.createCc, this.createBcc, this.createSubject, this.createTxt]
+      // Backend functionality still has to be implemented
+      console.log(this.created);
+      this.showCreated = false;
+      this.createTxt, this.createTo, this.createCc, this.createBcc, this.createSubject = null;
+      this.createShowed = false;
     },
   },
   mounted() {
