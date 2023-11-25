@@ -114,9 +114,10 @@ export default {
       Vue.prototype.$user = uuid;
       Vue.prototype.$isProlificUser = true;
     } else {
-      let uuid = [...Array(32)]
-        .map(() => Math.random().toString(36)[2])
-        .join("");
+      // let uuid = [...Array(32)]
+      //   .map(() => Math.random().toString(36)[2])
+      //   .join("");
+      let uuid = 'LOCAL_TEST';
       this.setID = uuid;
       Vue.prototype.$user = uuid;
       Vue.prototype.$isProlificUser = false;

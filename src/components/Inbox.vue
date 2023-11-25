@@ -35,12 +35,8 @@
       </v-dialog>
       &nbsp;&nbsp;
 
+      <v-icon dark>mdi-account</v-icon>
 
-      <v-card>
-        <v-card-actions>
-          <v-btn class="primary" @click="handleFinish">Finish</v-btn>
-        </v-card-actions>
-      </v-card>
     </v-toolbar>
 
     <v-toolbar dense color="rgb(240,240,240)" flat>
@@ -100,6 +96,7 @@
         ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
       >
       <v-spacer></v-spacer>
+      <v-btn depressed color="secondary" @click="handleFinish">DONE</v-btn>
     </v-toolbar>
 
     <v-main>
@@ -223,6 +220,16 @@
                     placeholder="CC"
                     @input="validateCCEmail"
                     @change="turnvalidatefalse"
+                  /> 
+                </p>
+
+                <p style="height: 30px; padding-top: 10px; padding-left: 15px">
+                Subject: 
+                  <input 
+                    type="text"
+                    id="replySubject" 
+                    v-model="replySubject"
+                    placeholder="Subject"
                   /> 
                 </p>
 
@@ -362,24 +369,22 @@
             <div v-if="showCreated" >
             <div style="display: flex; align-items: center;">
               <label for="to" style="font-weight: bold; margin-right: 12px; margin-bottom: 4px">To:</label>
-              <input type="text" id="to" v-model="createTo" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
+              <input required @input="validateToCreateEmail" type="email" id="to" v-model="createTo" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
             </div>
             <div style="display: flex; align-items: center;">
-              <label for="cc" style="margin-right: 12px; margin-bottom: 4px">Cc:</label>
+              <label for="cc" style="font-weight: bold; margin-right: 12px; margin-bottom: 4px">Cc:</label>
               <input type="text" id="cc" v-model="createCc" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
-            </div>
-            <div style="display: flex; align-items: center;">
-              <label for="bcc" style="margin-right: 12px; margin-bottom: 4px">Bcc:</label>
-              <input type="text" id="bcc" v-model="createBcc" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
             </div>
              <div style="display: flex; align-items: center; margin-top:20px">
               <label for="subject" style="font-weight: bold; margin-right: 12px; margin-bottom: 4px">Subject:</label>
               <input type="text" id="subject" v-model="createSubject" style="border: none; border-bottom: 1px solid #ccc; box-sizing: border-box; width: 100%; outline: none">
             </div>
             <vue-editor v-model="createTxt">
-              </vue-editor>
+            </vue-editor>
+            <p style="display: flex">
              <v-btn
               type="submit" 
+              :disabled="createTxt == null || !validToCreateEmail"
                color="primary"
                @click="
                   sendCreate();
@@ -388,6 +393,23 @@
                        "
                style="margin-top:1%"
                 >Send</v-btn>
+  
+                <input
+                      type="file"
+                      ref="fileInput1"
+                      style="display: none; margin-top: 1%; margin-left: 1%;"
+                      @change="handleFileUpload"
+                    />
+                    <v-btn style="margin-top: 1%; margin-left: 1%;" @click="openFileInput1">Add Attachment</v-btn>
+                    <ul>
+                      <!-- TODO? REFACTOR UploadAttachments TO ONLY DISPLAY CURRENTLY UPLOADED FILE, NOT PAST FILES; 
+                        suggest to do so by adding key-value pair of {'attachment': [list of file names]} to this.replies @click Add Attachment -->
+                      <li v-for="(attachment, index) in uploadedAttachments" :key="index">
+                        <!-- <a href={{attachment}}>{{ x }}</a> -->
+                        <a :href="attachment.url" target="_blank">{{ attachment.name }}</a>
+                      </li>
+                    </ul>
+              </p>
          </div>
         </v-col>
         <!-- <v-spacer></v-spacer> -->
@@ -427,8 +449,10 @@ export default {
     showReply: false,
     showCreated: false,
     recipientEmails: null,
+    replySubject: null,
     ccEmails: "",
     validToEmail: false,
+    validToCreateEmail: false,
     validCCEmail: true,
     remainingTime: 2400,
     replyTxt: null,
@@ -438,6 +462,7 @@ export default {
     createBcc: null,
     createSubject: null,
     createShowed: false,
+    created: {},
     uploadedAttachments: [],
     replies: {},
     customToolbar: [
@@ -469,6 +494,15 @@ export default {
         this.urlClicks[this.emlViewSrc] = [url];  
       }
     },
+    validateToCreateEmail() {
+      // Regular expression for email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      // Check if the entered email is valid
+      // this.validToEmail = emailRegex.test(this.recipientEmails);
+      const emailAddresses = this.createTo.split(',');
+      this.validToCreateEmail = emailAddresses.every(email => emailRegex.test(email.trim()));
+    },
     validateToEmail() {
       // Regular expression for email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -499,6 +533,10 @@ export default {
     openFileInput() {
       // Trigger the file input field when the button is clicked
       this.$refs.fileInput[0].click();
+    },
+    openFileInput1() {
+      // Trigger the file input field when the button is clicked
+      this.$refs.fileInput1.click();
     },
     async handleFileUpload(event) {
       const files = event.target.files;
@@ -603,6 +641,8 @@ export default {
         this.recipientEmails +
         "  \n\n\n $$$CCed: " +
         this.ccEmails +
+        "  \n\n\n $$$SUBJECT: " +
+        this.replySubject +
         "  \n\n\n $$$EMAIL: " +
         this.replyTxt +
         "  \n\n\n $$$ATTACHMENTS: ";
@@ -631,11 +671,42 @@ export default {
       this.uploadedAttachments = [];
     },
      sendCreate(){
-      this.created[this.createTo] = [this.createCc, this.createBcc, this.createSubject, this.createTxt]
-      // Backend functionality still has to be implemented
-      console.log(this.created);
-      this.showCreated = false;
-      this.createTxt, this.createTo, this.createCc, this.createBcc, this.createSubject = null;
+      // SEND REPLY MESSAGE TO DB
+      console.log('sending?')
+      let create =
+        "RECIPIENT(S): " +
+        this.createTo +
+        "  \n\n\n $$$CCed: " +
+        this.createCc +
+        "  \n\n\n $$$SUBJECT: " +
+        this.createSubject +
+        "  \n\n\n $$$EMAIL: " +
+        this.createTxt +
+        "  \n\n\n $$$ATTACHMENTS: ";
+        
+        
+      // add attachments
+      if (this.uploadedAttachments.length > 0) {
+        // console.log('i am here\n');
+        const attachmentText = this.uploadedAttachments.map(attachment => `${attachment.url}`).join('\n');
+        create += `${attachmentText}`;
+      }
+
+      if (!this.created[this.createTo]) {
+        this.created[this.createTo] = [];
+      }
+
+      // Push the reply to the array
+      this.created[this.createTo].push(create);
+
+      this.writeResponseData(this.$user, "create", this.created);
+      this.showReply = false;
+      this.createTxt = null;
+      this.createTo = null;
+      this.validToEmail = false;
+      this.createCc = null;
+      this.createSubject = null;
+      this.uploadedAttachments = [];
       this.createShowed = false;
     },
   },
