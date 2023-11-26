@@ -42,6 +42,9 @@ export default {
   mixins: [db],
   methods: {
     copyCode: function() {
+      if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+      }
       navigator.clipboard.writeText(this.completionCode);
       let complete = {
         ts: Date.now(),
@@ -50,6 +53,14 @@ export default {
       this.writeResponseData(this.$user, 'completion_code', complete)
     },
   },
+  beforeCreate() {
+    if (!this.$user) {
+      this.$user = localStorage.getItem('userUUID');
+    } 
+    if(!this.$isProlificUser) {
+      this.$isProlificUser = localStorage.getItem('isProlificUser');
+    }
+  }
 };
 </script>
 

@@ -221,6 +221,9 @@ export default {
   mixins: [db],
   methods: {
     validate() {
+      if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+      }
       if (this.$refs.form.validate()) {
         let formResponse = {
           "mental demand": this.MD,

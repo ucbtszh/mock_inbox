@@ -113,6 +113,8 @@ export default {
       let uuid = urlParams.get("PROLIFIC_PID");
       Vue.prototype.$user = uuid;
       Vue.prototype.$isProlificUser = true;
+      localStorage.setItem('userUUID', uuid);
+      localStorage.setItem('isProlificUser', true);
     } else {
       // let uuid = [...Array(32)]
       //   .map(() => Math.random().toString(36)[2])
@@ -121,8 +123,11 @@ export default {
       this.setID = uuid;
       Vue.prototype.$user = uuid;
       Vue.prototype.$isProlificUser = false;
+      localStorage.setItem('userUUID', uuid);
+      localStorage.setItem('isProlificUser', true);
     }
 
+    // change this code to change set of emails based on condition (if required)
     if (urlParams.has("cond")) {
       let cond = urlParams.get("cond");
       Vue.prototype.$condition = cond;

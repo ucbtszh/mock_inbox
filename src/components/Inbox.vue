@@ -629,8 +629,13 @@ export default {
     },
     sendLabels() {
       // SEND EML LABELS TO DB
+      if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+      }
+      
       this.writeResponseData(this.$user, "emlLabels" + this.UI, this.labels);
       this.writeResponseData(this.$user, "urlClicks", this.urlClicks);
+    
       this.$emit("next");
     },
     sendReply(src) {
@@ -661,6 +666,11 @@ export default {
 
       // Push the reply to the array
       this.replies[src].push(reply);
+      
+      if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+      }
+      
 
       this.writeResponseData(this.$user, "replies", this.replies);
       this.showReply = false;
@@ -699,7 +709,12 @@ export default {
       // Push the reply to the array
       this.created[this.createTo].push(create);
 
+      if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+      }
+
       this.writeResponseData(this.$user, "create", this.created);
+
       this.showReply = false;
       this.createTxt = null;
       this.createTo = null;

@@ -239,6 +239,9 @@ export default {
   },
   methods: {
     validate() {
+      if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+      }
       if (this.$refs.form.validate()) {
         this.writeResponseData(this.$user, "demos", this.formResponse);
         this.$emit("done");

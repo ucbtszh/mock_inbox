@@ -46,6 +46,9 @@ export default {
   },
   methods: {
     saveFeedback() {
+      if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+      }
       // console.log("feedback", responses)
       this.writeResponseData(this.$user, "feedback", {"feedback": this.feedbackResponse});
       this.$emit("done")

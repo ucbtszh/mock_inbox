@@ -45,6 +45,10 @@ export default {
       this.responses[event[0]] = event[1];
     },
     validate() {
+      if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+      }
+      
       if (this.$refs.form.validate()) {
         try {
           this.writeResponseData(this.$user, "SUS", this.responses);

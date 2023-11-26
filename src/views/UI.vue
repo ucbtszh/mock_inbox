@@ -33,6 +33,9 @@ export default {
       screen_width: window.screen.width,
       screen_height: window.screen.height,
     };
+    if(!this.$user) {
+        this.$user = localStorage.getItem('userUUID');
+    }
     this.writeMetaUser(this.$user, metaInfo);
   },
 };
