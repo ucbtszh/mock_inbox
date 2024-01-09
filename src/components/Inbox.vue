@@ -676,6 +676,7 @@ export default {
       this.showReply = false;
       this.replyTxt = null;
       this.recipientEmails = null;
+      this.replySubject = null;
       this.validToEmail = false;
       this.ccEmails = ""
       this.uploadedAttachments = [];
