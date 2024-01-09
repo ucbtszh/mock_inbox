@@ -50,7 +50,7 @@
         </v-flex>
         <v-flex column>{{ rightExtreme }}</v-flex>
       </v-layout>
-    </v-radio-group>
+    </v-radio-group><br/><br/>
   </div>
 </template>
 

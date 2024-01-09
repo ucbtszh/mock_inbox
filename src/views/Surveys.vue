@@ -1,13 +1,10 @@
 <template>
   <div id="surveys">
     <div v-show="showSUS">
-      <SUS @done="showDemos = true; showSUS = false; scrollUp()" />
-    </div>
-    <div v-show="showDemos">
-      <Demos @done="showFeedback = true; showDemos = false; scrollUp()" />
+      <SUS @done="showFeedback = true; showSUS = false; scrollUp()" />
     </div>
     <div v-show="showFeedback">
-        <Improve @done="showCode = true; showFeedback = false; scrollUp()" />
+        <Debrief @done="showCode = true; showFeedback = false; scrollUp()" />
     </div>
     <div v-show="showCode">
         <CompCode />
@@ -16,22 +13,19 @@
 </template>
 
 <script>
-import Demos from "../components/Demos.vue";
 import SUS from "../components/SUS.vue";
-import Improve from "../components/Improv.vue";
+import Debrief from "../components/Debrief.vue";
 import CompCode from "../components/CompletionCode.vue";
 
 export default {
   components: {
-    Demos,
     SUS,
-    Improve,
+    Debrief,
     CompCode
   },
   data() {
     return {
       showSUS: true,
-      showDemos: false,
       showFeedback: false,
       showCode: false
     };

@@ -1,7 +1,7 @@
 <template>
   <div>
     We would like to know how you experienced using the inbox.<br />
-    Please indicate how much you agree with each of the below statements.<br /><br />
+    Please indicate how much you agree with each of the below statements.<br /><br /><br/>
     <v-form v-model="isValid" ref="form">
       <Scale
         v-for="(item, index) in items"
