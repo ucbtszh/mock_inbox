@@ -19,13 +19,21 @@ const routes = [
     component: Instruct,
   },
   {
-    path: "/inbox",
-    name: "Inbox",
-    component: () =>
-      import(/* webpackChunkName: "inbox" */ "../views/Inbox.vue"),
+    path: "/UI",
+    name: "UI",
+    component: () => import(/* webpackChunkName: "inbox" */ "../views/UI.vue"),
     meta: {
       requiresAuth: true,
-    }
+    },
+  },
+  {
+    path: "/usab",
+    name: "Usability",
+    component: () =>
+      import(/* webpackChunkName: "inbox" */ "../views/Usabil.vue"),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/surveys",
@@ -34,8 +42,8 @@ const routes = [
       import(/* webpackChunkName: "inbox" */ "../views/Surveys.vue"),
     meta: {
       requiresAuth: true,
-    }
-  }
+    },
+  },
 ];
 
 const router = new VueRouter({

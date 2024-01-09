@@ -1,0 +1,122 @@
+/* Styles for the email attachment container
+.email-attachment {
+    background-color: #f2f2f2;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    margin: 20px;
+}
+
+.attachment-icon {
+    background-image: url('attachment-icon.png');
+    background-size: 32px 32px;
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+.attachment-details {
+    flex-grow: 1;
+}
+
+.attachment-filename {
+    font-weight: bold;
+    margin: 0;
+}
+
+.attachment-size {
+    font-size: 12px;
+    margin: 0;
+    color: #666;
+}
+
+.download-link {
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.download-link:hover {
+    background-color: #0056b3;
+} */
+
+.email-attachment {
+    background-color: #f9f9f9;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    margin: 20px;
+}
+
+/* Styles for the attachment icon */
+.attachment-icon {
+    background-image: url('attachment-icon.png'); /* Replace with your icon URL */
+    background-size: 32px 32px;
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+/* Styles for the attachment details */
+.attachment-details {
+    flex-grow: 1;
+}
+
+/* Styles for the attachment filename */
+.attachment-filename {
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+/* Styles for the attachment size */
+.attachment-size {
+    font-size: 12px;
+    margin: 0;
+    color: #666;
+}
+
+/* Styles for the download link */
+.download-link {
+    background-color: #0072C6;
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.download-link:hover {
+    background-color: #005ea6;
+}
+
+email-attachment-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 100% viewport height */
+    overflow: hidden;
+    background-color: #f0f0f0; /* Background color for the entire viewport */
+}
+
+/* Styles for the email attachment */
+.email-attachment {
+    background-color: #f9f9f9;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+}
