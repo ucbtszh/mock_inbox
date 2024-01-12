@@ -7,8 +7,6 @@
       <p id="time-remaining">Time Remaining: {{ remainingTimeDisplay }}</p>
       <v-spacer></v-spacer>
       
-      <!---->
-
       <v-dialog v-model="showHelp" persistent max-width="860px">
         <template v-slot:activator="{ on, attrs }">
           <v-icon
@@ -21,7 +19,7 @@
           >
         </template>
         <v-card>
-          <v-card-title> Instructions </v-card-title>
+          <v-card-title> </v-card-title>
           <v-card-text>
             <InstructTxt />
           </v-card-text>
@@ -44,7 +42,8 @@
           @click="
                   showCreated = !showCreated;
                   emlViewIndex = null;
-          ">Create</v-btn>
+          " color="primary" elevation="0" flat
+          >New e-mail</v-btn>
       <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
@@ -52,18 +51,6 @@
       <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
         ><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
       >
-
-      <!-- uncomment below if u wanna just forward to secretary upon clicking forward-->
-      <!-- <v-btn
-        depressed
-        :disabled="!emlViewSrc"
-        @click="
-          labelEml('fw');
-          snackbarTxt = 'E-mail forwarded to executive assistant';
-          snackbar = true;
-        "
-        ><v-icon>mdi-arrow-right</v-icon>&nbsp;Forward</v-btn
-      > -->
 
       <v-btn
         depressed
@@ -200,8 +187,8 @@
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                   To:
                   <input
+                  title="If you would like to add multiple e-mails, separate them by a comma."
                     type="email"
-                    name="CC"
                     :id="'recipientEmails' + index"
                     v-model="recipientEmails"
                     placeholder="To"
@@ -213,9 +200,9 @@
                 <p style="height: 30px; padding-top: 10px; padding-left: 15px">
                 CC: 
                   <input 
-                  title="do i work TODO: add , specification"
+                  title="If you would like to add multiple CC e-mails, separate them by a comma."
                     type="email"
-                    id="ccEmails" 
+                    :id="'ccEmails' + index"
                     v-model="ccEmails"
                     placeholder="CC"
                     @input="validateCCEmail"
@@ -259,7 +246,7 @@
                       style="display: none;"
                       @change="handleFileUpload"
                     />
-                    <v-btn @click="openFileInput">Add Attachment</v-btn>
+                    <v-btn @click="openFileInput" elevation="0" flat>Add Attachment</v-btn>
                     <ul>
                       <!-- TODO? REFACTOR UploadAttachments TO ONLY DISPLAY CURRENTLY UPLOADED FILE, NOT PAST FILES; 
                         suggest to do so by adding key-value pair of {'attachment': [list of file names]} to this.replies @click Add Attachment -->
@@ -338,7 +325,11 @@
                             </div>
                             <div class="to" :id="'eml_head_to_' + index">
                               To:&nbsp;&nbsp;{{ reply.split(' ').slice(reply.split(' ').indexOf("RECIPIENT(S):") + 1, reply.split(' ').indexOf("")).filter(item => item.trim() !== '').join(', ') }}<br />
-                              <p v-if="reply.split(' ').slice(reply.split(' ').indexOf('$$$EMAIL:') + 1) !== ''">CC: {{ reply.split(' ').slice(reply.split(' ').indexOf("$$$CCed:") + 1, reply.split(' ').indexOf("$$$EMAIL:") - 1).filter(item => item.trim() !== '').join(', ') }}</p>
+                              <p v-if="reply.split(' ').slice(reply.split(' ').indexOf('$$$EMAIL:') + 1) !== ''">
+                              CC: {{ reply.split(' ').slice(reply.split(' ').indexOf("$$$CCed:") + 1, 
+                              reply.split(' ').indexOf("$$$SUBJECT:") - 1).filter(item => item.trim() !== '').join(', ') }}<br/>
+                              Subject: {{ reply.split(' ').slice(reply.split(' ').indexOf("$$$SUBJECT:") + 1, 
+                              reply.split(' ').indexOf("$$$EMAIL:") - 1).filter(item => item.trim() !== '').join(' ') }}</p>
                             </div>
                           </div>
                         </v-col>
@@ -421,11 +412,10 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import db from "../utils/firestore";
-// import tracking from "../utils/track_ui";
 import InstructTxt from "./InstructTxt.vue";
-// import firebase from "firebase/app";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"; // uploadBytes
 import { storage } from "../main";
+
 import l19 from '../emls/l19.vue';
 import l26 from '../emls/l26.vue';
 import l3 from '../emls/l3.vue';
@@ -590,13 +580,13 @@ export default {
 
       this.handleUrlClick = (obj) => { // helper func to get details on clicked URL
         this.urlClicks.push(obj.data);
-        console.log(this.urlClicks)
+        // console.log(this.urlClicks)
       };
       window.addEventListener("message", this.handleUrlClick); // when receiving message back from child (e-mail html file), call helper func to set urlClicks data
     },
     labelEml(label) {
       this.labels[this.emlViewSrc] = label;
-      console.log(this.urlClicks);
+      // console.log(this.urlClicks);
       if (label !== "re") {
         document.getElementById("eml_" + this.emlViewIndex).style.display =
           "none";
@@ -624,7 +614,6 @@ export default {
         );
       } else {
         this.sendLabels();
-        // console.log('hey');
       }
     },
     sendLabels() {
@@ -640,7 +629,6 @@ export default {
     },
     sendReply(src) {
       // SEND REPLY MESSAGE TO DB
-      console.log('sending?')
       let reply =
         "RECIPIENT(S): " +
         this.recipientEmails +
@@ -655,7 +643,6 @@ export default {
         
       // add attachments
       if (this.uploadedAttachments.length > 0) {
-        // console.log('i am here\n');
         const attachmentText = this.uploadedAttachments.map(attachment => `${attachment.url}`).join('\n');
         reply += `${attachmentText}`;
       }
@@ -683,7 +670,6 @@ export default {
     },
      sendCreate(){
       // SEND REPLY MESSAGE TO DB
-      console.log('sending?')
       let create =
         "RECIPIENT(S): " +
         this.createTo +
@@ -698,7 +684,6 @@ export default {
         
       // add attachments
       if (this.uploadedAttachments.length > 0) {
-        // console.log('i am here\n');
         const attachmentText = this.uploadedAttachments.map(attachment => `${attachment.url}`).join('\n');
         create += `${attachmentText}`;
       }

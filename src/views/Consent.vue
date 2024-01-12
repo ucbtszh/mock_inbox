@@ -83,10 +83,10 @@ Information about the right to withdraw consent
 You have the right to withdraw your participation in this study and your consent to the use of your data at any time. We reserve the right to analyze the data according to the research purpose until a possible revocation. 
 You confirm that you are at least 18 years old, that you have read this consent form or had it read to you, that your questions about it have been answered to your satisfaction and that you are participating in this study voluntarily -->
 
-    <p v-show="!$isProlificUser">
+    <!-- <p v-show="!$isProlificUser">
       Your unique ID is: <b>{{ this.$user }}</b>
     </p>
-    <br />
+    <br /> -->
 
     <VueRecaptcha
       ref="recaptcha"
@@ -155,10 +155,10 @@ export default {
       localStorage.setItem("userUUID", uuid);
       localStorage.setItem("isProlificUser", true);
     } else {
-      // let uuid = [...Array(32)]
-      //   .map(() => Math.random().toString(36)[2])
-      //   .join("");
-      let uuid = "LOCAL_TEST";
+      let uuid = [...Array(32)]
+        .map(() => Math.random().toString(36)[2])
+        .join("");
+      // let uuid = "LOCAL_TEST"; ONLY USE FOR TESTING PURPOSES
       this.setID = uuid;
       Vue.prototype.$user = uuid;
       Vue.prototype.$isProlificUser = false;
