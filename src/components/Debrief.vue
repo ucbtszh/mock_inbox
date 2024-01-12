@@ -4,7 +4,7 @@
       <b>This is the end of the study.</b><br /><br />
 
       <b>What do you think was the purpose of this study?</b><br /><br />
-      <v-form>
+      <v-form v-model="isValid">
         <v-textarea
           auto-grow
           outlined
@@ -12,8 +12,11 @@
           label=""
           style="width: 575px"
           v-model="feedbackResponse"
+          :rules="[(v) => !!v || 'Please answer this question.']"
         ></v-textarea>
-        <v-btn elevation="3" @click="saveFeedback()">NEXT</v-btn>
+        <v-btn elevation="3" color="primary" @click="saveFeedback()" :disabled="!isValid"
+          >NEXT</v-btn
+        >
       </v-form>
     </div>
 
