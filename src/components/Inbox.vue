@@ -42,8 +42,13 @@
           @click="
                   showCreated = !showCreated;
                   emlViewIndex = null;
-          " color="primary" elevation="0" flat
-          >New e-mail</v-btn>
+          " color="primary" elevation="0" 
+          >
+          <v-icon
+            dark
+            >mdi-email-outline</v-icon
+          >&nbsp;
+          New e-mail</v-btn>
       <v-btn depressed :disabled="!emlViewSrc" @click="showReply = true"
         ><v-icon>mdi-reply</v-icon>&nbsp;Reply</v-btn
       >
@@ -287,13 +292,6 @@
                   </v-col>
                 </v-row>
 
-                <!-- <iframe
-                  :src="eml.bodyURL"
-                  :height="eml.height + 50"
-                  :id="'eml_body_' + index"
-                  ref="iframe"
-                /> -->
-                <!-- make new component and pass body to it -->
                 <div id="email-reply">
                   <l19 v-if="eml.bodyURL === '/l19.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                   <l26 v-if="eml.bodyURL === '/l26.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
@@ -338,7 +336,6 @@
                       <div id="email-reply" v-html="reply.split(' ').slice(reply.split(' ').indexOf('$$$EMAIL:') + 1, reply.split(' ').indexOf('$$$ATTACHMENTS:') - 1).filter(item => item.trim() !== '').join(' ')">
                       </div>
 
-                      <!-- TODO: add attachments if any-->
                       <div v-if="reply.split(' ').slice(reply.split(' ').indexOf('$$$ATTACHMENTS:') + 1).filter(element => element !== '').length > 0">
                         <div v-for="(item, inx) in reply.split(' ').slice(reply.split(' ').indexOf('$$$ATTACHMENTS:') + 1)" :key="inx">
                           <div class="email-attachment">
