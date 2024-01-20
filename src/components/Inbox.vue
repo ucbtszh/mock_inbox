@@ -81,11 +81,11 @@
         depressed
         :disabled="!emlViewSrc"
         @click="
-          labelEml('junk');
-          snackbarTxt = 'E-mail reported as junk';
+          labelEml('phish');
+          snackbarTxt = 'E-mail reported as phishing';
           snackbar = true;
         "
-        ><v-icon>mdi-block-helper</v-icon>&nbsp;Junk</v-btn
+        ><v-icon>mdi-block-helper</v-icon>&nbsp;Report phishing</v-btn
       >
       <v-spacer></v-spacer>
       <v-btn depressed color="secondary" @click="handleFinish">DONE</v-btn>
