@@ -27,7 +27,7 @@ export default {
     let metaInfo = {
       starttime: Date.now(),
       condition: 'ETRAY_STUDY',
-      // prolific_user: this.$isProlificUser,
+      prolific_user: this.$isProlificUser,
       browser_width: window.innerWidth,
       browser_height: window.innerHeight,
       screen_width: window.screen.width,

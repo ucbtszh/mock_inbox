@@ -7,7 +7,7 @@
     <p>
       <b>Please put yourself in the following situation:</b> <br>
 
-      PTCL (Pakistan Telecommunication Company Ltd.) has established a new division in Lahore in April 2022 to build the 5G network in Pakistan. You are <b>A. Durrani</b> and you are the <b>head of this department</b>. You oversee the organization and implementation of all necessary processes and are therefore responsible for the success of the project.
+      ATCL (American Telecommunication Company Ltd.) has established a new division in Portland in April 2022 to build the 5G network in American. You are <b>A. Jones</b> and you are the <b>head of this department</b>. You oversee the organization and implementation of all necessary processes and are therefore responsible for the success of the project.
     </p>
     <p>
       Please refer to the organogram below for the organizational structure of the employees relevant to you.
