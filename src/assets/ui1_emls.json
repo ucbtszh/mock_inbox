@@ -145,13 +145,13 @@
     },
     {
       "fromEml": "m.locke@atcl.com",
-      "fromName": "",
+      "fromName": "Mary Locke",
       "subject": "Conditions for transmission tower construction",
       "date": "Tue 12/08/2022",
       "time": "13:40",
       "toEml": "a.jones@atcl.com",
       "gtLabel": "l",
-      "bodyURL": "/l12.html",
+      "bodyURL": "/l11.html",
       "CCeml": "",
       "previewTxt": "Dear A. Jones, The head office has promised that the financial resources to build the "
     },
@@ -165,7 +165,7 @@
       "gtLabel": "l",
       "bodyURL": "/l12.html",
       "CCeml": "",
-      "previewTxt": "Dear A. Jones, My name is Marvi Robeson. I am a reporter from Jang Media Group working for GEO "
+      "previewTxt": "Dear A. Jones, My name is Marvi Robeson. I am a reporter from Bang Media Group working for GEO "
     },
     {
       "fromEml": "contact@gloriosbuilds.com",
@@ -202,41 +202,5 @@
       "bodyURL": "/l14.html",
       "CCeml": "",
       "previewTxt": "Dear A. Jones, We had already talked about this at our headquarters a few weeks ago: "
-    },
-    {
-      "fromEml": "",
-      "fromName": "",
-      "subject": "",
-      "date": "Tue 12/08/2022",
-      "time": "16:20",
-      "toEml": "a.jones@atcl.com",
-      "gtLabel": "l",
-      "bodyURL": "/.html",
-      "CCeml": "",
-      "previewTxt": ""
-    },
-    {
-      "fromEml": "",
-      "fromName": "",
-      "subject": "",
-      "date": "Tue 12/08/2022",
-      "time": "16:20",
-      "toEml": "a.jones@atcl.com",
-      "gtLabel": "l",
-      "bodyURL": "/.html",
-      "CCeml": "",
-      "previewTxt": ""
-    },
-    {
-      "fromEml": "",
-      "fromName": "",
-      "subject": "",
-      "date": "Tue 12/08/2022",
-      "time": "16:20",
-      "toEml": "a.jones@atcl.com",
-      "gtLabel": "l",
-      "bodyURL": "/.html",
-      "CCeml": "",
-      "previewTxt": ""
     }
 ]

@@ -293,11 +293,26 @@
                 </v-row>
 
                 <div id="email-reply">
-                  <l19 v-if="eml.bodyURL === '/l19.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
-                  <l26 v-if="eml.bodyURL === '/l26.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l1 v-if="eml.bodyURL === '/l1.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l2 v-if="eml.bodyURL === '/l2.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                   <l3 v-if="eml.bodyURL === '/l3.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
-                  <l30 v-if="eml.bodyURL === '/l30.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
-                
+                  <l4 v-if="eml.bodyURL === '/l4.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l5 v-if="eml.bodyURL === '/l5.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l6 v-if="eml.bodyURL === '/l6.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l7 v-if="eml.bodyURL === '/l7.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l8 v-if="eml.bodyURL === '/l8.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l9 v-if="eml.bodyURL === '/l9.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l10 v-if="eml.bodyURL === '/l10.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l11 v-if="eml.bodyURL === '/l11.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l12 v-if="eml.bodyURL === '/l12.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l13 v-if="eml.bodyURL === '/l13.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l14 v-if="eml.bodyURL === '/l14.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l15 v-if="eml.bodyURL === '/l15.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <l16 v-if="eml.bodyURL === '/l16.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <p1 v-if="eml.bodyURL === '/p1.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <p2 v-if="eml.bodyURL === '/p2.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <p3 v-if="eml.bodyURL === '/p3.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                    
                 </div>
 
               </div>
@@ -316,7 +331,7 @@
                               class="from-name"
                               :id="'eml_head_from_name_' + index"
                             >
-                              A. Durrani&nbsp;&lt;a.durrani@ptcl.com&gt;
+                              A. Jones&nbsp;&lt;a.jones@atcl.com&gt;
                             </div>
                             <div class="time" :id="'eml_head_time_' + index">
                             Now
@@ -393,14 +408,13 @@
                       <!-- TODO? REFACTOR UploadAttachments TO ONLY DISPLAY CURRENTLY UPLOADED FILE, NOT PAST FILES; 
                         suggest to do so by adding key-value pair of {'attachment': [list of file names]} to this.replies @click Add Attachment -->
                       <li v-for="(attachment, index) in uploadedAttachments" :key="index">
-                        <!-- <a href={{attachment}}>{{ x }}</a> -->
                         <a :href="attachment.url" target="_blank">{{ attachment.name }}</a>
                       </li>
                     </ul>
               </p>
          </div>
         </v-col>
-        <!-- <v-spacer></v-spacer> -->
+        <div style="margin-right: 10px;">&nbsp;</div>
       </v-row>
     </v-main>
   </div>
@@ -413,16 +427,30 @@ import InstructTxt from "./InstructTxt.vue";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"; // uploadBytes
 import { storage } from "../main";
 
-import l19 from '../emls/l19.vue';
-import l26 from '../emls/l26.vue';
+import l1 from '../emls/l1.vue';
+import l2 from '../emls/l2.vue';
 import l3 from '../emls/l3.vue';
-import l30 from '../emls/l30.vue';
+import l4 from '../emls/l4.vue';
+import l5 from '../emls/l5.vue';
+import l6 from '../emls/l6.vue';
+import l7 from '../emls/l7.vue';
+import l8 from '../emls/l8.vue';
+import l9 from '../emls/l9.vue';
+import l10 from '../emls/l10.vue';
+import l11 from '../emls/l11.vue';
+import l12 from '../emls/l12.vue';
+import l13 from '../emls/l13.vue';
+import l14 from '../emls/l14.vue';
+import p1 from '../emls/p1.vue';
+import p2 from '../emls/p2.vue';
+import p3 from '../emls/p3.vue';
 
 export default {
   components: {
     VueEditor,
     InstructTxt,
-    l19, l26, l3, l30
+    l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14,
+    p1, p2, p3
   },
   props: ["emls", "UI"],
   mixins: [db], //, tracking],

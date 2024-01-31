@@ -1,38 +1,24 @@
 <template>
-    <div style="margin-top: 1%; padding-bottom: 2%;">
-            Dear Prof Carter,<br/><br/>
-            
-            Via this e-mail I haha would like to connect with you regarding your research on informatics.<br/>
-            I recently started my PhD at the University of London. My research concerns people's use of health informatics data.<br/>
-            Through my reading thus far I came across many of your research articles and am interested in testing to what extent your theory on informatics extrapolates to my research. Would you be interested in having a chat about this sometime this or next week?<br/>
-            If so, please let me know what times would suit you best.<br/><br/>
-            
-            <a @click="parentFunction('https://www.google.com')" href="https://www.google.com" target="_blank">click me i am not scam</a>
-            
-            I look forward to your response.<br/><br/><br/>
-            
-            
-            Best wishes,<br/>
-            Joanna Chmiel
-            <div class="email-attachment">
-                <div class="attachment-icon"></div>
-                <div class="attachment-details">
-                    <p class="attachment-filename">1.aac</p>
-                </div>
-                <a @click="parentFunction('https://www.dropbox.com/s/6537i6ryoj0lruy/1.aac?dl=1')" class="download-link" target="_blank" href="https://www.dropbox.com/s/6537i6ryoj0lruy/1.aac?dl=1">Download</a> 
-            </div>
-    </div>
-
+  <div style="margin-top: 1%; padding-bottom: 2%">
+    Dear A. Jones,<br /><br />
+    Since the head office has made it clear that it cannot send any new
+    employees to our department at the moment, I am all the more pleased to be
+    able to inform you that the the interview with Mr. McKaegan went very well!
+    In the conversation, the question also came up when he would want to start
+    with us. From his point of view, he could start right away tomorrow, but I
+    told him that I am still unsure, because the office furniture that we
+    ordered has not arrived yet. <br /><br />
+    Many greetings<br />
+    Anand Amin
+  </div>
 </template>
 
 <script>
-    import './styles.css';
+import "./styles.css";
 
-    export default {
-        props: {
-            parentFunction: Function 
-        }
-    }
-
-
+export default {
+  props: {
+    parentFunction: Function,
+  },
+};
 </script>

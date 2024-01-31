@@ -9,7 +9,7 @@
     </v-alert>
 
     <h1 style="text-align: center">Welcome!</h1>
-    <br /><br />
+    <br />
     <p>
       Thank you for your interest in this research. We are testing new designs
       for the Outlook email client. You will be asked to process emails in a
