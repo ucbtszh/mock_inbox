@@ -163,7 +163,7 @@ export default {
       Vue.prototype.$user = uuid;
       Vue.prototype.$isProlificUser = false;
       localStorage.setItem("userUUID", uuid);
-      localStorage.setItem("isProlificUser", true);
+      localStorage.setItem("isProlificUser", false);
     }
 
     // change this code to change set of emails based on condition (if required)

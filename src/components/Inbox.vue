@@ -37,7 +37,7 @@
 
     </v-toolbar>
 
-    <v-toolbar dense color="rgb(240,240,240)" flat>
+    <v-toolbar dense color="rgb(240,240,240)" text>
       <v-btn
           @click="
                   showCreated = !showCreated;
@@ -251,7 +251,7 @@
                       style="display: none;"
                       @change="handleFileUpload"
                     />
-                    <v-btn @click="openFileInput" elevation="0" flat>Add Attachment</v-btn>
+                    <v-btn @click="openFileInput" elevation="0" text>Add Attachment</v-btn>
                     <ul>
                       <!-- TODO? REFACTOR UploadAttachments TO ONLY DISPLAY CURRENTLY UPLOADED FILE, NOT PAST FILES; 
                         suggest to do so by adding key-value pair of {'attachment': [list of file names]} to this.replies @click Add Attachment -->
