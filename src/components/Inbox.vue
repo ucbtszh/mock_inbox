@@ -312,6 +312,7 @@
                   <p1 v-if="eml.bodyURL === '/p1.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                   <p2 v-if="eml.bodyURL === '/p2.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                   <p3 v-if="eml.bodyURL === '/p3.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
+                  <p4 v-if="eml.bodyURL === '/p4.html'" :parentFunction="storeUrlClick" :height="eml.height + 250" :id="'eml_body_' + index"/>
                     
                 </div>
 
@@ -441,16 +442,19 @@ import l11 from '../emls/l11.vue';
 import l12 from '../emls/l12.vue';
 import l13 from '../emls/l13.vue';
 import l14 from '../emls/l14.vue';
+import l15 from '../emls/l15.vue';
+import l16 from '../emls/l16.vue';
 import p1 from '../emls/p1.vue';
 import p2 from '../emls/p2.vue';
 import p3 from '../emls/p3.vue';
+import p4 from '../emls/p4.vue';
 
 export default {
   components: {
     VueEditor,
     InstructTxt,
-    l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14,
-    p1, p2, p3
+    l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16,
+    p1, p2, p3, p4
   },
   props: ["emls", "UI"],
   mixins: [db], //, tracking],
@@ -480,6 +484,7 @@ export default {
     created: {},
     uploadedAttachments: [],
     replies: {},
+    viewed: {},
     customToolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
@@ -590,6 +595,8 @@ export default {
     displayEml(src) {
       this.emlViewSrc = src;
       this.showCreated = false;
+      this.viewed[src] = true;
+
       try {
         document.getElementById("eml_body_" + this.emlViewIndex).src = src;
         this.showReply = false;
@@ -633,9 +640,9 @@ export default {
       this.sendLabels();
     },
     handleFinish() {
-      if (Object.values(this.labels).length < this.emls.length) {
+      if (Object.values(this.viewed).length < this.emls.length) {
         alert(
-          "You have not processed all e-mails yet. All e-mails should have disappeared when you've processed everything."
+          "You have not viewed all e-mails yet."
         );
       } else {
         this.sendLabels();
@@ -664,7 +671,6 @@ export default {
         "  \n\n\n $$$EMAIL: " +
         this.replyTxt +
         "  \n\n\n $$$ATTACHMENTS: ";
-        
         
       // add attachments
       if (this.uploadedAttachments.length > 0) {
