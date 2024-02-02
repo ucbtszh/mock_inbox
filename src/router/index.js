@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Meta from "vue-meta";
 import Consent from "../views/Consent.vue";
 import Instruct from "../views/Instruct.vue";
+import Failed from "../views/Failed.vue";
 
 Vue.use(VueRouter);
 Vue.use(Meta);
@@ -25,6 +26,11 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: "/returnsub",
+    name: "Return",
+    component: Failed,
   },
   {
     path: "/surveys",
